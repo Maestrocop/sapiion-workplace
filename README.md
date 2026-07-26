@@ -6,7 +6,32 @@ This is a standalone product — a fresh build using the internship domain desig
 
 ## Status
 
-Early scaffolding. Not yet functional. Repository kept private until ready to launch publicly.
+Under active development. Repository kept private until ready to launch publicly.
+
+## Development setup
+
+```bash
+# Backend (port 4100)
+cd backend
+cp .env.example .env   # edit DATABASE_URL etc.
+npm install
+npm run create-db      # creates schema via migrations
+npm run dev
+
+# Frontend (port 5174, proxies /api to :4100)
+cd frontend
+cp .env.example .env
+npm install
+npm run dev
+```
+
+## Self-hosting with Docker
+
+```bash
+docker compose up
+```
+
+Starts Postgres, backend (port 4100), and frontend (port 8080) together.
 
 ## License
 
