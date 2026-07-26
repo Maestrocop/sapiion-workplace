@@ -8,6 +8,11 @@ import healthRouter from './routes/health.js';
 import authRouter from './routes/auth.js';
 import authMicrosoftRouter from './routes/authMicrosoft.js';
 import authGoogleRouter from './routes/authGoogle.js';
+import companiesRouter from './routes/companies.js';
+import internshipCampaignsRouter from './routes/internshipCampaigns.js';
+import internshipsRouter from './routes/internships.js';
+import usersRouter from './routes/users.js';
+import assignmentsRouter from './routes/assignments.js';
 
 dotenv.config({ path: '.env' });
 
@@ -77,9 +82,13 @@ async function start() {
     // All routes below require a valid JWT
     app.use(requireAuth);
 
-    // Additional routers are mounted here as later phases add them
-    // (companies, students, internships, campaigns, applications,
-    // activity logs, assessments, documents, supervisor portal).
+    app.use('/api/companies',            (req, res, next) => { req.models = models; next(); }, companiesRouter);
+    app.use('/api/internship-campaigns', (req, res, next) => { req.models = models; next(); }, internshipCampaignsRouter);
+    app.use('/api/internships',          (req, res, next) => { req.models = models; next(); }, internshipsRouter);
+    app.use('/api/users',                (req, res, next) => { req.models = models; next(); }, usersRouter);
+    app.use('/api/assignments',          (req, res, next) => { req.models = models; next(); }, assignmentsRouter);
+
+    // Supervisor portal (token-based, no login) is mounted in Phase 6.
 
     const port = process.env.PORT || 4100;
     const server = app.listen(port, () => console.log(`Backend listening on http://localhost:${port}`));
