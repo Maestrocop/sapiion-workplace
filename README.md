@@ -25,13 +25,43 @@ npm install
 npm run dev
 ```
 
+### First login
+
+Either create your own admin account:
+
+```bash
+cd backend
+ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=yourpassword npm run seed:admin
+```
+
+...or load a small realistic demo dataset (a class, a campaign, three students, a company, and one internship with a supervisor, activity log, and assessment already filled in):
+
+```bash
+cd backend
+npm run seed:demo
+```
+
+This prints the demo logins (`coordinator@example.com` / `student1@example.com` etc., password `DemoPassword123`) and a supervisor portal link you can open directly, no login required.
+
+## What's here
+
+- **Companies** — registry with CRM fields (partnership status, visits)
+- **Internship campaigns** — coordinator-managed cohorts per class/academic year, with student enrollment
+- **Internships** — the placement record: company info, supervisors, weekly activity logs, bilateral assessment (teacher + supervisor), placement checklist, applications, and document uploads
+- **Supervisor portal** — token-based, no account required — the external company supervisor updates their own details and acknowledges logs via a link, nothing else
+- Local email/password auth out of the box; Microsoft Entra ID and Google sign-in work once an administrator adds real OAuth credentials to `.env` (see `.env.example`)
+
 ## Self-hosting with Docker
 
 ```bash
 docker compose up
 ```
 
-Starts Postgres, backend (port 4100), and frontend (port 8080) together.
+Starts Postgres, backend (port 4100), and frontend (port 8080) together — the backend runs pending migrations automatically on startup. To load the demo dataset once containers are up:
+
+```bash
+docker compose exec backend npm run seed:demo
+```
 
 ## License
 
