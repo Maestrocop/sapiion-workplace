@@ -2,6 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
+import { initModels } from './models/index.js';
 import healthRouter from './routes/health.js';
 
 dotenv.config({ path: '.env' });
@@ -28,6 +29,7 @@ async function start() {
   try {
     await sequelize.authenticate();
     console.log('Sequelize connected to DB');
+    const models = await initModels(sequelize);
 
     const app = express();
     app.set('trust proxy', 1);
