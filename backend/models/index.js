@@ -107,5 +107,6 @@ export async function initModels(sequelize) {
     models.InternshipAssignmentLink.belongsTo(models.Assignment, { foreignKey: 'assignment_id', as: 'assignment' });
   }
 
+  models.sequelize = sequelize;
   return models;
 }

@@ -3,7 +3,11 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 import { initModels } from './models/index.js';
+import { requireAuth } from './middleware/requireAuth.js';
 import healthRouter from './routes/health.js';
+import authRouter from './routes/auth.js';
+import authMicrosoftRouter from './routes/authMicrosoft.js';
+import authGoogleRouter from './routes/authGoogle.js';
 
 dotenv.config({ path: '.env' });
 
@@ -66,9 +70,15 @@ async function start() {
     });
 
     app.use('/api/health', healthRouter);
+    app.use('/api/auth', (req, res, next) => { req.models = models; next(); }, authRouter);
+    app.use('/api/auth/microsoft', (req, res, next) => { req.models = models; next(); }, authMicrosoftRouter);
+    app.use('/api/auth/google', (req, res, next) => { req.models = models; next(); }, authGoogleRouter);
+
+    // All routes below require a valid JWT
+    app.use(requireAuth);
 
     // Additional routers are mounted here as later phases add them
-    // (auth, companies, students, internships, campaigns, applications,
+    // (companies, students, internships, campaigns, applications,
     // activity logs, assessments, documents, supervisor portal).
 
     const port = process.env.PORT || 4100;
