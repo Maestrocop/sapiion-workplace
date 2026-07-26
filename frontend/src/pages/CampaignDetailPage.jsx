@@ -30,7 +30,7 @@ export default function CampaignDetailPage() {
 
   return (
     <div>
-      <Link to="/campaigns" className="text-sm text-workplace-teal-700 hover:underline">&larr; Campaigns</Link>
+      <Link to="/campaigns" className="text-sm text-workplace-teal-700 hover:underline">&larr; Internships</Link>
       <h1 className="text-lg font-semibold text-slate-800 mt-2">{campaign.name}</h1>
       <p className="text-sm text-slate-500 mb-6">{campaign.class?.name} · {campaign.academicYear?.label} · {campaign.status}</p>
 

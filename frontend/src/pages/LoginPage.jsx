@@ -57,11 +57,11 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-6 flex flex-col gap-2">
-          <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:4100'}/api/auth/microsoft`}
+          <a href="/api/auth/microsoft"
              className="w-full text-center border border-slate-300 rounded-lg py-2 text-sm text-slate-600 hover:bg-slate-50">
             Sign in with Microsoft
           </a>
-          <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:4100'}/api/auth/google`}
+          <a href="/api/auth/google"
              className="w-full text-center border border-slate-300 rounded-lg py-2 text-sm text-slate-600 hover:bg-slate-50">
             Sign in with Google
           </a>

@@ -47,15 +47,16 @@ export default function CampaignsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-lg font-semibold text-slate-800">Internship Campaigns</h1>
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-lg font-semibold text-slate-800">Internship Programme</h1>
         <button
           onClick={() => setShowForm((s) => !s)}
           className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"
         >
-          {showForm ? 'Cancel' : '+ New campaign'}
+          {showForm ? 'Cancel' : '+ New programme'}
         </button>
       </div>
+      <p className="text-sm text-slate-500 mb-4">One programme per class — tracks all students from job search to final evaluation</p>
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white border border-slate-200 rounded-xl p-4 mb-4 grid grid-cols-3 gap-3">
@@ -64,15 +65,18 @@ export default function CampaignsPage() {
             <option value="">Academic year…</option>
             {years.map((y) => <option key={y.id} value={y.id}>{y.label}{y.is_current ? ' (current)' : ''}</option>)}
           </select>
-          <input required placeholder="Campaign name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          <input required placeholder="Programme name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
           {error && <p className="col-span-3 text-sm text-red-600">{error}</p>}
           <button type="submit" className="col-span-3 bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg py-2">Create</button>
         </form>
       )}
 
+      {!loading && (
+        <p className="text-sm text-slate-500 mb-2">{campaigns.length} programme{campaigns.length === 1 ? '' : 's'}</p>
+      )}
       <div className="grid gap-3">
         {loading && <p className="text-slate-400 text-sm">Loading…</p>}
-        {!loading && campaigns.length === 0 && <p className="text-slate-400 text-sm">No campaigns yet.</p>}
+        {!loading && campaigns.length === 0 && <p className="text-slate-400 text-sm">No programmes yet.</p>}
         {campaigns.map((c) => (
           <Link
             key={c.id} to={`/campaigns/${c.id}`}

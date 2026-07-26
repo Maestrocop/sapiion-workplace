@@ -162,7 +162,7 @@ export default function InternshipDetailPage() {
 
         <Section title="Placement checklist">
           <div className="space-y-1">
-            {(internship.placementChecks || []).length === 0 && <p className="text-sm text-slate-400">No checklist data — view via campaign page.</p>}
+            {(internship.placementChecks || []).length === 0 && <p className="text-sm text-slate-400">No checklist data yet.</p>}
           </div>
           <ChecklistLoader internshipId={id} onToggle={toggleCheck} />
         </Section>

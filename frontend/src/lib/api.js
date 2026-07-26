@@ -1,4 +1,8 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4100';
+// Relative by default so requests go through Vite's dev proxy (or nginx in
+// production) on whatever port/origin the frontend actually runs on — never
+// a hardcoded backend URL, which breaks the moment Vite picks a different
+// port because something else is using 5174.
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 function getToken() {
   return localStorage.getItem('token');
