@@ -10,6 +10,7 @@ import CampaignDetailPage from './pages/CampaignDetailPage';
 import InternshipDetailPage from './pages/InternshipDetailPage';
 import SupervisorPortalPage from './pages/SupervisorPortalPage';
 import MyInternshipPage from './pages/MyInternshipPage';
+import MonitoringPage from './pages/MonitoringPage';
 
 function isStudentOnly(user) {
   const roles = user?.roles || [];
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/campaigns/:id" element={<CampaignDetailPage />} />
             <Route path="/internships/:id" element={<InternshipDetailPage />} />
             <Route path="/my-internship" element={<MyInternshipPage />} />
+            <Route path="/monitoring" element={<MonitoringPage />} />
           </Route>
 
           <Route path="/" element={<RequireAuth><HomeRedirect /></RequireAuth>} />

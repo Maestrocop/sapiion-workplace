@@ -14,10 +14,16 @@ function isStudentOnly(user) {
   return roles.includes('student') && !roles.some((r) => ['admin', 'coordinator', 'teacher'].includes(r));
 }
 
+function isCoordinator(user) {
+  const roles = user?.roles || [];
+  return roles.includes('coordinator') || roles.includes('admin');
+}
+
 export default function MainLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const navItems = isStudentOnly(user) ? STUDENT_NAV : STAFF_NAV;
+  const baseNav = isStudentOnly(user) ? STUDENT_NAV : STAFF_NAV;
+  const navItems = isCoordinator(user) ? [...baseNav, { to: '/monitoring', label: 'Monitoring' }] : baseNav;
 
   async function handleLogout() {
     await logout();

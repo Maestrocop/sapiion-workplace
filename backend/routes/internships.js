@@ -40,6 +40,11 @@ function isStaff(user) {
   return Array.isArray(user?.roles) && user.roles.some((r) => STAFF_ROLES.includes(r));
 }
 
+// Execution Monitoring is coordinator-only in ILS-dev too — teachers don't get it.
+function isCoordinator(user) {
+  return Array.isArray(user?.roles) && (user.roles.includes('coordinator') || user.roles.includes('admin'));
+}
+
 // A student may only touch their own internship's activity logs; staff can touch any.
 async function canManageInternship(models, internshipId, user) {
   if (isStaff(user)) return true;
@@ -63,6 +68,56 @@ router.get('/mine', async (req, res) => {
     res.json(internships);
   } catch (err) {
     console.error('[internships GET mine]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/internships/execution-risk — coordinator dashboard: students in
+// the on_site phase with engagement/risk indicators. Must stay before /:id.
+router.get('/execution-risk', async (req, res) => {
+  try {
+    if (!isCoordinator(req.user)) return res.status(403).json({ error: 'Coordinator access only' });
+
+    const { campaign_id } = req.query;
+    const seq = req.models.sequelize;
+
+    const [rows] = await seq.query(`
+      SELECT
+        i.id, i.student_id, i.company_name, i.start_date, i.end_date,
+        u.first_name, u.last_name, u.email,
+        COALESCE(SUM(ial.hours_logged), 0) AS total_hours,
+        COUNT(ial.id)                       AS log_count,
+        MAX(ial.created_at)                 AS last_log_date,
+        COUNT(DISTINCT sv.id)               AS supervisor_count,
+        ic.id   AS campaign_id,
+        ic.name AS campaign_name
+      FROM internships i
+      JOIN users u ON u.id = i.student_id
+      LEFT JOIN internship_activity_logs ial ON ial.internship_id = i.id AND ial.deleted_at IS NULL
+      LEFT JOIN internship_supervisors sv    ON sv.internship_id  = i.id AND sv.deleted_at IS NULL
+      LEFT JOIN internship_campaigns ic      ON ic.id = i.campaign_id    AND ic.deleted_at IS NULL
+      WHERE i.deleted_at IS NULL AND i.phase = 'on_site'
+        AND (:campaignId IS NULL OR ic.id = :campaignId)
+      GROUP BY i.id, u.id, ic.id
+      ORDER BY u.last_name, u.first_name
+    `, { replacements: { campaignId: campaign_id || null } });
+
+    const now = Date.now();
+    const withRisk = rows.map((r) => {
+      const lastLog = r.last_log_date ? new Date(r.last_log_date) : null;
+      const daysSinceLast = lastLog ? Math.floor((now - lastLog) / 86400000) : null;
+      const noSupervisor = Number(r.supervisor_count) === 0;
+
+      let risk = 'green';
+      if (noSupervisor || daysSinceLast === null || daysSinceLast > 14) risk = 'red';
+      else if (daysSinceLast > 7) risk = 'amber';
+
+      return { ...r, days_since_last_log: daysSinceLast, risk };
+    });
+
+    res.json(withRisk);
+  } catch (err) {
+    console.error('[internships GET execution-risk]', err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
