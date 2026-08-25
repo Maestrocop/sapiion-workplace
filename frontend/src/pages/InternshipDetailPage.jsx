@@ -7,7 +7,7 @@ import PhaseProgress from '../components/PhaseProgress';
 const PHASE_ADVANCE_LABEL = { placed: 'Mark as on-site', on_site: 'Move to evaluating' };
 const PHASE_ADVANCE_CONFIRM = {
   placed: 'Mark this internship as on-site? The student and coordinator will see it move to the On-site phase.',
-  on_site: 'Move this internship to Evaluating? This cannot be undone from here — only completing or reopening it manually can change it back.',
+  on_site: 'Move this internship to Evaluating? This cannot be undone.',
 };
 const PHASE_DISPLAY_LABEL = { placed: 'Placed', on_site: 'On-site', evaluating: 'Evaluating' };
 
