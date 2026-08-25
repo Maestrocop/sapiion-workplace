@@ -55,13 +55,21 @@ async function canManageInternship(models, internshipId, user) {
 // GET /api/internships/mine — current student's own internship record(s)
 router.get('/mine', async (req, res) => {
   try {
-    const { Internship, InternshipSupervisor, InternshipActivityLog, InternshipAssessment } = req.models;
+    const {
+      Internship, InternshipSupervisor, InternshipActivityLog, InternshipAssessment,
+      InternshipDocument, InternshipApplication, InternshipApplicationHistory,
+    } = req.models;
     const internships = await Internship.findAll({
       where: { student_id: req.user.id },
       include: [
         { model: InternshipSupervisor, as: 'supervisors' },
         { model: InternshipActivityLog, as: 'activityLogs' },
         { model: InternshipAssessment, as: 'assessments' },
+        { model: InternshipDocument, as: 'documents' },
+        {
+          model: InternshipApplication, as: 'applications',
+          include: [{ model: InternshipApplicationHistory, as: 'history' }],
+        },
       ],
       order: [['created_at', 'DESC']],
     });

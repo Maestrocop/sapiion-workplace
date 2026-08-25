@@ -29,12 +29,28 @@ async function request(path, { method = 'GET', body, headers = {} } = {}) {
   return data;
 }
 
+// For file uploads — no JSON body, no Content-Type header (the browser
+// sets the correct multipart boundary itself for FormData).
+async function postFormData(path, formData) {
+  const token = getToken();
+  const res = await fetch(`${API_URL}${path}`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
+  });
+  const contentType = res.headers.get('content-type') || '';
+  const data = contentType.includes('application/json') ? await res.json() : null;
+  if (!res.ok) throw new Error((data && data.error) || `Request failed (${res.status})`);
+  return data;
+}
+
 export const api = {
   get:    (path) => request(path),
   post:   (path, body) => request(path, { method: 'POST', body }),
   put:    (path, body) => request(path, { method: 'PUT', body }),
   patch:  (path, body) => request(path, { method: 'PATCH', body }),
   del:    (path) => request(path, { method: 'DELETE' }),
+  postFormData,
 };
 
 export { API_URL };
