@@ -19,11 +19,16 @@ function isCoordinator(user) {
   return roles.includes('coordinator') || roles.includes('admin');
 }
 
+function isAdmin(user) {
+  return (user?.roles || []).includes('admin');
+}
+
 export default function MainLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const baseNav = isStudentOnly(user) ? STUDENT_NAV : STAFF_NAV;
-  const navItems = isCoordinator(user) ? [...baseNav, { to: '/monitoring', label: 'Monitoring' }] : baseNav;
+  let navItems = isStudentOnly(user) ? STUDENT_NAV : STAFF_NAV;
+  if (isCoordinator(user)) navItems = [...navItems, { to: '/classes', label: 'Classes' }, { to: '/monitoring', label: 'Monitoring' }];
+  if (isAdmin(user)) navItems = [...navItems, { to: '/people', label: 'People' }];
 
   async function handleLogout() {
     await logout();
