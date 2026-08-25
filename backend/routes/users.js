@@ -19,17 +19,20 @@ const updateUserSchema = z.object({
   last_name:  z.string().min(1).max(100).optional(),
   roles:      z.array(z.enum(['admin', 'coordinator', 'teacher', 'student'])).optional(),
   is_active:  z.boolean().optional(),
+  class_id:   z.number().int().nullable().optional(),
+  password:   z.string().min(8).max(128).optional(),
 });
 
 // GET /api/users?role=student
 router.get('/', async (req, res) => {
   try {
-    const { User } = req.models;
+    const { User, Class } = req.models;
     const where = {};
     if (req.query.role) where.roles = { [Op.contains]: [req.query.role] };
     const users = await User.findAll({
       where,
-      attributes: ['id', 'email', 'first_name', 'last_name', 'roles', 'is_active', 'created_at'],
+      attributes: ['id', 'email', 'first_name', 'last_name', 'roles', 'is_active', 'class_id', 'created_at'],
+      include: [{ model: Class, as: 'cohortClass', attributes: ['id', 'name', 'code'] }],
       order: [['last_name', 'ASC']],
     });
     res.json(users);
@@ -67,9 +70,18 @@ router.put('/:id', validate(updateUserSchema), async (req, res) => {
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ error: 'User not found' });
     const updates = { ...req.body };
-    if (!req.user.roles?.includes('admin')) { delete updates.roles; delete updates.is_active; }
+    if (!req.user.roles?.includes('admin')) { delete updates.roles; delete updates.is_active; delete updates.class_id; }
+    if (updates.password) {
+      updates.password_hash = await hashPassword(updates.password);
+      updates.failed_login_attempts = 0;
+      updates.locked_until = null;
+      delete updates.password;
+    }
     await user.update(updates);
-    res.json({ id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, roles: user.roles, is_active: user.is_active });
+    res.json({
+      id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name,
+      roles: user.roles, is_active: user.is_active, class_id: user.class_id,
+    });
   } catch (err) {
     console.error('[users PUT]', err.message);
     res.status(500).json({ error: 'Internal server error' });

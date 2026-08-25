@@ -31,6 +31,12 @@ export async function initModels(sequelize) {
     models.CompanyVisit.belongsTo(models.User, { foreignKey: 'visited_by', as: 'visitor' });
   }
 
+  // User cohort/class
+  if (models.User && models.Class) {
+    models.User.belongsTo(models.Class, { foreignKey: 'class_id', as: 'cohortClass' });
+    models.Class.hasMany(models.User, { foreignKey: 'class_id', as: 'students' });
+  }
+
   // Internship campaign
   if (models.InternshipCampaign && models.Class) {
     models.InternshipCampaign.belongsTo(models.Class, { foreignKey: 'class_id', as: 'class' });
