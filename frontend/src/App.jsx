@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import RequireAuth from './components/RequireAuth';
 import MainLayout from './components/MainLayout';
 import LoginPage from './pages/LoginPage';
@@ -9,6 +9,17 @@ import CampaignsPage from './pages/CampaignsPage';
 import CampaignDetailPage from './pages/CampaignDetailPage';
 import InternshipDetailPage from './pages/InternshipDetailPage';
 import SupervisorPortalPage from './pages/SupervisorPortalPage';
+import MyInternshipPage from './pages/MyInternshipPage';
+
+function isStudentOnly(user) {
+  const roles = user?.roles || [];
+  return roles.includes('student') && !roles.some((r) => ['admin', 'coordinator', 'teacher'].includes(r));
+}
+
+function HomeRedirect() {
+  const { user } = useAuth();
+  return <Navigate to={isStudentOnly(user) ? '/my-internship' : '/companies'} replace />;
+}
 
 export default function App() {
   return (
@@ -24,10 +35,11 @@ export default function App() {
             <Route path="/campaigns" element={<CampaignsPage />} />
             <Route path="/campaigns/:id" element={<CampaignDetailPage />} />
             <Route path="/internships/:id" element={<InternshipDetailPage />} />
+            <Route path="/my-internship" element={<MyInternshipPage />} />
           </Route>
 
-          <Route path="/" element={<Navigate to="/companies" replace />} />
-          <Route path="*" element={<Navigate to="/companies" replace />} />
+          <Route path="/" element={<RequireAuth><HomeRedirect /></RequireAuth>} />
+          <Route path="*" element={<RequireAuth><HomeRedirect /></RequireAuth>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

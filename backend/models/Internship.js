@@ -14,6 +14,7 @@ export default function defineInternship(sequelize) {
     end_date:            { type: DataTypes.DATEONLY },
     working_schedule:    { type: DataTypes.TEXT },
     status:              { type: DataTypes.TEXT, allowNull: false, defaultValue: 'active' },
+    phase:               { type: DataTypes.STRING(20), allowNull: false, defaultValue: 'searching' },
     placement_substate:  { type: DataTypes.STRING(50) },
     completed_at:        { type: DataTypes.DATE },
     total_hours:         { type: DataTypes.DECIMAL(7, 1) },

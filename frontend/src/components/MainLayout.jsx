@@ -1,14 +1,23 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const navItems = [
+const STAFF_NAV = [
   { to: '/companies', label: 'Companies' },
   { to: '/campaigns', label: 'Internships' },
 ];
+const STUDENT_NAV = [
+  { to: '/my-internship', label: 'My Internship' },
+];
+
+function isStudentOnly(user) {
+  const roles = user?.roles || [];
+  return roles.includes('student') && !roles.some((r) => ['admin', 'coordinator', 'teacher'].includes(r));
+}
 
 export default function MainLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const navItems = isStudentOnly(user) ? STUDENT_NAV : STAFF_NAV;
 
   async function handleLogout() {
     await logout();

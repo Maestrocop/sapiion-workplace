@@ -35,6 +35,18 @@ function includeStudent(models) {
   return { model: models.User, as: 'student', attributes: ['id', 'first_name', 'last_name', 'email'] };
 }
 
+const STAFF_ROLES = ['admin', 'coordinator', 'teacher'];
+function isStaff(user) {
+  return Array.isArray(user?.roles) && user.roles.some((r) => STAFF_ROLES.includes(r));
+}
+
+// A student may only touch their own internship's activity logs; staff can touch any.
+async function canManageInternship(models, internshipId, user) {
+  if (isStaff(user)) return true;
+  const internship = await models.Internship.findByPk(internshipId, { attributes: ['student_id'] });
+  return Boolean(internship) && Number(internship.student_id) === Number(user.id);
+}
+
 // GET /api/internships/mine — current student's own internship record(s)
 router.get('/mine', async (req, res) => {
   try {
@@ -141,10 +153,35 @@ router.post('/:id/complete', validate(completeSchema), async (req, res) => {
     const { Internship } = req.models;
     const internship = await Internship.findByPk(req.params.id);
     if (!internship) return res.status(404).json({ error: 'Internship not found' });
-    await internship.update({ ...req.body, status: 'completed', completed_at: new Date() });
+    await internship.update({ ...req.body, status: 'completed', phase: 'completed', completed_at: new Date() });
     res.json(internship);
   } catch (err) {
     console.error('[internships POST complete]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/internships/:id/advance-phase — manual, staff-only.
+// Judgment-call transitions: placed -> on_site, on_site -> evaluating.
+// (searching -> placed and -> completed happen automatically elsewhere.)
+const PHASE_ADVANCE = { placed: 'on_site', on_site: 'evaluating' };
+
+router.post('/:id/advance-phase', async (req, res) => {
+  try {
+    if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can advance an internship phase' });
+
+    const { Internship } = req.models;
+    const internship = await Internship.findByPk(req.params.id);
+    if (!internship) return res.status(404).json({ error: 'Internship not found' });
+
+    const next = PHASE_ADVANCE[internship.phase];
+    if (!next) {
+      return res.status(400).json({ error: `Cannot advance from phase "${internship.phase}"` });
+    }
+    await internship.update({ phase: next });
+    res.json(internship);
+  } catch (err) {
+    console.error('[internships POST advance-phase]', err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -248,6 +285,9 @@ router.get('/:id/activity-logs', async (req, res) => {
 
 router.post('/:id/activity-logs', validate(activityLogSchema), async (req, res) => {
   try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      return res.status(403).json({ error: 'Not allowed' });
+    }
     const { InternshipActivityLog } = req.models;
     const log = await InternshipActivityLog.create({ ...req.body, internship_id: req.params.id, created_by: req.user.id });
     res.status(201).json(log);
@@ -259,6 +299,9 @@ router.post('/:id/activity-logs', validate(activityLogSchema), async (req, res) 
 
 router.put('/:id/activity-logs/:logId', validate(activityLogSchema.partial()), async (req, res) => {
   try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      return res.status(403).json({ error: 'Not allowed' });
+    }
     const { InternshipActivityLog } = req.models;
     const log = await InternshipActivityLog.findOne({ where: { id: req.params.logId, internship_id: req.params.id } });
     if (!log) return res.status(404).json({ error: 'Activity log not found' });
@@ -272,6 +315,9 @@ router.put('/:id/activity-logs/:logId', validate(activityLogSchema.partial()), a
 
 router.delete('/:id/activity-logs/:logId', async (req, res) => {
   try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      return res.status(403).json({ error: 'Not allowed' });
+    }
     const { InternshipActivityLog } = req.models;
     const log = await InternshipActivityLog.findOne({ where: { id: req.params.logId, internship_id: req.params.id } });
     if (!log) return res.status(404).json({ error: 'Activity log not found' });
@@ -457,6 +503,17 @@ router.put('/:id/applications/:appId', validate(applicationUpdateSchema), async 
       created_by: req.user.id,
     });
     await application.update(req.body);
+
+    // Automatic transition: an accepted application moves the internship
+    // from searching to placed. Doesn't regress a placement further along.
+    if (req.body.outcome === 'accepted') {
+      const { Internship } = req.models;
+      const internship = await Internship.findByPk(req.params.id);
+      if (internship && internship.phase === 'searching') {
+        await internship.update({ phase: 'placed' });
+      }
+    }
+
     res.json(application);
   } catch (err) {
     console.error('[internships PUT applications]', err.message);
