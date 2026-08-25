@@ -83,12 +83,13 @@ export default function CompaniesPage() {
               <th className="px-4 py-2">City</th>
               <th className="px-4 py-2">Sector</th>
               <th className="px-4 py-2">Status</th>
+              <th className="px-4 py-2">Students</th>
               <th className="px-4 py-2">Last contact</th>
             </tr>
           </thead>
           <tbody>
-            {loading && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400">Loading…</td></tr>}
-            {!loading && companies.length === 0 && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400">No companies yet.</td></tr>}
+            {loading && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">Loading…</td></tr>}
+            {!loading && companies.length === 0 && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">No companies yet.</td></tr>}
             {companies.map((c) => (
               <tr key={c.id} className="border-t border-slate-100">
                 <td className="px-4 py-2 font-medium text-slate-700">{c.name}</td>
@@ -97,6 +98,7 @@ export default function CompaniesPage() {
                 <td className="px-4 py-2">
                   <span className={`text-xs px-2 py-0.5 rounded-full ${STATUS_COLORS[c.partnership_status] || ''}`}>{c.partnership_status}</span>
                 </td>
+                <td className="px-4 py-2 text-slate-500">{c.student_count ?? 0}</td>
                 <td className="px-4 py-2 text-slate-500">{formatDate(c.last_contact_date)}</td>
               </tr>
             ))}

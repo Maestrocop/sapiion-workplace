@@ -1,6 +1,5 @@
 import express from 'express';
 import { z } from 'zod';
-import { Op } from 'sequelize';
 import { validate } from '../middleware/validate.js';
 
 const router = express.Router();
@@ -26,16 +25,27 @@ const visitSchema = z.object({
 });
 
 // GET /api/companies?search=&partnership_status=
+// Internship.company_name is a free-text field (no FK to companies — see
+// CLAUDE.md scope notes), so student_count is a name match, same
+// limitation ILS-dev itself has.
 router.get('/', async (req, res) => {
   try {
-    const { Company } = req.models;
     const { search, partnership_status } = req.query;
-    const where = {};
-    if (partnership_status) where.partnership_status = partnership_status;
-    if (search) {
-      where.name = { [Op.iLike]: `%${search}%` };
-    }
-    const companies = await Company.findAll({ where, order: [['name', 'ASC']] });
+    const [companies] = await req.models.sequelize.query(`
+      SELECT c.*,
+        (SELECT COUNT(*) FROM internships i
+         WHERE lower(i.company_name) = lower(c.name) AND i.deleted_at IS NULL) AS student_count
+      FROM companies c
+      WHERE c.deleted_at IS NULL
+        AND (:partnershipStatus IS NULL OR c.partnership_status = :partnershipStatus)
+        AND (:search IS NULL OR c.name ILIKE '%' || :search || '%')
+      ORDER BY c.name ASC
+    `, {
+      replacements: {
+        partnershipStatus: partnership_status || null,
+        search: search || null,
+      },
+    });
     res.json(companies);
   } catch (err) {
     console.error('[companies GET]', err.message);
