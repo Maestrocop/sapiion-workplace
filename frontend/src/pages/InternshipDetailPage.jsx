@@ -143,7 +143,7 @@ export default function InternshipDetailPage() {
           </form>
         </Section>
 
-        <Section title="Weekly activity logs">
+        <Section title="Daily Activity Logs">
           <div className="space-y-2 mb-3 max-h-48 overflow-y-auto">
             {(internship.activityLogs || []).map((l) => (
               <div key={l.id} className="text-sm border border-slate-100 rounded-lg p-2">
@@ -155,10 +155,10 @@ export default function InternshipDetailPage() {
           <form onSubmit={addLog} className="space-y-2">
             <div className="flex gap-2">
               <input type="date" value={logForm.week_starting} onChange={(e) => setLogForm({ ...logForm, week_starting: e.target.value })} className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-              <input type="number" placeholder="Hours" value={logForm.hours_logged} onChange={(e) => setLogForm({ ...logForm, hours_logged: e.target.value })} className="w-24 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+              <input type="number" placeholder="Hours worked" value={logForm.hours_logged} onChange={(e) => setLogForm({ ...logForm, hours_logged: e.target.value })} className="w-24 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
             </div>
-            <textarea required placeholder="What did you work on?" value={logForm.content} onChange={(e) => setLogForm({ ...logForm, content: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" rows={2} />
-            <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">Add log</button>
+            <textarea required placeholder="What did you do and learn today?" value={logForm.content} onChange={(e) => setLogForm({ ...logForm, content: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" rows={2} />
+            <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">+ Add log</button>
           </form>
         </Section>
 
