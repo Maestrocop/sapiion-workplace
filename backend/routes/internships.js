@@ -255,8 +255,16 @@ router.get('/:id/placement-checklist', async (req, res) => {
   }
 });
 
+// Staff can toggle any check; a student may only toggle their own
+// "student_signed" item (self-signing the placement agreement) on their own
+// internship — everything else on this endpoint stays staff-only.
 router.patch('/:id/placement-checklist/:checkKey', async (req, res) => {
   try {
+    const staff = isStaff(req.user);
+    if (!staff) {
+      if (req.params.checkKey !== 'student_signed') return res.status(403).json({ error: 'Not allowed' });
+      if (!(await canManageInternship(req.models, req.params.id, req.user))) return res.status(403).json({ error: 'Not allowed' });
+    }
     const { InternshipCheckDefinition, InternshipPlacementCheck } = req.models;
     const definition = await InternshipCheckDefinition.findOne({ where: { check_key: req.params.checkKey } });
     if (!definition) return res.status(404).json({ error: 'Unknown check' });
@@ -411,6 +419,7 @@ router.get('/:id/assessments', async (req, res) => {
 
 router.post('/:id/assessments', validate(assessmentSchema), async (req, res) => {
   try {
+    if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can submit teacher/supervisor assessments' });
     const { InternshipAssessment } = req.models;
     const [assessment] = await InternshipAssessment.findOrCreate({
       where: { internship_id: req.params.id, assessor_role: req.body.assessor_role },
@@ -429,6 +438,39 @@ router.post('/:id/assessments', validate(assessmentSchema), async (req, res) => 
   }
 });
 
+// POST /api/internships/:id/reflection — student's own self-reflection,
+// stored as an assessment row with assessor_role='student' (separate from
+// the teacher/supervisor bilateral assessment, which is scoring — this is
+// the student's own words, no score).
+const reflectionSchema = z.object({
+  reflection:       z.string().optional(),
+  competency_notes: z.string().optional(),
+  submit:           z.boolean().optional(),
+});
+
+router.post('/:id/reflection', validate(reflectionSchema), async (req, res) => {
+  try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      return res.status(403).json({ error: 'Not allowed' });
+    }
+    const { InternshipAssessment } = req.models;
+    const [assessment] = await InternshipAssessment.findOrCreate({
+      where: { internship_id: req.params.id, assessor_role: 'student' },
+      defaults: { internship_id: req.params.id, assessor_role: 'student', assessor_user_id: req.user.id },
+    });
+    await assessment.update({
+      reflection: req.body.reflection ?? assessment.reflection,
+      competency_notes: req.body.competency_notes ?? assessment.competency_notes,
+      is_completed: req.body.submit ? true : assessment.is_completed,
+      submitted_at: req.body.submit ? new Date() : assessment.submitted_at,
+    });
+    res.status(201).json(assessment);
+  } catch (err) {
+    console.error('[internships POST reflection]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // ── Documents ──────────────────────────────────────────────────────────────────
 router.get('/:id/documents', async (req, res) => {
   try {
@@ -443,6 +485,10 @@ router.get('/:id/documents', async (req, res) => {
 
 router.post('/:id/documents', upload.single('file'), async (req, res) => {
   try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      if (req.file) fs.unlink(req.file.path, () => {});
+      return res.status(403).json({ error: 'Not allowed' });
+    }
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const { InternshipDocument } = req.models;
     const { doc_type } = req.body;
@@ -482,6 +528,7 @@ router.get('/:id/documents/:docId/download', async (req, res) => {
 
 router.put('/:id/documents/:docId/review', async (req, res) => {
   try {
+    if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can review documents' });
     const { InternshipDocument } = req.models;
     const doc = await InternshipDocument.findOne({ where: { id: req.params.docId, internship_id: req.params.id } });
     if (!doc) return res.status(404).json({ error: 'Document not found' });
@@ -535,6 +582,9 @@ router.get('/:id/applications', async (req, res) => {
 
 router.post('/:id/applications', validate(applicationSchema), async (req, res) => {
   try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      return res.status(403).json({ error: 'Not allowed' });
+    }
     const { InternshipApplication } = req.models;
     const application = await InternshipApplication.create({ ...req.body, internship_id: req.params.id });
     res.status(201).json(application);
@@ -546,6 +596,9 @@ router.post('/:id/applications', validate(applicationSchema), async (req, res) =
 
 router.put('/:id/applications/:appId', validate(applicationUpdateSchema), async (req, res) => {
   try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      return res.status(403).json({ error: 'Not allowed' });
+    }
     const { InternshipApplication, InternshipApplicationHistory } = req.models;
     const application = await InternshipApplication.findOne({ where: { id: req.params.appId, internship_id: req.params.id } });
     if (!application) return res.status(404).json({ error: 'Application not found' });
