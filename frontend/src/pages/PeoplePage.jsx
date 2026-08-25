@@ -41,12 +41,12 @@ export default function PeoplePage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <h1 className="text-lg font-semibold text-slate-800">People</h1>
+        <h1 className="text-lg font-semibold text-slate-800">Users</h1>
         <button
           onClick={() => setShowForm((s) => !s)}
           className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"
         >
-          {showForm ? 'Cancel' : '+ New person'}
+          {showForm ? 'Cancel' : '+ New User'}
         </button>
       </div>
       <p className="text-sm text-slate-500 mb-4">Students, teachers, and coordinators — no self-registration, accounts are created here</p>

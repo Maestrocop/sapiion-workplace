@@ -41,7 +41,7 @@ export default function App() {
             <Route path="/my-internship" element={<MyInternshipPage />} />
             <Route path="/monitoring" element={<MonitoringPage />} />
             <Route path="/classes" element={<ClassesPage />} />
-            <Route path="/people" element={<PeoplePage />} />
+            <Route path="/users" element={<PeoplePage />} />
           </Route>
 
           <Route path="/" element={<RequireAuth><HomeRedirect /></RequireAuth>} />

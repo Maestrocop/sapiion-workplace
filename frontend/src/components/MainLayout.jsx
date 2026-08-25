@@ -28,7 +28,7 @@ export default function MainLayout() {
   const navigate = useNavigate();
   let navItems = isStudentOnly(user) ? STUDENT_NAV : STAFF_NAV;
   if (isCoordinator(user)) navItems = [...navItems, { to: '/classes', label: 'Classes' }, { to: '/monitoring', label: 'Monitoring' }];
-  if (isAdmin(user)) navItems = [...navItems, { to: '/people', label: 'People' }];
+  if (isAdmin(user)) navItems = [...navItems, { to: '/users', label: 'Users' }];
 
   async function handleLogout() {
     await logout();
