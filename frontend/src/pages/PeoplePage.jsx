@@ -3,7 +3,7 @@ import { api } from '../lib/api';
 
 const ROLE_OPTIONS = ['student', 'teacher', 'coordinator', 'admin'];
 
-function EditRow({ user, onSave, onCancel }) {
+function EditUserModal({ user, onClose, onSaved }) {
   const [roles, setRoles] = useState(user.roles || []);
   const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
@@ -18,41 +18,49 @@ function EditRow({ user, onSave, onCancel }) {
     setError('');
     if (roles.length === 0) { setError('At least one role is required'); return; }
     try {
-      await onSave({ first_name: firstName, last_name: lastName, roles, is_active: isActive });
+      await api.put(`/api/users/${user.id}`, { first_name: firstName, last_name: lastName, roles, is_active: isActive });
+      onSaved();
     } catch (err) {
       setError(err.message);
     }
   }
 
   return (
-    <tr className="border-t border-slate-100 bg-slate-50">
-      <td className="px-4 py-2">
-        <div className="flex gap-1">
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="w-20 border border-slate-300 rounded px-2 py-1 text-sm" />
-          <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="w-20 border border-slate-300 rounded px-2 py-1 text-sm" />
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50" onClick={onClose}>
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
+        <h2 className="text-lg font-semibold text-slate-800 mb-4">Edit user</h2>
+
+        <div className="space-y-3">
+          <div className="flex gap-2">
+            <input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First name" className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+            <input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last name" className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <p className="text-sm text-slate-400">{user.email}</p>
+
+          <div>
+            <p className="text-xs font-medium text-slate-500 mb-1">Roles</p>
+            <div className="flex flex-wrap gap-3">
+              {ROLE_OPTIONS.map((r) => (
+                <label key={r} className="flex items-center gap-1 text-sm">
+                  <input type="checkbox" checked={roles.includes(r)} onChange={() => toggleRole(r)} /> {r}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} /> Active
+          </label>
+
+          {error && <p className="text-sm text-red-600">{error}</p>}
         </div>
-      </td>
-      <td className="px-4 py-2 text-slate-400">{user.email}</td>
-      <td className="px-4 py-2">
-        <div className="flex flex-wrap gap-2">
-          {ROLE_OPTIONS.map((r) => (
-            <label key={r} className="flex items-center gap-1 text-xs">
-              <input type="checkbox" checked={roles.includes(r)} onChange={() => toggleRole(r)} /> {r}
-            </label>
-          ))}
+
+        <div className="flex justify-end gap-2 mt-6">
+          <button onClick={onClose} className="text-sm text-slate-500 px-4 py-2">Cancel</button>
+          <button onClick={save} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">Save</button>
         </div>
-        <label className="flex items-center gap-1 text-xs mt-1">
-          <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} /> Active
-        </label>
-        {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
-      </td>
-      <td className="px-4 py-2">
-        <div className="flex gap-2">
-          <button onClick={save} className="text-xs bg-workplace-teal-600 text-white rounded px-2 py-1">Save</button>
-          <button onClick={onCancel} className="text-xs text-slate-500">Cancel</button>
-        </div>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 }
 
@@ -60,7 +68,7 @@ export default function PeoplePage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
   const [form, setForm] = useState({ email: '', password: '', first_name: '', last_name: '', role: 'student' });
   const [error, setError] = useState('');
   const [created, setCreated] = useState('');
@@ -90,12 +98,6 @@ export default function PeoplePage() {
     } catch (err) {
       setError(err.message);
     }
-  }
-
-  async function handleSaveEdit(id, updates) {
-    await api.put(`/api/users/${id}`, updates);
-    setEditingId(null);
-    load();
   }
 
   return (
@@ -141,24 +143,28 @@ export default function PeoplePage() {
             {loading && <tr><td colSpan={4} className="px-4 py-6 text-center text-slate-400">Loading…</td></tr>}
             {!loading && users.length === 0 && <tr><td colSpan={4} className="px-4 py-6 text-center text-slate-400">No users yet.</td></tr>}
             {users.map((u) => (
-              editingId === u.id ? (
-                <EditRow key={u.id} user={u} onSave={(updates) => handleSaveEdit(u.id, updates)} onCancel={() => setEditingId(null)} />
-              ) : (
-                <tr key={u.id} className="border-t border-slate-100">
-                  <td className="px-4 py-2 font-medium text-slate-700">
-                    {u.first_name} {u.last_name} {u.is_active === false && <span className="text-xs text-slate-400">(inactive)</span>}
-                  </td>
-                  <td className="px-4 py-2 text-slate-500">{u.email}</td>
-                  <td className="px-4 py-2 text-slate-500">{(u.roles || []).join(', ')}</td>
-                  <td className="px-4 py-2">
-                    <button onClick={() => setEditingId(u.id)} className="text-xs text-workplace-teal-700 hover:underline">Edit</button>
-                  </td>
-                </tr>
-              )
+              <tr key={u.id} className="border-t border-slate-100">
+                <td className="px-4 py-2 font-medium text-slate-700">
+                  {u.first_name} {u.last_name} {u.is_active === false && <span className="text-xs text-slate-400">(inactive)</span>}
+                </td>
+                <td className="px-4 py-2 text-slate-500">{u.email}</td>
+                <td className="px-4 py-2 text-slate-500">{(u.roles || []).join(', ')}</td>
+                <td className="px-4 py-2">
+                  <button onClick={() => setEditingUser(u)} className="text-xs text-workplace-teal-700 hover:underline">Edit</button>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {editingUser && (
+        <EditUserModal
+          user={editingUser}
+          onClose={() => setEditingUser(null)}
+          onSaved={() => { setEditingUser(null); load(); }}
+        />
+      )}
     </div>
   );
 }
