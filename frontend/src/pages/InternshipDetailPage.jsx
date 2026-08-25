@@ -5,6 +5,11 @@ import { formatDate } from '../lib/dates';
 import PhaseProgress from '../components/PhaseProgress';
 
 const PHASE_ADVANCE_LABEL = { placed: 'Mark as on-site', on_site: 'Move to evaluating' };
+const PHASE_ADVANCE_CONFIRM = {
+  placed: 'Mark this internship as on-site? The student and coordinator will see it move to the On-site phase.',
+  on_site: 'Move this internship to Evaluating? This cannot be undone from here — only completing or reopening it manually can change it back.',
+};
+const PHASE_DISPLAY_LABEL = { placed: 'Placed', on_site: 'On-site', evaluating: 'Evaluating' };
 
 function Section({ title, children }) {
   return (
@@ -19,6 +24,7 @@ export default function InternshipDetailPage() {
   const { id } = useParams();
   const [internship, setInternship] = useState(null);
   const [error, setError] = useState('');
+  const [phaseMessage, setPhaseMessage] = useState('');
 
   const [companyForm, setCompanyForm] = useState({ company_name: '', company_address: '', start_date: '', end_date: '' });
   const [supervisorForm, setSupervisorForm] = useState({ name: '', email: '', job_title: '' });
@@ -78,9 +84,19 @@ export default function InternshipDetailPage() {
   }
 
   async function advancePhase() {
+    const currentPhase = internship.phase;
+    if (!window.confirm(PHASE_ADVANCE_CONFIRM[currentPhase])) return;
+
     setError('');
-    try { await api.post(`/api/internships/${id}/advance-phase`); load(); }
-    catch (err) { setError(err.message); }
+    setPhaseMessage('');
+    try {
+      const updated = await api.post(`/api/internships/${id}/advance-phase`);
+      setPhaseMessage(`✓ Moved to ${PHASE_DISPLAY_LABEL[updated.phase] || updated.phase}`);
+      setTimeout(() => setPhaseMessage(''), 4000);
+      load();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function toggleCheck(checkKey, current) {
@@ -104,11 +120,14 @@ export default function InternshipDetailPage() {
 
       <div className="flex items-center justify-between bg-white border border-slate-200 rounded-xl p-4 mb-6">
         <PhaseProgress phase={internship.phase} />
-        {PHASE_ADVANCE_LABEL[internship.phase] && (
-          <button onClick={advancePhase} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">
-            {PHASE_ADVANCE_LABEL[internship.phase]}
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {phaseMessage && <span className="text-sm text-emerald-600">{phaseMessage}</span>}
+          {PHASE_ADVANCE_LABEL[internship.phase] && (
+            <button onClick={advancePhase} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">
+              {PHASE_ADVANCE_LABEL[internship.phase]}
+            </button>
+          )}
+        </div>
       </div>
 
       {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
