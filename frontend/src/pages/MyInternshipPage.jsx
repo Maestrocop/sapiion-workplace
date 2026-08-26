@@ -265,12 +265,12 @@ function ReflectionPanel({ internship, onSaved }) {
             <textarea value={competencyNotes} onChange={(e) => setCompetencyNotes(e.target.value)} rows={3} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
           </div>
           {msg && <p className="text-sm text-emerald-600">{msg}</p>}
-          {!studentAssessment?.submitted_at && (
-            <div className="flex gap-2">
-              <button onClick={() => save(false)} className="text-sm border border-slate-300 rounded-lg px-4 py-2 text-slate-600 hover:bg-slate-50">Save draft</button>
-              <button onClick={() => save(true)} disabled={!reflection} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2 disabled:opacity-50">Submit</button>
-            </div>
-          )}
+          <div className="flex gap-2">
+            <button onClick={() => save(false)} className="text-sm border border-slate-300 rounded-lg px-4 py-2 text-slate-600 hover:bg-slate-50">Save draft</button>
+            <button onClick={() => save(true)} disabled={!reflection} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2 disabled:opacity-50">
+              {studentAssessment?.submitted_at ? 'Update' : 'Submit'}
+            </button>
+          </div>
         </div>
       </Section>
     </div>
