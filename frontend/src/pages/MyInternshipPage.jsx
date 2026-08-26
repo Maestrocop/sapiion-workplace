@@ -163,6 +163,39 @@ function ApplicationsPanel({ internship, onSaved }) {
   );
 }
 
+// ── Assignments (on-site phase, read-only — teacher-assigned deliverables) ──
+function AssignmentsPanel({ internshipId }) {
+  const [links, setLinks] = useState([]);
+
+  useEffect(() => {
+    api.get(`/api/internships/${internshipId}/assignments`).then(setLinks);
+  }, [internshipId]);
+
+  if (links.length === 0) return null;
+
+  return (
+    <Section title="Assignments">
+      <div className="space-y-2">
+        {links.map((link) => (
+          <div key={link.id} className="border border-slate-200 rounded-lg px-3 py-2 flex items-center justify-between text-sm">
+            <div>
+              <p className="font-medium text-slate-800">{link.assignment?.title || 'Assignment'}</p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {link.assignment?.discipline && <span className="mr-3">{link.assignment.discipline}</span>}
+                {(link.due_date_override || link.assignment?.due_date) && (
+                  <span className="mr-3">Due {formatDate(link.due_date_override || link.assignment.due_date)}</span>
+                )}
+                {link.assignment?.points_possible && <span>{link.assignment.points_possible} pts</span>}
+              </p>
+            </div>
+            <span className="text-xs bg-workplace-teal-50 text-workplace-teal-700 px-2 py-1 rounded-full font-medium">To do</span>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 // ── Signature (placement phase) ──────────────────────────────────────────────
 function SignaturePanel({ internship, onSaved }) {
   const [checked, setChecked] = useState(false);
@@ -361,6 +394,11 @@ export default function MyInternshipPage() {
         {/* Placed — sign the agreement */}
         {internship.phase === 'placed' && (
           <SignaturePanel internship={internship} onSaved={load} />
+        )}
+
+        {/* On-site — teacher-assigned deliverables */}
+        {internship.phase === 'on_site' && (
+          <AssignmentsPanel internshipId={internship.id} />
         )}
 
         {/* On-site — daily activity logs */}
