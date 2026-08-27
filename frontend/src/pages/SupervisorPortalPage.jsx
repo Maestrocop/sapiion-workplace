@@ -62,6 +62,16 @@ export default function SupervisorPortalPage() {
     } catch { /* best-effort */ }
   }
 
+  async function respondToReview(reviewId, response) {
+    try {
+      await fetch(`${API_URL}/api/supervisor-portal/${token}/reviews/${reviewId}/respond`, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ response }),
+      });
+      load();
+    } catch { /* best-effort */ }
+  }
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -96,6 +106,35 @@ export default function SupervisorPortalPage() {
             <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">Save</button>
           </form>
         </div>
+
+        {data.reviews && data.reviews.length > 0 && (
+          <div className="bg-white border border-slate-200 rounded-xl p-5 mb-6">
+            <h2 className="text-sm font-medium text-slate-600 mb-3">School interim reviews</h2>
+            <div className="space-y-2">
+              {data.reviews.map((r) => (
+                <div key={r.id} className="border border-slate-100 rounded-lg p-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{formatDate(r.scheduled_date)}</span>
+                    <span className="text-xs text-slate-400 capitalize">{r.status}</span>
+                  </div>
+                  {r.status === 'completed' && r.report && <p className="text-slate-600 mt-1">{r.report}</p>}
+                  {r.status === 'scheduled' && (
+                    r.supervisor_response === 'pending' ? (
+                      <div className="flex gap-2 mt-2">
+                        <button onClick={() => respondToReview(r.id, 'confirmed')} className="text-xs bg-workplace-teal-600 text-white rounded-lg px-3 py-1">Confirm attendance</button>
+                        <button onClick={() => respondToReview(r.id, 'declined')} className="text-xs border border-slate-300 rounded-lg px-3 py-1 text-slate-600">Can't attend</button>
+                      </div>
+                    ) : (
+                      <p className="text-xs mt-1">
+                        You responded: <span className={r.supervisor_response === 'confirmed' ? 'text-emerald-600' : 'text-red-600'}>{r.supervisor_response}</span>
+                      </p>
+                    )
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="bg-white border border-slate-200 rounded-xl p-5">
           <h2 className="text-sm font-medium text-slate-600 mb-3">Weekly activity logs</h2>

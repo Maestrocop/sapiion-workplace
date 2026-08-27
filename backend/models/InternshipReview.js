@@ -11,6 +11,8 @@ export default function defineInternshipReview(sequelize) {
     report:                { type: DataTypes.TEXT },
     hours_logged_snapshot: { type: DataTypes.DECIMAL(7, 1) },
     completed_at:          { type: DataTypes.DATE },
+    student_response:      { type: DataTypes.STRING(20), allowNull: false, defaultValue: 'pending' },
+    supervisor_response:   { type: DataTypes.STRING(20), allowNull: false, defaultValue: 'pending' },
   }, {
     tableName:   'internship_reviews',
     underscored: true,

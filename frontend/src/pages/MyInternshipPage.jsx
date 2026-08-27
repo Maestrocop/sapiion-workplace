@@ -203,9 +203,14 @@ const REVIEW_STATUS_STYLE = {
 };
 
 // ── Interim reviews (read-only for the student) ──────────────────────────────
-function ReviewsPanel({ internship }) {
+function ReviewsPanel({ internship, onSaved }) {
   const reviews = internship.reviews || [];
   if (reviews.length === 0) return null;
+
+  async function respond(reviewId, response) {
+    await api.put(`/api/internships/${internship.id}/reviews/${reviewId}/respond`, { response });
+    onSaved();
+  }
 
   return (
     <Section title="Interim reviews">
@@ -217,6 +222,18 @@ function ReviewsPanel({ internship }) {
               <span className={`text-xs px-2 py-0.5 rounded-full ${REVIEW_STATUS_STYLE[r.status]}`}>{r.status}</span>
             </div>
             {r.status === 'completed' && r.report && <p className="text-slate-600 mt-1">{r.report}</p>}
+            {r.status === 'scheduled' && (
+              r.student_response === 'pending' ? (
+                <div className="flex gap-2 mt-2">
+                  <button onClick={() => respond(r.id, 'confirmed')} className="text-xs bg-workplace-teal-600 text-white rounded-lg px-3 py-1">Confirm attendance</button>
+                  <button onClick={() => respond(r.id, 'declined')} className="text-xs border border-slate-300 rounded-lg px-3 py-1 text-slate-600">Can't attend</button>
+                </div>
+              ) : (
+                <p className="text-xs mt-1">
+                  You responded: <span className={r.student_response === 'confirmed' ? 'text-emerald-600' : 'text-red-600'}>{r.student_response}</span>
+                </p>
+              )
+            )}
           </div>
         ))}
       </div>
@@ -487,7 +504,7 @@ export default function MyInternshipPage() {
             earlier phase should stay visible as a record, not disappear
             once the internship moves on. The component itself renders
             nothing if there are no reviews yet. */}
-        <ReviewsPanel internship={internship} />
+        <ReviewsPanel internship={internship} onSaved={load} />
 
         {/* On-site — daily activity logs */}
         {(internship.phase === 'on_site' || internship.phase === 'completed') && (

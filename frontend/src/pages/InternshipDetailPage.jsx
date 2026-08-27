@@ -92,6 +92,12 @@ function ReviewsPanel({ internship, onSaved }) {
               <span className="font-medium">{formatDate(r.scheduled_date)}{r.reviewer && ` — ${r.reviewer.first_name} ${r.reviewer.last_name}`}</span>
               <span className={`text-xs px-2 py-0.5 rounded-full ${REVIEW_STATUS_STYLE[r.status]}`}>{r.status}</span>
             </div>
+            {r.status === 'scheduled' && (
+              <p className="text-xs text-slate-400 mt-1">
+                Student: <span className={r.student_response === 'confirmed' ? 'text-emerald-600' : r.student_response === 'declined' ? 'text-red-600' : 'text-amber-600'}>{r.student_response}</span>
+                {r.supervisor_id && <> · Supervisor: <span className={r.supervisor_response === 'confirmed' ? 'text-emerald-600' : r.supervisor_response === 'declined' ? 'text-red-600' : 'text-amber-600'}>{r.supervisor_response}</span></>}
+              </p>
+            )}
             {r.status === 'completed' && (
               <>
                 <p className="text-slate-600 mt-1">{r.report}</p>

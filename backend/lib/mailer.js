@@ -39,3 +39,17 @@ export async function sendApplicationEmail({ to, subject, body, replyTo }) {
   }
   await t.sendMail({ from: process.env.SMTP_FROM || 'no-reply@example.com', to, subject, html: body, replyTo });
 }
+
+// Sent to both the student and the supervisor when a coordinator schedules an
+// interim review — each needs to confirm/decline attendance independently.
+export async function sendReviewScheduledEmail({ to, studentName, scheduledDate, actionUrl }) {
+  await send({
+    to,
+    subject: `Interim review scheduled for ${studentName} — ${scheduledDate}`,
+    html: `
+      <p>A school interim review has been scheduled for <strong>${studentName}</strong>'s internship on <strong>${scheduledDate}</strong>.</p>
+      <p>Please confirm whether you can attend:</p>
+      <p><a href="${actionUrl}">${actionUrl}</a></p>
+    `,
+  });
+}

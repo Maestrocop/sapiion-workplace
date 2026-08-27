@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import multer from 'multer';
 import { z } from 'zod';
 import { validate } from '../middleware/validate.js';
+import { sendReviewScheduledEmail } from '../lib/mailer.js';
 
 const router = express.Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -316,16 +317,60 @@ router.get('/:id/reviews', async (req, res) => {
 router.post('/:id/reviews', validate(scheduleReviewSchema), async (req, res) => {
   try {
     if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can schedule an interim review' });
-    const { InternshipReview } = req.models;
+    const { InternshipReview, Internship, User, InternshipSupervisor } = req.models;
     const review = await InternshipReview.create({
       internship_id: req.params.id,
       scheduled_date: req.body.scheduled_date,
       supervisor_id: req.body.supervisor_id || null,
       reviewer_id: req.user.id,
     });
+
+    // Notify both sides — each needs to confirm/decline independently.
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5174';
+    const internship = await Internship.findByPk(req.params.id, { include: [{ model: User, as: 'student' }] });
+    if (internship?.student?.email) {
+      sendReviewScheduledEmail({
+        to: internship.student.email,
+        studentName: `${internship.student.first_name} ${internship.student.last_name}`,
+        scheduledDate: req.body.scheduled_date,
+        actionUrl: `${frontendUrl}/my-internship`,
+      }).catch((err) => console.error('[reviews] student email failed:', err.message));
+    }
+    if (review.supervisor_id) {
+      const supervisor = await InternshipSupervisor.findByPk(review.supervisor_id);
+      if (supervisor?.email) {
+        sendReviewScheduledEmail({
+          to: supervisor.email,
+          studentName: internship?.student ? `${internship.student.first_name} ${internship.student.last_name}` : 'the student',
+          scheduledDate: req.body.scheduled_date,
+          actionUrl: `${frontendUrl}/supervisor/${supervisor.access_token}`,
+        }).catch((err) => console.error('[reviews] supervisor email failed:', err.message));
+      }
+    }
+
     res.status(201).json(review);
   } catch (err) {
     console.error('[internships POST reviews]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT /api/internships/:id/reviews/:reviewId/respond — the student confirms
+// or declines their own review invitation.
+const respondSchema = z.object({ response: z.enum(['confirmed', 'declined']) });
+
+router.put('/:id/reviews/:reviewId/respond', validate(respondSchema), async (req, res) => {
+  try {
+    if (!(await canManageInternship(req.models, req.params.id, req.user))) {
+      return res.status(403).json({ error: 'Not allowed' });
+    }
+    const { InternshipReview } = req.models;
+    const review = await InternshipReview.findOne({ where: { id: req.params.reviewId, internship_id: req.params.id } });
+    if (!review) return res.status(404).json({ error: 'Review not found' });
+    await review.update({ student_response: req.body.response });
+    res.json(review);
+  } catch (err) {
+    console.error('[internships PUT reviews respond]', err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

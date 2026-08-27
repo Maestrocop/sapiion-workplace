@@ -39,6 +39,13 @@ router.get('/:token', async (req, res) => {
       { replacements: { id: internship.id } }
     );
 
+    // Reviews this supervisor is involved in (not every review on the
+    // internship — only ones where they were named as attending).
+    const reviews = await models.InternshipReview.findAll({
+      where: { internship_id: internship.id, supervisor_id: supervisor.id },
+      order: [['scheduled_date', 'DESC']],
+    });
+
     res.json({
       supervisor: {
         id: supervisor.id, name: supervisor.name, email: supervisor.email,
@@ -55,6 +62,7 @@ router.get('/:token', async (req, res) => {
       },
       logs,
       assignments,
+      reviews,
     });
   } catch (err) {
     console.error('[supervisor-portal GET]', err.message);
@@ -125,6 +133,32 @@ router.patch('/:token/logs/:logId', async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error('[supervisor-portal PATCH logs]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT /api/supervisor-portal/:token/reviews/:reviewId/respond — supervisor
+// confirms or declines their own review invitation.
+router.put('/:token/reviews/:reviewId/respond', async (req, res) => {
+  try {
+    const models = req.models;
+    const supervisor = await loadSupervisor(models, req.params.token);
+    if (!supervisor) return res.status(404).json({ error: 'Invalid or expired invitation link.' });
+
+    const response = req.body.response;
+    if (!['confirmed', 'declined'].includes(response)) {
+      return res.status(400).json({ error: 'response must be confirmed or declined' });
+    }
+
+    const review = await models.InternshipReview.findOne({
+      where: { id: req.params.reviewId, supervisor_id: supervisor.id },
+    });
+    if (!review) return res.status(404).json({ error: 'Review not found.' });
+
+    await review.update({ supervisor_response: response });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[supervisor-portal PUT reviews respond]', err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
