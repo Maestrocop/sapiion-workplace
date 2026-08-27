@@ -20,6 +20,120 @@ function Section({ title, children }) {
   );
 }
 
+const REVIEW_STATUS_STYLE = {
+  scheduled: 'bg-blue-100 text-blue-700',
+  completed: 'bg-emerald-100 text-emerald-700',
+  cancelled: 'bg-slate-100 text-slate-500',
+};
+
+function ReviewCompleteForm({ internshipId, review, onDone }) {
+  const [report, setReport] = useState('');
+  const [error, setError] = useState('');
+
+  async function submit(e) {
+    e.preventDefault();
+    setError('');
+    try {
+      await api.put(`/api/internships/${internshipId}/reviews/${review.id}/complete`, { report });
+      onDone();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-2 space-y-2">
+      <textarea
+        required placeholder="Visit report — discussion, what's going well, what isn't"
+        value={report} onChange={(e) => setReport(e.target.value)}
+        className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" rows={3}
+      />
+      {error && <p className="text-xs text-red-600">{error}</p>}
+      <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-3 py-1.5">Complete review</button>
+    </form>
+  );
+}
+
+function ReviewsPanel({ internship, onSaved }) {
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ scheduled_date: '', supervisor_id: '' });
+  const [completingId, setCompletingId] = useState(null);
+  const [error, setError] = useState('');
+
+  async function schedule(e) {
+    e.preventDefault();
+    setError('');
+    try {
+      await api.post(`/api/internships/${internship.id}/reviews`, {
+        scheduled_date: form.scheduled_date,
+        supervisor_id: form.supervisor_id ? Number(form.supervisor_id) : undefined,
+      });
+      setForm({ scheduled_date: '', supervisor_id: '' });
+      setShowForm(false);
+      onSaved();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function cancel(reviewId) {
+    if (!window.confirm('Cancel this scheduled review?')) return;
+    await api.put(`/api/internships/${internship.id}/reviews/${reviewId}/cancel`, {});
+    onSaved();
+  }
+
+  return (
+    <Section title="Interim reviews">
+      <div className="space-y-2 mb-3">
+        {(internship.reviews || []).length === 0 && <p className="text-sm text-slate-400">No reviews scheduled yet.</p>}
+        {(internship.reviews || []).map((r) => (
+          <div key={r.id} className="border border-slate-100 rounded-lg p-2 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="font-medium">{formatDate(r.scheduled_date)}{r.reviewer && ` — ${r.reviewer.first_name} ${r.reviewer.last_name}`}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${REVIEW_STATUS_STYLE[r.status]}`}>{r.status}</span>
+            </div>
+            {r.status === 'completed' && (
+              <>
+                <p className="text-slate-600 mt-1">{r.report}</p>
+                <p className="text-xs text-slate-400 mt-1">Hours logged at review: {r.hours_logged_snapshot}</p>
+              </>
+            )}
+            {r.status === 'scheduled' && (
+              completingId === r.id ? (
+                <ReviewCompleteForm internshipId={internship.id} review={r} onDone={() => { setCompletingId(null); onSaved(); }} />
+              ) : (
+                <div className="flex gap-3 mt-1">
+                  <button onClick={() => setCompletingId(r.id)} className="text-xs text-workplace-teal-700 hover:underline">Complete</button>
+                  <button onClick={() => cancel(r.id)} className="text-xs text-slate-400 hover:underline">Cancel</button>
+                </div>
+              )
+            )}
+          </div>
+        ))}
+      </div>
+
+      {error && <p className="text-sm text-red-600 mb-2">{error}</p>}
+
+      <button onClick={() => setShowForm((s) => !s)} className="w-full py-2 border-2 border-dashed border-workplace-teal-200 text-workplace-teal-700 text-sm rounded-lg hover:bg-workplace-teal-50">
+        {showForm ? 'Cancel' : '+ Schedule review'}
+      </button>
+
+      {showForm && (
+        <form onSubmit={schedule} className="mt-3 space-y-2 border border-workplace-teal-100 rounded-lg p-3 bg-workplace-teal-50/30">
+          <input required type="date" value={form.scheduled_date} onChange={(e) => setForm({ ...form, scheduled_date: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white" />
+          {(internship.supervisors || []).length > 0 && (
+            <select value={form.supervisor_id} onChange={(e) => setForm({ ...form, supervisor_id: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white">
+              <option value="">Supervisor attending (optional)</option>
+              {internship.supervisors.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+            </select>
+          )}
+          <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">Schedule</button>
+        </form>
+      )}
+    </Section>
+  );
+}
+
 export default function InternshipDetailPage() {
   const { id } = useParams();
   const [internship, setInternship] = useState(null);
@@ -243,6 +357,8 @@ export default function InternshipDetailPage() {
             </form>
           </Section>
         )}
+
+        <ReviewsPanel internship={internship} onSaved={load} />
 
         <Section title="Applications">
           <div className="space-y-2">

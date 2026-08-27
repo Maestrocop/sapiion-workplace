@@ -104,6 +104,16 @@ export async function initModels(sequelize) {
     models.InternshipCheckDefinition.hasMany(models.InternshipPlacementCheck, { foreignKey: 'definition_id', as: 'placementChecks' });
     models.InternshipPlacementCheck.belongsTo(models.InternshipCheckDefinition, { foreignKey: 'definition_id', as: 'definition' });
   }
+  if (models.Internship && models.InternshipReview) {
+    models.Internship.hasMany(models.InternshipReview, { foreignKey: 'internship_id', as: 'reviews' });
+    models.InternshipReview.belongsTo(models.Internship, { foreignKey: 'internship_id', as: 'internship' });
+  }
+  if (models.InternshipReview && models.User) {
+    models.InternshipReview.belongsTo(models.User, { foreignKey: 'reviewer_id', as: 'reviewer' });
+  }
+  if (models.InternshipReview && models.InternshipSupervisor) {
+    models.InternshipReview.belongsTo(models.InternshipSupervisor, { foreignKey: 'supervisor_id', as: 'supervisor' });
+  }
   if (models.Internship && models.InternshipAssignmentLink) {
     models.Internship.hasMany(models.InternshipAssignmentLink, { foreignKey: 'internship_id', as: 'assignmentLinks' });
     models.InternshipAssignmentLink.belongsTo(models.Internship, { foreignKey: 'internship_id', as: 'internship' });

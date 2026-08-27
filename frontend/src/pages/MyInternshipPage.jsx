@@ -196,6 +196,34 @@ function AssignmentsPanel({ internshipId }) {
   );
 }
 
+const REVIEW_STATUS_STYLE = {
+  scheduled: 'bg-blue-100 text-blue-700',
+  completed: 'bg-emerald-100 text-emerald-700',
+  cancelled: 'bg-slate-100 text-slate-500',
+};
+
+// ── Interim reviews (read-only for the student) ──────────────────────────────
+function ReviewsPanel({ internship }) {
+  const reviews = internship.reviews || [];
+  if (reviews.length === 0) return null;
+
+  return (
+    <Section title="Interim reviews">
+      <div className="space-y-2">
+        {reviews.map((r) => (
+          <div key={r.id} className="border border-slate-100 rounded-lg p-2 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="font-medium">{formatDate(r.scheduled_date)}{r.reviewer && ` — ${r.reviewer.first_name} ${r.reviewer.last_name}`}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${REVIEW_STATUS_STYLE[r.status]}`}>{r.status}</span>
+            </div>
+            {r.status === 'completed' && r.report && <p className="text-slate-600 mt-1">{r.report}</p>}
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 // ── Signature (placement phase) ──────────────────────────────────────────────
 function SignaturePanel({ internship, onSaved }) {
   const [checked, setChecked] = useState(false);
@@ -453,6 +481,11 @@ export default function MyInternshipPage() {
         {/* On-site — teacher-assigned deliverables */}
         {internship.phase === 'on_site' && (
           <AssignmentsPanel internshipId={internship.id} />
+        )}
+
+        {/* On-site — interim reviews (read-only) */}
+        {internship.phase === 'on_site' && (
+          <ReviewsPanel internship={internship} />
         )}
 
         {/* On-site — daily activity logs */}

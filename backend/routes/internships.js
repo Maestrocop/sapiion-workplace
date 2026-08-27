@@ -58,6 +58,7 @@ router.get('/mine', async (req, res) => {
     const {
       Internship, InternshipSupervisor, InternshipActivityLog, InternshipAssessment,
       InternshipDocument, InternshipApplication, InternshipApplicationHistory,
+      InternshipReview, User,
     } = req.models;
     const internships = await Internship.findAll({
       where: { student_id: req.user.id },
@@ -70,6 +71,7 @@ router.get('/mine', async (req, res) => {
           model: InternshipApplication, as: 'applications',
           include: [{ model: InternshipApplicationHistory, as: 'history' }],
         },
+        { model: InternshipReview, as: 'reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] }] },
       ],
       order: [['created_at', 'DESC']],
     });
@@ -161,7 +163,7 @@ router.post('/', validate(internshipSchema), async (req, res) => {
 // GET /api/internships/:id
 router.get('/:id', async (req, res) => {
   try {
-    const { Internship, InternshipSupervisor, InternshipActivityLog, InternshipAssessment, InternshipDocument, InternshipApplication, InternshipPlacementCheck, InternshipCheckDefinition, InternshipAssignmentLink, Assignment } = req.models;
+    const { Internship, InternshipSupervisor, InternshipActivityLog, InternshipAssessment, InternshipDocument, InternshipApplication, InternshipPlacementCheck, InternshipCheckDefinition, InternshipAssignmentLink, Assignment, InternshipReview, User } = req.models;
     const internship = await Internship.findByPk(req.params.id, {
       include: [
         includeStudent(req.models),
@@ -172,6 +174,7 @@ router.get('/:id', async (req, res) => {
         { model: InternshipApplication, as: 'applications' },
         { model: InternshipPlacementCheck, as: 'placementChecks', include: [{ model: InternshipCheckDefinition, as: 'definition' }] },
         { model: InternshipAssignmentLink, as: 'assignmentLinks', include: [{ model: Assignment, as: 'assignment' }] },
+        { model: InternshipReview, as: 'reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] }] },
       ],
     });
     if (!internship) return res.status(404).json({ error: 'Internship not found' });
@@ -275,6 +278,93 @@ router.post('/:id/advance-phase', async (req, res) => {
     res.json(internship);
   } catch (err) {
     console.error('[internships POST advance-phase]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ── Interim reviews (school visits during the internship) ───────────────────
+// Staff schedules and completes these; a student can only view their own.
+// Deliberately separate from the final teacher/supervisor assessment and
+// from company_visits (which is CRM outreach to companies, not this).
+const scheduleReviewSchema = z.object({
+  scheduled_date: z.string().min(1),
+  supervisor_id:  z.number().int().optional(),
+});
+
+const completeReviewSchema = z.object({
+  report: z.string().optional(),
+});
+
+router.get('/:id/reviews', async (req, res) => {
+  try {
+    const { InternshipReview, User, InternshipSupervisor } = req.models;
+    const reviews = await InternshipReview.findAll({
+      where: { internship_id: req.params.id },
+      include: [
+        { model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] },
+        { model: InternshipSupervisor, as: 'supervisor', attributes: ['id', 'name'] },
+      ],
+      order: [['scheduled_date', 'DESC']],
+    });
+    res.json(reviews);
+  } catch (err) {
+    console.error('[internships GET reviews]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/:id/reviews', validate(scheduleReviewSchema), async (req, res) => {
+  try {
+    if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can schedule an interim review' });
+    const { InternshipReview } = req.models;
+    const review = await InternshipReview.create({
+      internship_id: req.params.id,
+      scheduled_date: req.body.scheduled_date,
+      supervisor_id: req.body.supervisor_id || null,
+      reviewer_id: req.user.id,
+    });
+    res.status(201).json(review);
+  } catch (err) {
+    console.error('[internships POST reviews]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.put('/:id/reviews/:reviewId/complete', validate(completeReviewSchema), async (req, res) => {
+  try {
+    if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can complete an interim review' });
+    const { InternshipReview } = req.models;
+    const review = await InternshipReview.findOne({ where: { id: req.params.reviewId, internship_id: req.params.id } });
+    if (!review) return res.status(404).json({ error: 'Review not found' });
+
+    const [[hoursRow]] = await req.models.sequelize.query(
+      `SELECT COALESCE(SUM(hours_logged), 0) AS total FROM internship_activity_logs WHERE internship_id = :id AND deleted_at IS NULL`,
+      { replacements: { id: req.params.id } }
+    );
+
+    await review.update({
+      status: 'completed',
+      report: req.body.report || null,
+      hours_logged_snapshot: Number(hoursRow.total) || 0,
+      completed_at: new Date(),
+    });
+    res.json(review);
+  } catch (err) {
+    console.error('[internships PUT reviews complete]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.put('/:id/reviews/:reviewId/cancel', async (req, res) => {
+  try {
+    if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can cancel an interim review' });
+    const { InternshipReview } = req.models;
+    const review = await InternshipReview.findOne({ where: { id: req.params.reviewId, internship_id: req.params.id } });
+    if (!review) return res.status(404).json({ error: 'Review not found' });
+    await review.update({ status: 'cancelled' });
+    res.json(review);
+  } catch (err) {
+    console.error('[internships PUT reviews cancel]', err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
