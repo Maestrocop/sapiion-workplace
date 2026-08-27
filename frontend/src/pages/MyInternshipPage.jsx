@@ -483,10 +483,11 @@ export default function MyInternshipPage() {
           <AssignmentsPanel internshipId={internship.id} />
         )}
 
-        {/* On-site — interim reviews (read-only) */}
-        {internship.phase === 'on_site' && (
-          <ReviewsPanel internship={internship} />
-        )}
+        {/* Interim reviews (read-only) — not phase-gated: a review from an
+            earlier phase should stay visible as a record, not disappear
+            once the internship moves on. The component itself renders
+            nothing if there are no reviews yet. */}
+        <ReviewsPanel internship={internship} />
 
         {/* On-site — daily activity logs */}
         {(internship.phase === 'on_site' || internship.phase === 'completed') && (
