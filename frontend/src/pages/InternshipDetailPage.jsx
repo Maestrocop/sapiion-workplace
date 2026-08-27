@@ -30,7 +30,7 @@ export default function InternshipDetailPage() {
   const [supervisorForm, setSupervisorForm] = useState({ name: '', email: '', job_title: '' });
   const [logForm, setLogForm] = useState({ week_starting: '', hours_logged: '', content: '' });
   const [assessmentForm, setAssessmentForm] = useState({ score: '', feedback: '' });
-  const [completeForm, setCompleteForm] = useState({ total_hours: '', final_score: '', completion_note: '' });
+  const [completeForm, setCompleteForm] = useState({ completion_note: '' });
   const [completeMessage, setCompleteMessage] = useState('');
 
   async function load() {
@@ -108,8 +108,6 @@ export default function InternshipDetailPage() {
     setCompleteMessage('');
     try {
       await api.post(`/api/internships/${id}/complete`, {
-        total_hours: completeForm.total_hours ? Number(completeForm.total_hours) : undefined,
-        final_score: completeForm.final_score ? Number(completeForm.final_score) : undefined,
         completion_note: completeForm.completion_note || undefined,
       });
       setCompleteMessage('✓ Internship marked complete');
@@ -237,10 +235,8 @@ export default function InternshipDetailPage() {
 
         {internship.phase === 'evaluating' && (
           <Section title="Complete internship">
-            <p className="text-sm text-slate-500 mb-3">Once evaluation is finished, mark this internship complete — final and shown to the student as a summary.</p>
+            <p className="text-sm text-slate-500 mb-3">Total hours and final score are calculated automatically from activity logs and submitted assessments — nothing to enter there.</p>
             <form onSubmit={handleComplete} className="space-y-2">
-              <input type="number" placeholder="Total hours" value={completeForm.total_hours} onChange={(e) => setCompleteForm({ ...completeForm, total_hours: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-              <input type="number" placeholder="Final score (0-100)" value={completeForm.final_score} onChange={(e) => setCompleteForm({ ...completeForm, final_score: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
               <textarea placeholder="Completion note (optional)" value={completeForm.completion_note} onChange={(e) => setCompleteForm({ ...completeForm, completion_note: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" rows={2} />
               {completeMessage && <p className="text-sm text-emerald-600">{completeMessage}</p>}
               <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">Mark as complete</button>

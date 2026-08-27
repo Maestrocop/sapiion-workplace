@@ -25,9 +25,9 @@ const internshipSchema = z.object({
   working_schedule: z.string().optional(),
 });
 
+// total_hours and final_score are computed, not entered — see the /complete
+// handler. Only completion_note is actual coordinator input.
 const completeSchema = z.object({
-  total_hours:     z.number().nonnegative().optional(),
-  final_score:     z.number().min(0).max(100).optional(),
   completion_note: z.string().optional(),
 });
 
@@ -216,7 +216,37 @@ router.post('/:id/complete', validate(completeSchema), async (req, res) => {
     const { Internship } = req.models;
     const internship = await Internship.findByPk(req.params.id);
     if (!internship) return res.status(404).json({ error: 'Internship not found' });
-    await internship.update({ ...req.body, status: 'completed', phase: 'completed', completed_at: new Date() });
+    if (internship.completed_at) return res.status(400).json({ error: 'Internship is already completed.' });
+
+    const seq = req.models.sequelize;
+
+    // Total hours: sum of activity logs.
+    const [[hoursRow]] = await seq.query(
+      `SELECT COALESCE(SUM(hours_logged), 0) AS total FROM internship_activity_logs WHERE internship_id = :id AND deleted_at IS NULL`,
+      { replacements: { id: internship.id } }
+    );
+
+    // Final score: average of submitted teacher + supervisor assessments, as a percentage.
+    const [assessRows] = await seq.query(
+      `SELECT score, max_score FROM internship_assessments
+       WHERE internship_id = :id AND deleted_at IS NULL AND submitted_at IS NOT NULL
+         AND assessor_role IN ('teacher', 'supervisor') AND score IS NOT NULL`,
+      { replacements: { id: internship.id } }
+    );
+    let finalScore = null;
+    if (assessRows.length > 0) {
+      const pcts = assessRows.map((a) => (Number(a.score) / Number(a.max_score || 100)) * 100);
+      finalScore = Math.round((pcts.reduce((s, p) => s + p, 0) / pcts.length) * 100) / 100;
+    }
+
+    await internship.update({
+      completed_at: new Date(),
+      total_hours: Number(hoursRow.total) || 0,
+      final_score: finalScore,
+      completion_note: req.body.completion_note || null,
+      status: 'completed',
+      phase: 'completed',
+    });
     res.json(internship);
   } catch (err) {
     console.error('[internships POST complete]', err.message);
