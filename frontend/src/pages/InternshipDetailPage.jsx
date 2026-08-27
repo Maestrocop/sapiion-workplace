@@ -203,13 +203,24 @@ export default function InternshipDetailPage() {
 
         <Section title="Assessment (teacher)">
           <div className="space-y-2 mb-3">
-            {(internship.assessments || []).map((a) => (
+            {(internship.assessments || []).filter((a) => a.assessor_role !== 'student').map((a) => (
               <div key={a.id} className="text-sm border border-slate-100 rounded-lg p-2">
                 <p className="font-medium capitalize">{a.assessor_role}: {a.score ?? '—'}/{a.max_score}</p>
                 <p className="text-slate-600">{a.feedback}</p>
               </div>
             ))}
           </div>
+          {(() => {
+            const studentReflection = (internship.assessments || []).find((a) => a.assessor_role === 'student' && (a.reflection || a.competency_notes));
+            if (!studentReflection) return null;
+            return (
+              <div className="text-sm border border-slate-100 rounded-lg p-2 mb-3 bg-slate-50">
+                <p className="font-medium text-slate-700">Student reflection {studentReflection.submitted_at ? <span className="text-xs text-emerald-600 font-normal">(submitted)</span> : <span className="text-xs text-amber-600 font-normal">(draft)</span>}</p>
+                {studentReflection.reflection && <p className="text-slate-600 mt-1">{studentReflection.reflection}</p>}
+                {studentReflection.competency_notes && <p className="text-slate-500 mt-1 text-xs">Competencies: {studentReflection.competency_notes}</p>}
+              </div>
+            );
+          })()}
           <form onSubmit={submitAssessment} className="space-y-2">
             <input type="number" placeholder="Score (0-100)" value={assessmentForm.score} onChange={(e) => setAssessmentForm({ ...assessmentForm, score: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
             <textarea placeholder="Feedback" value={assessmentForm.feedback} onChange={(e) => setAssessmentForm({ ...assessmentForm, feedback: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" rows={2} />
