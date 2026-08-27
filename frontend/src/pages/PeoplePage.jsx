@@ -129,15 +129,22 @@ function EditUserModal({ user, classes, onClose, onSaved }) {
   );
 }
 
+const emptyCreateForm = { email: '', password: '', first_name: '', last_name: '', roles: ['student'], class_id: '' };
+
 export default function PeoplePage() {
   const [users, setUsers] = useState([]);
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  const [form, setForm] = useState({ email: '', password: '', first_name: '', last_name: '', role: 'student' });
+  const [form, setForm] = useState(emptyCreateForm);
   const [error, setError] = useState('');
   const [created, setCreated] = useState('');
+
+  function toggleCreateRole(role) {
+    setForm((f) => ({ ...f, roles: f.roles.includes(role) ? f.roles.filter((x) => x !== role) : [...f.roles, role] }));
+  }
 
   async function load() {
     setLoading(true);
@@ -156,14 +163,17 @@ export default function PeoplePage() {
     e.preventDefault();
     setError('');
     setCreated('');
+    if (form.roles.length === 0) { setError('At least one role is required'); return; }
     try {
       const user = await api.post('/api/users', {
         email: form.email, password: form.password,
         first_name: form.first_name, last_name: form.last_name,
-        roles: [form.role],
+        roles: form.roles,
+        class_id: form.class_id ? Number(form.class_id) : null,
       });
       setCreated(`✓ Created ${user.email} (id ${user.id}) — share the password with them directly`);
-      setForm({ email: '', password: '', first_name: '', last_name: '', role: 'student' });
+      setForm(emptyCreateForm);
+      setShowPassword(false);
       setShowForm(false);
       load();
     } catch (err) {
@@ -191,10 +201,33 @@ export default function PeoplePage() {
           <input required placeholder="First name" value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
           <input required placeholder="Last name" value={form.last_name} onChange={(e) => setForm({ ...form, last_name: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
           <input required type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-          <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm">
-            {ROLE_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+          <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm">
+            <option value="">No cohort</option>
+            {classes.map((c) => <option key={c.id} value={c.id}>{c.name}{c.code ? ` (${c.code})` : ''}</option>)}
           </select>
-          <input required type="password" placeholder="Temporary password (min 8 chars)" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="col-span-2 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+
+          <div className="col-span-2">
+            <label className="block text-xs font-medium text-slate-500 mb-1">Roles</label>
+            <div className="flex flex-wrap gap-3">
+              {ROLE_OPTIONS.map((r) => (
+                <label key={r} className="flex items-center gap-1 text-sm">
+                  <input type="checkbox" checked={form.roles.includes(r)} onChange={() => toggleCreateRole(r)} /> {r}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="col-span-2 relative">
+            <input
+              required type={showPassword ? 'text' : 'password'} placeholder="Temporary password (min 8 chars)"
+              value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm pr-9"
+            />
+            <button type="button" onClick={() => setShowPassword((s) => !s)} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+              👁
+            </button>
+          </div>
+
           {error && <p className="col-span-2 text-sm text-red-600">{error}</p>}
           <button type="submit" className="col-span-2 bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg py-2">Create account</button>
         </form>

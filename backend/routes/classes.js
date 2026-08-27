@@ -37,4 +37,20 @@ router.post('/', validate(classSchema), async (req, res) => {
   }
 });
 
+router.put('/:id', validate(classSchema), async (req, res) => {
+  try {
+    if (!req.user.roles?.some((r) => ['admin', 'coordinator'].includes(r))) {
+      return res.status(403).json({ error: 'Only admin/coordinator can edit classes' });
+    }
+    const { Class } = req.models;
+    const klass = await Class.findByPk(req.params.id);
+    if (!klass) return res.status(404).json({ error: 'Class not found' });
+    await klass.update(req.body);
+    res.json(klass);
+  } catch (err) {
+    console.error('[classes PUT]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default router;

@@ -12,6 +12,7 @@ const createUserSchema = z.object({
   first_name: z.string().min(1).max(100),
   last_name:  z.string().min(1).max(100),
   roles:      z.array(z.enum(['admin', 'coordinator', 'teacher', 'student'])).min(1),
+  class_id:   z.number().int().nullable().optional(),
 });
 
 const updateUserSchema = z.object({
@@ -47,13 +48,19 @@ router.post('/', validate(createUserSchema), async (req, res) => {
   try {
     if (!req.user.roles?.includes('admin')) return res.status(403).json({ error: 'Only an admin can create users' });
     const { User } = req.models;
-    const { email, password, first_name, last_name, roles } = req.body;
+    const { email, password, first_name, last_name, roles, class_id } = req.body;
     const existing = await User.findOne({ where: { email: email.toLowerCase().trim() } });
     if (existing) return res.status(409).json({ error: 'A user with this email already exists' });
 
     const password_hash = await hashPassword(password);
-    const user = await User.create({ email: email.toLowerCase().trim(), password_hash, first_name, last_name, roles });
-    res.status(201).json({ id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, roles: user.roles });
+    const user = await User.create({
+      email: email.toLowerCase().trim(), password_hash, first_name, last_name, roles,
+      class_id: class_id || null,
+    });
+    res.status(201).json({
+      id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name,
+      roles: user.roles, class_id: user.class_id,
+    });
   } catch (err) {
     console.error('[users POST]', err.message);
     res.status(500).json({ error: 'Internal server error' });
