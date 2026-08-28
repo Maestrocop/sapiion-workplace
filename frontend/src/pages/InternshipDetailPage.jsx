@@ -7,8 +7,9 @@ import PhaseProgress from '../components/PhaseProgress';
 const PHASE_ADVANCE_LABEL = { placed: 'Mark as on-site', on_site: 'Move to evaluating' };
 const PHASE_ADVANCE_CONFIRM = {
   placed: 'Mark this internship as on-site? The student and coordinator will see it move to the On-site phase.',
-  on_site: 'Move this internship to Evaluating? This cannot be undone.',
+  on_site: 'Move this internship to Evaluating?',
 };
+const PHASE_REVERSE_LABEL = { on_site: 'Move back to placed', evaluating: 'Move back to on-site' };
 const PHASE_DISPLAY_LABEL = { placed: 'Placed', on_site: 'On-site', evaluating: 'Evaluating' };
 
 function Section({ title, children }) {
@@ -221,6 +222,23 @@ export default function InternshipDetailPage() {
     }
   }
 
+  async function reversePhase() {
+    const reason = window.prompt('Why are you moving this phase back? (required — kept as a record)');
+    if (reason === null) return; // cancelled
+    if (!reason.trim()) { setError('A reason is required to reverse a phase.'); return; }
+
+    setError('');
+    setPhaseMessage('');
+    try {
+      const updated = await api.post(`/api/internships/${id}/reverse-phase`, { reason: reason.trim() });
+      setPhaseMessage(`✓ Moved back to ${PHASE_DISPLAY_LABEL[updated.phase] || updated.phase}`);
+      setTimeout(() => setPhaseMessage(''), 4000);
+      load();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   async function handleComplete(e) {
     e.preventDefault();
     if (!window.confirm('Mark this internship as complete? This is final — the student will see their finished-state summary.')) return;
@@ -260,6 +278,11 @@ export default function InternshipDetailPage() {
         <PhaseProgress phase={internship.phase} />
         <div className="flex items-center gap-3">
           {phaseMessage && <span className="text-sm text-emerald-600">{phaseMessage}</span>}
+          {PHASE_REVERSE_LABEL[internship.phase] && (
+            <button onClick={reversePhase} className="border border-slate-300 text-slate-600 hover:bg-slate-50 text-sm rounded-lg px-4 py-2">
+              ← {PHASE_REVERSE_LABEL[internship.phase]}
+            </button>
+          )}
           {PHASE_ADVANCE_LABEL[internship.phase] && (
             <button onClick={advancePhase} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">
               {PHASE_ADVANCE_LABEL[internship.phase]}
@@ -269,6 +292,22 @@ export default function InternshipDetailPage() {
       </div>
 
       {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
+
+      {internship.phaseHistory && internship.phaseHistory.length > 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 text-sm">
+          <h2 className="font-medium text-amber-800 mb-2">Phase reversal history</h2>
+          <div className="space-y-2">
+            {internship.phaseHistory.map((h) => (
+              <div key={h.id} className="text-amber-700">
+                <span className="font-medium">{PHASE_DISPLAY_LABEL[h.from_phase] || h.from_phase} → {PHASE_DISPLAY_LABEL[h.to_phase] || h.to_phase}</span>
+                {' — '}"{h.reason}"
+                {h.reversedBy && ` — ${h.reversedBy.first_name} ${h.reversedBy.last_name}`}
+                {' · '}{formatDate(h.created_at)}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-4">
         <Section title="Company">

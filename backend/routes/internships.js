@@ -164,7 +164,7 @@ router.post('/', validate(internshipSchema), async (req, res) => {
 // GET /api/internships/:id
 router.get('/:id', async (req, res) => {
   try {
-    const { Internship, InternshipSupervisor, InternshipActivityLog, InternshipAssessment, InternshipDocument, InternshipApplication, InternshipPlacementCheck, InternshipCheckDefinition, InternshipAssignmentLink, Assignment, InternshipReview, User } = req.models;
+    const { Internship, InternshipSupervisor, InternshipActivityLog, InternshipAssessment, InternshipDocument, InternshipApplication, InternshipPlacementCheck, InternshipCheckDefinition, InternshipAssignmentLink, Assignment, InternshipReview, InternshipPhaseHistory, User } = req.models;
     const internship = await Internship.findByPk(req.params.id, {
       include: [
         includeStudent(req.models),
@@ -176,7 +176,9 @@ router.get('/:id', async (req, res) => {
         { model: InternshipPlacementCheck, as: 'placementChecks', include: [{ model: InternshipCheckDefinition, as: 'definition' }] },
         { model: InternshipAssignmentLink, as: 'assignmentLinks', include: [{ model: Assignment, as: 'assignment' }] },
         { model: InternshipReview, as: 'reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] }] },
+        { model: InternshipPhaseHistory, as: 'phaseHistory', include: [{ model: User, as: 'reversedBy', attributes: ['id', 'first_name', 'last_name'] }] },
       ],
+      order: [[{ model: InternshipPhaseHistory, as: 'phaseHistory' }, 'created_at', 'DESC']],
     });
     if (!internship) return res.status(404).json({ error: 'Internship not found' });
     res.json(internship);
@@ -279,6 +281,41 @@ router.post('/:id/advance-phase', async (req, res) => {
     res.json(internship);
   } catch (err) {
     console.error('[internships POST advance-phase]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/internships/:id/reverse-phase — mirror of advance-phase, staff-only.
+// An unusual, correction-only action, so it requires a reason and leaves a
+// permanent record of why (internship_phase_history), same spirit as
+// internship_application_history.
+const PHASE_REVERSE = { on_site: 'placed', evaluating: 'on_site' };
+const reversePhaseSchema = z.object({ reason: z.string().min(1).max(500) });
+
+router.post('/:id/reverse-phase', validate(reversePhaseSchema), async (req, res) => {
+  try {
+    if (!isStaff(req.user)) return res.status(403).json({ error: 'Only staff can reverse an internship phase' });
+
+    const { Internship, InternshipPhaseHistory } = req.models;
+    const internship = await Internship.findByPk(req.params.id);
+    if (!internship) return res.status(404).json({ error: 'Internship not found' });
+
+    const prev = PHASE_REVERSE[internship.phase];
+    if (!prev) {
+      return res.status(400).json({ error: `Cannot reverse from phase "${internship.phase}"` });
+    }
+
+    await InternshipPhaseHistory.create({
+      internship_id: internship.id,
+      from_phase: internship.phase,
+      to_phase: prev,
+      reason: req.body.reason,
+      created_by: req.user.id,
+    });
+    await internship.update({ phase: prev });
+    res.json(internship);
+  } catch (err) {
+    console.error('[internships POST reverse-phase]', err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

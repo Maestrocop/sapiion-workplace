@@ -122,6 +122,13 @@ export async function initModels(sequelize) {
   if (models.InternshipReview && models.InternshipSupervisor) {
     models.InternshipReview.belongsTo(models.InternshipSupervisor, { foreignKey: 'supervisor_id', as: 'supervisor' });
   }
+  if (models.Internship && models.InternshipPhaseHistory) {
+    models.Internship.hasMany(models.InternshipPhaseHistory, { foreignKey: 'internship_id', as: 'phaseHistory' });
+    models.InternshipPhaseHistory.belongsTo(models.Internship, { foreignKey: 'internship_id', as: 'internship' });
+  }
+  if (models.InternshipPhaseHistory && models.User) {
+    models.InternshipPhaseHistory.belongsTo(models.User, { foreignKey: 'created_by', as: 'reversedBy' });
+  }
   if (models.Internship && models.InternshipAssignmentLink) {
     models.Internship.hasMany(models.InternshipAssignmentLink, { foreignKey: 'internship_id', as: 'assignmentLinks' });
     models.InternshipAssignmentLink.belongsTo(models.Internship, { foreignKey: 'internship_id', as: 'internship' });
