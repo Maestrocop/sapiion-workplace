@@ -3,11 +3,12 @@ import { api } from '../lib/api';
 
 const ROLE_OPTIONS = ['student', 'teacher', 'coordinator', 'admin'];
 
-function EditUserModal({ user, classes, onClose, onSaved }) {
+function EditUserModal({ user, classes, years, onClose, onSaved }) {
   const [roles, setRoles] = useState(user.roles || []);
   const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
   const [classId, setClassId] = useState(user.class_id || '');
+  const [academicYearId, setAcademicYearId] = useState(user.academic_year_id || '');
   const [isActive, setIsActive] = useState(user.is_active !== false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
@@ -29,6 +30,7 @@ function EditUserModal({ user, classes, onClose, onSaved }) {
       await api.put(`/api/users/${user.id}`, {
         first_name: firstName, last_name: lastName, roles, is_active: isActive,
         class_id: classId ? Number(classId) : null,
+        academic_year_id: academicYearId ? Number(academicYearId) : null,
       });
       setSaved(true);
       onSaved();
@@ -72,10 +74,18 @@ function EditUserModal({ user, classes, onClose, onSaved }) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Cohort (optional)</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Class (optional)</label>
             <select value={classId} onChange={(e) => setClassId(e.target.value)} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-              <option value="">No cohort</option>
+              <option value="">No class</option>
               {classes.map((c) => <option key={c.id} value={c.id}>{c.name}{c.code ? ` (${c.code})` : ''}</option>)}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Cohort (optional)</label>
+            <select value={academicYearId} onChange={(e) => setAcademicYearId(e.target.value)} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+              <option value="">No cohort</option>
+              {years.map((y) => <option key={y.id} value={y.id}>{y.label}{y.is_current ? ' (current)' : ''}</option>)}
             </select>
           </div>
 
@@ -129,9 +139,9 @@ function EditUserModal({ user, classes, onClose, onSaved }) {
   );
 }
 
-const emptyCreateForm = { email: '', password: '', first_name: '', last_name: '', roles: ['student'], class_id: '' };
+const emptyCreateForm = { email: '', password: '', first_name: '', last_name: '', roles: ['student'], class_id: '', academic_year_id: '' };
 
-function CreateUserModal({ classes, onClose, onCreated }) {
+function CreateUserModal({ classes, years, onClose, onCreated }) {
   const [form, setForm] = useState(emptyCreateForm);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -149,6 +159,7 @@ function CreateUserModal({ classes, onClose, onCreated }) {
         first_name: form.first_name, last_name: form.last_name,
         roles: form.roles,
         class_id: form.class_id ? Number(form.class_id) : null,
+        academic_year_id: form.academic_year_id ? Number(form.academic_year_id) : null,
       });
       onCreated(user);
       onClose();
@@ -178,10 +189,18 @@ function CreateUserModal({ classes, onClose, onCreated }) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">Cohort (optional)</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Class (optional)</label>
             <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-              <option value="">No cohort</option>
+              <option value="">No class</option>
               {classes.map((c) => <option key={c.id} value={c.id}>{c.name}{c.code ? ` (${c.code})` : ''}</option>)}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Cohort (optional)</label>
+            <select value={form.academic_year_id} onChange={(e) => setForm({ ...form, academic_year_id: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+              <option value="">No cohort</option>
+              {years.map((y) => <option key={y.id} value={y.id}>{y.label}{y.is_current ? ' (current)' : ''}</option>)}
             </select>
           </div>
 
@@ -225,6 +244,7 @@ function CreateUserModal({ classes, onClose, onCreated }) {
 export default function PeoplePage() {
   const [users, setUsers] = useState([]);
   const [classes, setClasses] = useState([]);
+  const [years, setYears] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
@@ -233,9 +253,12 @@ export default function PeoplePage() {
   async function load() {
     setLoading(true);
     try {
-      const [u, c] = await Promise.all([api.get('/api/users'), api.get('/api/classes')]);
+      const [u, c, y] = await Promise.all([
+        api.get('/api/users'), api.get('/api/classes'), api.get('/api/internship-campaigns/academic-years'),
+      ]);
       setUsers(u);
       setClasses(c);
+      setYears(y);
     } finally {
       setLoading(false);
     }
@@ -264,14 +287,15 @@ export default function PeoplePage() {
             <tr>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Email</th>
+              <th className="px-4 py-2">Class</th>
               <th className="px-4 py-2">Cohort</th>
               <th className="px-4 py-2">Roles</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {loading && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400">Loading…</td></tr>}
-            {!loading && users.length === 0 && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400">No users yet.</td></tr>}
+            {loading && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">Loading…</td></tr>}
+            {!loading && users.length === 0 && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">No users yet.</td></tr>}
             {users.map((u) => (
               <tr key={u.id} className="border-t border-slate-100">
                 <td
@@ -281,7 +305,8 @@ export default function PeoplePage() {
                   {u.first_name} {u.last_name} {u.is_active === false && <span className="text-xs text-slate-400">(inactive)</span>}
                 </td>
                 <td className="px-4 py-2 text-slate-500">{u.email}</td>
-                <td className="px-4 py-2 text-slate-500">{u.cohortClass?.name || '—'}</td>
+                <td className="px-4 py-2 text-slate-500">{u.enrolledClass?.name || '—'}</td>
+                <td className="px-4 py-2 text-slate-500">{u.cohort?.label || '—'}</td>
                 <td className="px-4 py-2 text-slate-500">{(u.roles || []).join(', ')}</td>
                 <td className="px-4 py-2">
                   <button onClick={() => setEditingUser(u)} className="text-xs text-workplace-teal-700 hover:underline">Edit</button>
@@ -296,6 +321,7 @@ export default function PeoplePage() {
         <EditUserModal
           user={editingUser}
           classes={classes}
+          years={years}
           onClose={() => setEditingUser(null)}
           onSaved={() => load()}
         />
@@ -304,6 +330,7 @@ export default function PeoplePage() {
       {showCreateModal && (
         <CreateUserModal
           classes={classes}
+          years={years}
           onClose={() => setShowCreateModal(false)}
           onCreated={(user) => {
             setCreated(`✓ Created ${user.email} (id ${user.id}) — share the password with them directly`);

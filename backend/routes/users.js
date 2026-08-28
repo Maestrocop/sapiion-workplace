@@ -7,33 +7,38 @@ import { hashPassword } from '../lib/auth.js';
 const router = express.Router();
 
 const createUserSchema = z.object({
-  email:      z.string().email(),
-  password:   z.string().min(8).max(128),
-  first_name: z.string().min(1).max(100),
-  last_name:  z.string().min(1).max(100),
-  roles:      z.array(z.enum(['admin', 'coordinator', 'teacher', 'student'])).min(1),
-  class_id:   z.number().int().nullable().optional(),
+  email:            z.string().email(),
+  password:         z.string().min(8).max(128),
+  first_name:       z.string().min(1).max(100),
+  last_name:        z.string().min(1).max(100),
+  roles:            z.array(z.enum(['admin', 'coordinator', 'teacher', 'student'])).min(1),
+  class_id:         z.number().int().nullable().optional(),
+  academic_year_id: z.number().int().nullable().optional(),
 });
 
 const updateUserSchema = z.object({
-  first_name: z.string().min(1).max(100).optional(),
-  last_name:  z.string().min(1).max(100).optional(),
-  roles:      z.array(z.enum(['admin', 'coordinator', 'teacher', 'student'])).optional(),
-  is_active:  z.boolean().optional(),
-  class_id:   z.number().int().nullable().optional(),
-  password:   z.string().min(8).max(128).optional(),
+  first_name:       z.string().min(1).max(100).optional(),
+  last_name:        z.string().min(1).max(100).optional(),
+  roles:            z.array(z.enum(['admin', 'coordinator', 'teacher', 'student'])).optional(),
+  is_active:        z.boolean().optional(),
+  class_id:         z.number().int().nullable().optional(),
+  academic_year_id: z.number().int().nullable().optional(),
+  password:         z.string().min(8).max(128).optional(),
 });
 
 // GET /api/users?role=student
 router.get('/', async (req, res) => {
   try {
-    const { User, Class } = req.models;
+    const { User, Class, AcademicYear } = req.models;
     const where = {};
     if (req.query.role) where.roles = { [Op.contains]: [req.query.role] };
     const users = await User.findAll({
       where,
-      attributes: ['id', 'email', 'first_name', 'last_name', 'roles', 'is_active', 'class_id', 'created_at'],
-      include: [{ model: Class, as: 'cohortClass', attributes: ['id', 'name', 'code'] }],
+      attributes: ['id', 'email', 'first_name', 'last_name', 'roles', 'is_active', 'class_id', 'academic_year_id', 'created_at'],
+      include: [
+        { model: Class, as: 'enrolledClass', attributes: ['id', 'name', 'code'] },
+        { model: AcademicYear, as: 'cohort', attributes: ['id', 'label', 'is_current'] },
+      ],
       order: [['last_name', 'ASC']],
     });
     res.json(users);
@@ -48,7 +53,7 @@ router.post('/', validate(createUserSchema), async (req, res) => {
   try {
     if (!req.user.roles?.includes('admin')) return res.status(403).json({ error: 'Only an admin can create users' });
     const { User } = req.models;
-    const { email, password, first_name, last_name, roles, class_id } = req.body;
+    const { email, password, first_name, last_name, roles, class_id, academic_year_id } = req.body;
     const existing = await User.findOne({ where: { email: email.toLowerCase().trim() } });
     if (existing) return res.status(409).json({ error: 'A user with this email already exists' });
 
@@ -56,10 +61,11 @@ router.post('/', validate(createUserSchema), async (req, res) => {
     const user = await User.create({
       email: email.toLowerCase().trim(), password_hash, first_name, last_name, roles,
       class_id: class_id || null,
+      academic_year_id: academic_year_id || null,
     });
     res.status(201).json({
       id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name,
-      roles: user.roles, class_id: user.class_id,
+      roles: user.roles, class_id: user.class_id, academic_year_id: user.academic_year_id,
     });
   } catch (err) {
     console.error('[users POST]', err.message);
@@ -77,7 +83,9 @@ router.put('/:id', validate(updateUserSchema), async (req, res) => {
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ error: 'User not found' });
     const updates = { ...req.body };
-    if (!req.user.roles?.includes('admin')) { delete updates.roles; delete updates.is_active; delete updates.class_id; }
+    if (!req.user.roles?.includes('admin')) {
+      delete updates.roles; delete updates.is_active; delete updates.class_id; delete updates.academic_year_id;
+    }
     if (updates.password) {
       updates.password_hash = await hashPassword(updates.password);
       updates.failed_login_attempts = 0;
@@ -87,7 +95,7 @@ router.put('/:id', validate(updateUserSchema), async (req, res) => {
     await user.update(updates);
     res.json({
       id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name,
-      roles: user.roles, is_active: user.is_active, class_id: user.class_id,
+      roles: user.roles, is_active: user.is_active, class_id: user.class_id, academic_year_id: user.academic_year_id,
     });
   } catch (err) {
     console.error('[users PUT]', err.message);

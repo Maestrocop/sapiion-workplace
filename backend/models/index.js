@@ -31,10 +31,18 @@ export async function initModels(sequelize) {
     models.CompanyVisit.belongsTo(models.User, { foreignKey: 'visited_by', as: 'visitor' });
   }
 
-  // User cohort/class
+  // User's class (the group/course they're in, e.g. "BIM Year 3")
   if (models.User && models.Class) {
-    models.User.belongsTo(models.Class, { foreignKey: 'class_id', as: 'cohortClass' });
+    models.User.belongsTo(models.Class, { foreignKey: 'class_id', as: 'enrolledClass' });
     models.Class.hasMany(models.User, { foreignKey: 'class_id', as: 'students' });
+  }
+
+  // User's cohort (their intake year, e.g. "2026-2027") — distinct from Class.
+  // Reuses academic_years rather than a free-text field like ILS-dev's, since
+  // Workplace already has that table for Internship Programme.
+  if (models.User && models.AcademicYear) {
+    models.User.belongsTo(models.AcademicYear, { foreignKey: 'academic_year_id', as: 'cohort' });
+    models.AcademicYear.hasMany(models.User, { foreignKey: 'academic_year_id', as: 'cohortUsers' });
   }
 
   // Internship campaign

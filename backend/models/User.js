@@ -9,6 +9,7 @@ export default function defineUser(sequelize) {
     last_name:              { type: DataTypes.STRING(100), allowNull: false },
     roles:                  { type: DataTypes.ARRAY(DataTypes.TEXT), allowNull: false, defaultValue: ['student'] },
     class_id:               { type: DataTypes.BIGINT },
+    academic_year_id:       { type: DataTypes.BIGINT },
     is_active:              { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
     avatar_url:             { type: DataTypes.TEXT },
     google_id:              { type: DataTypes.TEXT },
