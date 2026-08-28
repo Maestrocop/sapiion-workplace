@@ -91,16 +91,74 @@ function CreateClassModal({ onClose, onCreated }) {
   );
 }
 
+function CreateAcademicYearModal({ onClose, onCreated }) {
+  const [startYear, setStartYear] = useState(String(new Date().getFullYear()));
+  const [isCurrent, setIsCurrent] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleCreate() {
+    setError('');
+    const year = Number(startYear);
+    if (!Number.isInteger(year) || year < 2000 || year > 2100) { setError('Enter a valid start year'); return; }
+    try {
+      const academicYear = await api.post('/api/internship-campaigns/academic-years', {
+        start_year: year, is_current: isCurrent,
+      });
+      onCreated(academicYear);
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
+        <h2 className="text-lg font-semibold text-slate-800">New Academic Year</h2>
+        <p className="text-sm text-slate-500 mb-4">Runs 1 Sept → 31 Aug, e.g. 2027 creates "2027-2028"</p>
+
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Start year</label>
+            <input
+              type="number" placeholder="e.g. 2027" value={startYear}
+              onChange={(e) => setStartYear(e.target.value)}
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+            />
+          </div>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={isCurrent} onChange={(e) => setIsCurrent(e.target.checked)} />
+            Set as the current academic year
+          </label>
+          {error && <p className="text-sm text-red-600">{error}</p>}
+        </div>
+
+        <div className="flex justify-end gap-2 mt-6">
+          <button onClick={onClose} className="text-sm text-slate-500 px-4 py-2">Cancel</button>
+          <button onClick={handleCreate} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">Create</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ClassesPage() {
   const [classes, setClasses] = useState([]);
+  const [years, setYears] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCreateYearModal, setShowCreateYearModal] = useState(false);
   const [editingClass, setEditingClass] = useState(null);
 
   async function load() {
     setLoading(true);
-    try { setClasses(await api.get('/api/classes')); }
-    finally { setLoading(false); }
+    try {
+      const [c, y] = await Promise.all([api.get('/api/classes'), api.get('/api/internship-campaigns/academic-years')]);
+      setClasses(c);
+      setYears(y);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => { load(); }, []);
@@ -116,9 +174,9 @@ export default function ClassesPage() {
           + New class
         </button>
       </div>
-      <p className="text-sm text-slate-500 mb-4">Classes/cohorts that internship programmes attach to</p>
+      <p className="text-sm text-slate-500 mb-4">Classes that internship programmes attach to</p>
 
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden mb-8">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-slate-500 text-left">
             <tr>
@@ -150,6 +208,43 @@ export default function ClassesPage() {
         </table>
       </div>
 
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-lg font-semibold text-slate-800">Academic Years</h1>
+        <button
+          onClick={() => setShowCreateYearModal(true)}
+          className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"
+        >
+          + New academic year
+        </button>
+      </div>
+      <p className="text-sm text-slate-500 mb-4">A student's cohort (e.g. "2026-2027") and the scope internship programmes run within</p>
+
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-50 text-slate-500 text-left">
+            <tr>
+              <th className="px-4 py-2">Label</th>
+              <th className="px-4 py-2">Starts</th>
+              <th className="px-4 py-2">Ends</th>
+              <th className="px-4 py-2">Current</th>
+            </tr>
+          </thead>
+          <tbody>
+            {!loading && years.length === 0 && <tr><td colSpan={4} className="px-4 py-6 text-center text-slate-400">No academic years yet.</td></tr>}
+            {years.map((y) => (
+              <tr key={y.id} className="border-t border-slate-100">
+                <td className="px-4 py-2 font-medium text-slate-700">{y.label}</td>
+                <td className="px-4 py-2 text-slate-500">{y.start_date}</td>
+                <td className="px-4 py-2 text-slate-500">{y.end_date}</td>
+                <td className="px-4 py-2">
+                  {y.is_current && <span className="text-xs bg-workplace-teal-50 text-workplace-teal-700 px-2 py-0.5 rounded-full">Current</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       {editingClass && (
         <EditClassModal
           klass={editingClass}
@@ -161,6 +256,13 @@ export default function ClassesPage() {
       {showCreateModal && (
         <CreateClassModal
           onClose={() => setShowCreateModal(false)}
+          onCreated={() => load()}
+        />
+      )}
+
+      {showCreateYearModal && (
+        <CreateAcademicYearModal
+          onClose={() => setShowCreateYearModal(false)}
           onCreated={() => load()}
         />
       )}

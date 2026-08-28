@@ -4,6 +4,11 @@ import { validate } from '../middleware/validate.js';
 
 const router = express.Router();
 
+const createAcademicYearSchema = z.object({
+  start_year: z.number().int().min(2000).max(2100),
+  is_current: z.boolean().optional(),
+});
+
 const campaignSchema = z.object({
   class_id:              z.number().int(),
   academic_year_id:      z.number().int(),
@@ -26,6 +31,38 @@ router.get('/academic-years', async (req, res) => {
     res.json(years);
   } catch (err) {
     console.error('[internship-campaigns GET academic-years]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/internship-campaigns/academic-years — same Sept-1..Aug-31 convention
+// the initial migration seed used, so admins aren't stuck once that seed ages out.
+router.post('/academic-years', validate(createAcademicYearSchema), async (req, res) => {
+  try {
+    if (!req.user.roles?.some((r) => ['admin', 'coordinator'].includes(r))) {
+      return res.status(403).json({ error: 'Only admin/coordinator can create academic years' });
+    }
+    const { AcademicYear, sequelize } = req.models;
+    const { start_year, is_current } = req.body;
+    const label = `${start_year}-${start_year + 1}`;
+
+    const existing = await AcademicYear.findOne({ where: { label } });
+    if (existing) return res.status(409).json({ error: `Academic year ${label} already exists` });
+
+    const year = await sequelize.transaction(async (t) => {
+      if (is_current) {
+        await AcademicYear.update({ is_current: false }, { where: { is_current: true }, transaction: t });
+      }
+      return AcademicYear.create({
+        label,
+        start_date: `${start_year}-09-01`,
+        end_date: `${start_year + 1}-08-31`,
+        is_current: !!is_current,
+      }, { transaction: t });
+    });
+    res.status(201).json(year);
+  } catch (err) {
+    console.error('[internship-campaigns POST academic-years]', err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
