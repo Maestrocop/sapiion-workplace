@@ -1,21 +1,25 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function CampaignsPage() {
+  const { user } = useAuth();
+  const isAdmin = (user?.roles || []).includes('admin');
   const [campaigns, setCampaigns] = useState([]);
   const [years, setYears] = useState([]);
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const [form, setForm] = useState({ class_id: '', academic_year_id: '', name: '' });
   const [error, setError] = useState('');
 
-  async function load() {
+  async function load(all) {
     setLoading(true);
     try {
       const [c, y, cl] = await Promise.all([
-        api.get('/api/internship-campaigns'),
+        api.get(`/api/internship-campaigns${all ? '?all=1' : ''}`),
         api.get('/api/internship-campaigns/academic-years'),
         api.get('/api/classes'),
       ]);
@@ -29,7 +33,7 @@ export default function CampaignsPage() {
     }
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(showAll); }, [showAll]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleCreate(e) {
     e.preventDefault();
@@ -42,7 +46,7 @@ export default function CampaignsPage() {
       });
       setForm({ class_id: '', academic_year_id: form.academic_year_id, name: '' });
       setShowForm(false);
-      load();
+      load(showAll);
     } catch (err) {
       setError(err.message);
     }
@@ -59,7 +63,13 @@ export default function CampaignsPage() {
           {showForm ? 'Cancel' : '+ New programme'}
         </button>
       </div>
-      <p className="text-sm text-slate-500 mb-4">One programme per class — tracks all students from job search to final evaluation</p>
+      <p className="text-sm text-slate-500 mb-1">One programme per class — tracks all students from job search to final evaluation</p>
+      {!isAdmin && (
+        <button onClick={() => setShowAll((s) => !s)} className="text-xs text-workplace-teal-700 hover:underline mb-4">
+          {showAll ? '← Show only my programmes' : 'Show all coordinators\' programmes →'}
+        </button>
+      )}
+      {isAdmin && <p className="text-xs text-slate-400 mb-4">Showing every coordinator's programmes (admin view)</p>}
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white border border-slate-200 rounded-xl p-4 mb-4 grid grid-cols-3 gap-3">
@@ -93,7 +103,10 @@ export default function CampaignsPage() {
           >
             <div>
               <p className="font-medium text-slate-800">{c.name}</p>
-              <p className="text-sm text-slate-500">{c.class?.name} · {c.academicYear?.label}</p>
+              <p className="text-sm text-slate-500">
+                {c.class?.name} · {c.academicYear?.label}
+                {(showAll || isAdmin) && c.coordinator && ` · ${c.coordinator.first_name} ${c.coordinator.last_name}`}
+              </p>
             </div>
             <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{c.status}</span>
           </Link>

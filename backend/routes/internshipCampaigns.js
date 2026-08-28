@@ -67,14 +67,21 @@ router.post('/academic-years', validate(createAcademicYearSchema), async (req, r
   }
 });
 
-// GET /api/internship-campaigns
+// GET /api/internship-campaigns — admins see every programme (platform
+// oversight); everyone else only sees their own, so a coach managing several
+// classes isn't scrolling through every other coordinator's programmes too.
+// ?all=1 lets a non-admin coordinator explicitly see the full list when they
+// need to (e.g. covering for someone), without changing the default.
 router.get('/', async (req, res) => {
   try {
     const { InternshipCampaign, Class, AcademicYear, User } = req.models;
-    const { class_id, status } = req.query;
+    const { class_id, status, all } = req.query;
     const where = {};
     if (class_id) where.class_id = class_id;
     if (status) where.status = status;
+    if (!req.user.roles?.includes('admin') && all !== '1') {
+      where.coordinator_id = req.user.id;
+    }
     const campaigns = await InternshipCampaign.findAll({
       where,
       include: [
