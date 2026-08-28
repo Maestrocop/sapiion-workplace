@@ -133,7 +133,12 @@ export default function ClassesPage() {
             {!loading && classes.length === 0 && <tr><td colSpan={4} className="px-4 py-6 text-center text-slate-400">No classes yet.</td></tr>}
             {classes.map((c) => (
               <tr key={c.id} className="border-t border-slate-100">
-                <td className="px-4 py-2 font-medium text-slate-700">{c.name}</td>
+                <td
+                  onClick={() => setEditingClass(c)}
+                  className="px-4 py-2 font-medium text-slate-700 cursor-pointer hover:text-workplace-teal-700 hover:underline"
+                >
+                  {c.name}
+                </td>
                 <td className="px-4 py-2 text-slate-500">{c.code || '—'}</td>
                 <td className="px-4 py-2 text-slate-400">{c.id}</td>
                 <td className="px-4 py-2">

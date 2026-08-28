@@ -274,7 +274,10 @@ export default function PeoplePage() {
             {!loading && users.length === 0 && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400">No users yet.</td></tr>}
             {users.map((u) => (
               <tr key={u.id} className="border-t border-slate-100">
-                <td className="px-4 py-2 font-medium text-slate-700">
+                <td
+                  onClick={() => setEditingUser(u)}
+                  className="px-4 py-2 font-medium text-slate-700 cursor-pointer hover:text-workplace-teal-700 hover:underline"
+                >
                   {u.first_name} {u.last_name} {u.is_active === false && <span className="text-xs text-slate-400">(inactive)</span>}
                 </td>
                 <td className="px-4 py-2 text-slate-500">{u.email}</td>
