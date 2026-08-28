@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
 import { formatDate } from '../lib/dates';
 import PhaseProgress from '../components/PhaseProgress';
+import CompletedSummary from '../components/CompletedSummary';
 
 const PHASE_ADVANCE_LABEL = { placed: 'Mark as on-site', on_site: 'Move to evaluating' };
 const PHASE_ADVANCE_CONFIRM = {
@@ -292,6 +293,12 @@ export default function InternshipDetailPage() {
       </div>
 
       {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
+
+      {internship.phase === 'completed' && internship.completed_at && (
+        <div className="mb-6">
+          <CompletedSummary internship={internship} />
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-4">
         <Section title="Company">
