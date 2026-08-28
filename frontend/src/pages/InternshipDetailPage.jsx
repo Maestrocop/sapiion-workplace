@@ -293,22 +293,6 @@ export default function InternshipDetailPage() {
 
       {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
 
-      {internship.phaseHistory && internship.phaseHistory.length > 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 text-sm">
-          <h2 className="font-medium text-amber-800 mb-2">Phase reversal history</h2>
-          <div className="space-y-2">
-            {internship.phaseHistory.map((h) => (
-              <div key={h.id} className="text-amber-700">
-                <span className="font-medium">{PHASE_DISPLAY_LABEL[h.from_phase] || h.from_phase} → {PHASE_DISPLAY_LABEL[h.to_phase] || h.to_phase}</span>
-                {' — '}"{h.reason}"
-                {h.reversedBy && ` — ${h.reversedBy.first_name} ${h.reversedBy.last_name}`}
-                {' · '}{formatDate(h.created_at)}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       <div className="grid grid-cols-2 gap-4">
         <Section title="Company">
           <form onSubmit={saveCompany} className="space-y-2">
@@ -416,6 +400,24 @@ export default function InternshipDetailPage() {
           </div>
         </Section>
       </div>
+
+      {internship.phaseHistory && internship.phaseHistory.length > 0 && (
+        <details className="mt-4 text-sm">
+          <summary className="text-slate-400 hover:text-slate-600 cursor-pointer select-none">
+            Phase reversal history ({internship.phaseHistory.length})
+          </summary>
+          <div className="mt-2 space-y-2 bg-white border border-slate-200 rounded-xl p-4">
+            {internship.phaseHistory.map((h) => (
+              <div key={h.id} className="text-slate-500">
+                <span className="font-medium text-slate-700">{PHASE_DISPLAY_LABEL[h.from_phase] || h.from_phase} → {PHASE_DISPLAY_LABEL[h.to_phase] || h.to_phase}</span>
+                {' — '}"{h.reason}"
+                {h.reversedBy && ` — ${h.reversedBy.first_name} ${h.reversedBy.last_name}`}
+                {' · '}{formatDate(h.created_at)}
+              </div>
+            ))}
+          </div>
+        </details>
+      )}
     </div>
   );
 }
