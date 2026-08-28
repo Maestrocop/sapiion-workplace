@@ -18,6 +18,48 @@ const OUTCOME_STYLE = {
   accepted: 'bg-emerald-100 text-emerald-700',
 };
 
+// ── Searching-phase header stats ─────────────────────────────────────────────
+// Informational only — same underlying data as DocumentsPanel/ApplicationsPanel,
+// just summarized at a glance the way ILS-dev's header does.
+function SearchStatsHeader({ internship }) {
+  const applications = internship.applications || [];
+  const total = applications.length;
+  const interviews = applications.filter((a) => a.outcome === 'interview_scheduled').length;
+  const accepted = applications.filter((a) => a.outcome === 'accepted').length;
+
+  const cvDocs = (internship.documents || []).filter((d) => d.doc_type === 'cv');
+  const latestCv = cvDocs.length > 0 ? cvDocs.reduce((a, b) => (b.version > a.version ? b : a)) : null;
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
+      <div className="grid grid-cols-4 gap-4 text-center">
+        <div>
+          <div className="text-xl font-bold text-slate-800">{total}</div>
+          <div className="text-xs text-slate-400">Applications</div>
+        </div>
+        <div>
+          <div className="text-xl font-bold text-blue-700">{interviews}</div>
+          <div className="text-xs text-slate-400">Interviews</div>
+        </div>
+        <div>
+          <div className="text-xl font-bold text-emerald-700">{accepted}</div>
+          <div className="text-xs text-slate-400">Accepted</div>
+        </div>
+        <div>
+          {latestCv ? (
+            <span className={`text-xs px-2 py-0.5 rounded-full ${DOC_STATUS_STYLE[latestCv.status]}`}>
+              CV {latestCv.status.replace('_', ' ')}
+            </span>
+          ) : (
+            <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">No CV yet</span>
+          )}
+          <div className="text-xs text-slate-400 mt-1">CV status</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Section({ title, children }) {
   return (
     <div className="bg-white border border-slate-200 rounded-xl p-4">
@@ -404,6 +446,8 @@ export default function MyInternshipPage() {
       <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
         <PhaseProgress phase={internship.phase} />
       </div>
+
+      {internship.phase === 'searching' && <SearchStatsHeader internship={internship} />}
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="bg-white border border-slate-200 rounded-xl p-4">
