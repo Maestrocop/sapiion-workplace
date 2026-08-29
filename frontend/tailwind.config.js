@@ -9,6 +9,9 @@ module.exports = {
       colors: {
         'workplace-teal': {
           DEFAULT: '#0d9488',
+          50: '#f0fdfa',
+          100: '#ccfbf1',
+          200: '#99f6e4',
           600: '#0d9488',
           700: '#0f766e',
         },
