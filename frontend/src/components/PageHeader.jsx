@@ -18,7 +18,7 @@ export default function PageHeader({ title, eyebrow, subtitle, actions, children
           <h1 className="font-semibold text-lg">{title}</h1>
           {subtitle && <p className="text-sm opacity-80">{subtitle}</p>}
         </div>
-        {actions && <div className="shrink-0 flex items-center gap-2">{actions}</div>}
+        {actions && <div className="flex-1 flex items-center justify-end gap-2">{actions}</div>}
       </div>
       {children && (
         <div className="px-5 py-3 bg-slate-50 border-t border-slate-100">
