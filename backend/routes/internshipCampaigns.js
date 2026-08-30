@@ -91,7 +91,41 @@ router.get('/', async (req, res) => {
       ],
       order: [['created_at', 'DESC']],
     });
-    res.json(campaigns);
+
+    // Phase-distribution stats per campaign, for the list's progress bar —
+    // counts by phase (active internships only) plus a separate inactive
+    // count (cancelled/withdrawn), so the list shows at a glance which
+    // programmes need attention instead of just a plain status pill.
+    const campaignIds = campaigns.map((c) => c.id);
+    const statsByCampaign = {};
+    if (campaignIds.length > 0) {
+      const [rows] = await req.models.sequelize.query(
+        `SELECT campaign_id,
+                phase,
+                (status IN ('cancelled', 'withdrawn')) AS is_inactive,
+                COUNT(*) AS count
+         FROM internships
+         WHERE campaign_id IN (:campaignIds) AND deleted_at IS NULL
+         GROUP BY campaign_id, phase, is_inactive`,
+        { replacements: { campaignIds } }
+      );
+      for (const row of rows) {
+        const stats = statsByCampaign[row.campaign_id] || {
+          total: 0, searching: 0, placed: 0, on_site: 0, evaluating: 0, completed: 0, inactive: 0,
+        };
+        const count = Number(row.count);
+        stats.total += count;
+        if (row.is_inactive) stats.inactive += count;
+        else if (stats[row.phase] !== undefined) stats[row.phase] += count;
+        statsByCampaign[row.campaign_id] = stats;
+      }
+    }
+
+    const result = campaigns.map((c) => ({
+      ...c.toJSON(),
+      stats: statsByCampaign[c.id] || { total: 0, searching: 0, placed: 0, on_site: 0, evaluating: 0, completed: 0, inactive: 0 },
+    }));
+    res.json(result);
   } catch (err) {
     console.error('[internship-campaigns GET]', err.message);
     res.status(500).json({ error: 'Internal server error' });
