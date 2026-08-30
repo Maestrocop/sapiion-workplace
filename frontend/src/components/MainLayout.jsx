@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from './Sidebar';
 import Logo from './Logo';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const STAFF_NAV = [
-  { to: '/companies', label: 'Companies' },
-  { to: '/campaigns', label: 'Internships' },
+  { to: '/companies', labelKey: 'nav.companies' },
+  { to: '/campaigns', labelKey: 'nav.internships' },
 ];
 const STUDENT_NAV = [
-  { to: '/my-internship', label: 'My Internship' },
+  { to: '/my-internship', labelKey: 'nav.myInternship' },
 ];
 
 function isStudentOnly(user) {
@@ -27,11 +29,13 @@ function isAdmin(user) {
 }
 
 export default function MainLayout() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   let navItems = isStudentOnly(user) ? STUDENT_NAV : STAFF_NAV;
-  if (isCoordinator(user)) navItems = [...navItems, { to: '/classes', label: 'Classes' }, { to: '/monitoring', label: 'Monitoring' }];
-  if (isAdmin(user)) navItems = [...navItems, { to: '/users', label: 'Users' }];
+  if (isCoordinator(user)) navItems = [...navItems, { to: '/classes', labelKey: 'nav.classes' }, { to: '/monitoring', labelKey: 'nav.monitoring' }];
+  if (isAdmin(user)) navItems = [...navItems, { to: '/users', labelKey: 'nav.users' }];
+  navItems = navItems.map((item) => ({ ...item, label: t(item.labelKey) }));
 
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem('workplace_sidebar_collapsed') === 'true'; } catch { return false; }
@@ -83,30 +87,33 @@ export default function MainLayout() {
         <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
           <div className="px-4 h-14 flex items-center justify-between">
             <Logo />
-            <div className="relative" ref={userMenuRef}>
-              <button
-                onClick={() => setUserMenuOpen((v) => !v)}
-                className="w-9 h-9 rounded-full bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white flex items-center justify-center font-semibold text-sm transition-colors"
-                aria-label="User menu"
-              >
-                {initials}
-              </button>
-              {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-slate-100 py-1 z-50">
-                  <div className="px-4 py-3 border-b border-slate-100">
-                    <div className="text-sm font-semibold text-slate-800 truncate">
-                      {user ? `${user.first_name} ${user.last_name}` : ''}
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  className="w-9 h-9 rounded-full bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white flex items-center justify-center font-semibold text-sm transition-colors"
+                  aria-label="User menu"
+                >
+                  {initials}
+                </button>
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-slate-100 py-1 z-50">
+                    <div className="px-4 py-3 border-b border-slate-100">
+                      <div className="text-sm font-semibold text-slate-800 truncate">
+                        {user ? `${user.first_name} ${user.last_name}` : ''}
+                      </div>
+                      <div className="text-xs text-slate-400 mt-0.5 capitalize">{roles.join(', ')}</div>
                     </div>
-                    <div className="text-xs text-slate-400 mt-0.5 capitalize">{roles.join(', ')}</div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      {t('header.signOut')}
+                    </button>
                   </div>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </header>

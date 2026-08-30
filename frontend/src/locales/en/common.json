@@ -1,0 +1,21 @@
+{
+  "nav": {
+    "companies": "Companies",
+    "internships": "Internships",
+    "classes": "Classes",
+    "monitoring": "Monitoring",
+    "users": "Users",
+    "myInternship": "My Internship"
+  },
+  "header": {
+    "signOut": "Sign out"
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "search": "Search",
+    "back": "← Back"
+  }
+}

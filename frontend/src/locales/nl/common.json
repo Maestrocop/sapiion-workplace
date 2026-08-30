@@ -1,0 +1,21 @@
+{
+  "nav": {
+    "companies": "Bedrijven",
+    "internships": "Stages",
+    "classes": "Klassen",
+    "monitoring": "Opvolging",
+    "users": "Gebruikers",
+    "myInternship": "Mijn Stage"
+  },
+  "header": {
+    "signOut": "Afmelden"
+  },
+  "common": {
+    "loading": "Laden…",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "edit": "Bewerken",
+    "search": "Zoeken",
+    "back": "← Terug"
+  }
+}
