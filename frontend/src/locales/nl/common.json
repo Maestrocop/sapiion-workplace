@@ -37,6 +37,92 @@
     "evaluating": "Evaluatie",
     "completed": "Afgerond"
   },
+  "docStatus": {
+    "submitted": "ingediend",
+    "under_review": "in beoordeling",
+    "approved": "goedgekeurd",
+    "needs_revision": "aanpassing nodig"
+  },
+  "applicationOutcome": {
+    "pending": "in afwachting",
+    "no_reply": "geen reactie",
+    "interview_scheduled": "gesprek gepland",
+    "rejected": "afgewezen",
+    "accepted": "aanvaard"
+  },
+  "myInternship": {
+    "title": "Mijn Stage",
+    "eyebrow": "Stageprogramma",
+    "subtitleSearch": "Zoekfase — vind je stagebedrijf",
+    "subtitlePlaced": "Plaatsing in uitvoering",
+    "noPlacement": "Nog geen stageplaats — neem contact op met je coördinator.",
+    "placementDetails": {
+      "title": "Plaatsingsdetails",
+      "notAssigned": "Nog niet toegewezen",
+      "status": "Status: {{status}}"
+    },
+    "assessment": { "title": "Beoordeling" },
+    "searchStats": {
+      "applications": "Sollicitaties",
+      "interviews": "Gesprekken",
+      "accepted": "Aanvaard",
+      "cvStatusLabel": "CV-status",
+      "noCv": "Nog geen CV",
+      "cvStatus": "CV {{status}}"
+    },
+    "documents": {
+      "title": "Documenten",
+      "none": "Nog geen documenten geüpload.",
+      "docType": { "cv": "CV", "motivation_letter": "Motivatiebrief", "other": "Ander" },
+      "upload": "Uploaden",
+      "uploading": "Uploaden…",
+      "uploaded": "✓ Geüpload"
+    },
+    "myApplications": {
+      "historyToggle": "Geschiedenis ({{count}})",
+      "companyNamePlaceholder": "Bedrijfsnaam",
+      "companyEmailPlaceholder": "E-mail bedrijf (optioneel)",
+      "notesPlaceholder": "Notities",
+      "applyButton": "+ Solliciteren bij een bedrijf",
+      "logButton": "Sollicitatie registreren"
+    },
+    "assignments": {
+      "title": "Opdrachten",
+      "fallbackTitle": "Opdracht",
+      "due": "Deadline {{date}}",
+      "points": "{{count}} pt",
+      "todo": "Te doen"
+    },
+    "reviews": {
+      "confirmAttendance": "Aanwezigheid bevestigen",
+      "cantAttend": "Kan niet aanwezig zijn",
+      "youResponded": "Je antwoordde: "
+    },
+    "signature": {
+      "title": "Stageovereenkomst",
+      "intro": "Bevestig dat je akkoord gaat met de voorwaarden van deze plaatsing.",
+      "confirmLabel": "Ik bevestig dat de plaatsingsdetails hierboven correct zijn en ga akkoord met de voorwaarden.",
+      "signButton": "Overeenkomst ondertekenen",
+      "signedTitle": "Overeenkomst ondertekend",
+      "signedSubtitle": "Je hebt de plaatsingsovereenkomst bevestigd."
+    },
+    "reflection": {
+      "submitted": "Ingediend",
+      "notSubmitted": "Niet ingediend",
+      "yourReflection": "Jouw reflectie",
+      "whatDidYouLearn": "Wat heb je geleerd van deze stage?",
+      "competenciesDeveloped": "Ontwikkelde competenties",
+      "saveDraft": "Concept opslaan",
+      "submit": "Indienen",
+      "update": "Bijwerken",
+      "draftSaved": "✓ Concept opgeslagen",
+      "submittedMsg": "✓ Ingediend"
+    },
+    "dailyLogs": {
+      "titlePlaceholder": "Titel",
+      "none": "Nog geen logs ingediend."
+    }
+  },
   "internshipDetail": {
     "backLink": "← Terug",
     "searchingSubtitle": "Op zoek naar een bedrijf",

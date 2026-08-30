@@ -37,6 +37,92 @@
     "evaluating": "Evaluating",
     "completed": "Completed"
   },
+  "docStatus": {
+    "submitted": "submitted",
+    "under_review": "under review",
+    "approved": "approved",
+    "needs_revision": "needs revision"
+  },
+  "applicationOutcome": {
+    "pending": "pending",
+    "no_reply": "no reply",
+    "interview_scheduled": "interview scheduled",
+    "rejected": "rejected",
+    "accepted": "accepted"
+  },
+  "myInternship": {
+    "title": "My Internship",
+    "eyebrow": "Internship Programme",
+    "subtitleSearch": "Search phase — find your placement company",
+    "subtitlePlaced": "Placement in progress",
+    "noPlacement": "No internship placement yet — check with your coordinator.",
+    "placementDetails": {
+      "title": "Placement details",
+      "notAssigned": "Not yet assigned",
+      "status": "Status: {{status}}"
+    },
+    "assessment": { "title": "Assessment" },
+    "searchStats": {
+      "applications": "Applications",
+      "interviews": "Interviews",
+      "accepted": "Accepted",
+      "cvStatusLabel": "CV status",
+      "noCv": "No CV yet",
+      "cvStatus": "CV {{status}}"
+    },
+    "documents": {
+      "title": "Documents",
+      "none": "No documents uploaded yet.",
+      "docType": { "cv": "CV", "motivation_letter": "Motivation letter", "other": "Other" },
+      "upload": "Upload",
+      "uploading": "Uploading…",
+      "uploaded": "✓ Uploaded"
+    },
+    "myApplications": {
+      "historyToggle": "History ({{count}})",
+      "companyNamePlaceholder": "Company name",
+      "companyEmailPlaceholder": "Company email (optional)",
+      "notesPlaceholder": "Notes",
+      "applyButton": "+ Apply to a company",
+      "logButton": "Log application"
+    },
+    "assignments": {
+      "title": "Assignments",
+      "fallbackTitle": "Assignment",
+      "due": "Due {{date}}",
+      "points": "{{count}} pts",
+      "todo": "To do"
+    },
+    "reviews": {
+      "confirmAttendance": "Confirm attendance",
+      "cantAttend": "Can't attend",
+      "youResponded": "You responded: "
+    },
+    "signature": {
+      "title": "Placement agreement",
+      "intro": "Please confirm you agree to the terms of this placement.",
+      "confirmLabel": "I confirm the placement details above are correct and I agree to the terms.",
+      "signButton": "Sign agreement",
+      "signedTitle": "Agreement signed",
+      "signedSubtitle": "You've confirmed the placement agreement."
+    },
+    "reflection": {
+      "submitted": "Submitted",
+      "notSubmitted": "Not submitted",
+      "yourReflection": "Your reflection",
+      "whatDidYouLearn": "What did you learn from this internship?",
+      "competenciesDeveloped": "Competencies developed",
+      "saveDraft": "Save draft",
+      "submit": "Submit",
+      "update": "Update",
+      "draftSaved": "✓ Draft saved",
+      "submittedMsg": "✓ Submitted"
+    },
+    "dailyLogs": {
+      "titlePlaceholder": "Title",
+      "none": "No logs submitted yet."
+    }
+  },
   "internshipDetail": {
     "backLink": "← Back",
     "searchingSubtitle": "Searching for a company",
