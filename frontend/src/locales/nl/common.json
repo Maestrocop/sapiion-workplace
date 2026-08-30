@@ -16,6 +16,60 @@
     "cancel": "Annuleren",
     "edit": "Bewerken",
     "search": "Zoeken",
-    "back": "← Terug"
+    "back": "← Terug",
+    "create": "Aanmaken"
+  },
+  "companies": {
+    "title": "Bedrijven",
+    "subtitle": "Beheer je netwerk van stagebedrijven",
+    "addCompany": "+ Bedrijf toevoegen",
+    "searchPlaceholder": "Zoek op naam…",
+    "createForm": {
+      "name": "Bedrijfsnaam",
+      "city": "Stad",
+      "sector": "Sector",
+      "email": "E-mail"
+    },
+    "table": { "name": "Naam", "city": "Stad", "sector": "Sector", "status": "Status", "students": "Studenten", "lastContact": "Laatste contact" },
+    "noCompanies": "Nog geen bedrijven."
+  },
+  "classes": {
+    "title": "Klassen",
+    "subtitle": "Klassen waar stageprogramma's aan gekoppeld zijn",
+    "newClass": "+ Nieuwe klas",
+    "table": { "name": "Naam", "code": "Code", "id": "ID", "actions": "Acties" },
+    "noClasses": "Nog geen klassen.",
+    "editModal": {
+      "title": "Klas bewerken",
+      "subtitle": "Naam of code van de klas bijwerken",
+      "name": "Naam",
+      "code": "Code",
+      "saved": "✓ Opgeslagen",
+      "save": "Klas opslaan"
+    },
+    "createModal": {
+      "title": "Nieuwe klas",
+      "subtitle": "Klassen/cohorten waar stageprogramma's aan gekoppeld zijn",
+      "name": "Naam",
+      "namePlaceholder": "bv. BIM Jaar 3",
+      "code": "Code (optioneel)",
+      "codePlaceholder": "bv. BIM3"
+    },
+    "academicYears": {
+      "title": "Academiejaren",
+      "subtitle": "Het cohort van een student (bv. \"2026-2027\") en de scope waarbinnen stageprogramma's lopen",
+      "newYear": "+ Nieuw academiejaar",
+      "table": { "label": "Label", "starts": "Start", "ends": "Einde", "current": "Huidig" },
+      "noYears": "Nog geen academiejaren.",
+      "currentBadge": "Huidig",
+      "createModal": {
+        "title": "Nieuw academiejaar",
+        "subtitle": "Loopt van 1 sept tot 31 aug, bv. 2027 maakt \"2027-2028\"",
+        "startYear": "Startjaar",
+        "startYearPlaceholder": "bv. 2027",
+        "setCurrent": "Instellen als huidig academiejaar",
+        "invalidYear": "Voer een geldig startjaar in"
+      }
+    }
   }
 }

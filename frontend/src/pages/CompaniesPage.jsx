@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 import { formatDate } from '../lib/dates';
 import PageHeader from '../components/PageHeader';
@@ -11,6 +12,7 @@ const STATUS_COLORS = {
 };
 
 export default function CompaniesPage() {
+  const { t } = useTranslation();
   const [companies, setCompanies] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -46,14 +48,14 @@ export default function CompaniesPage() {
   return (
     <div>
       <PageHeader
-        title="Companies"
-        subtitle="Manage your internship partner network"
+        title={t('companies.title')}
+        subtitle={t('companies.subtitle')}
         actions={
           <button
             onClick={() => setShowForm((s) => !s)}
             className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/20 hover:bg-white/30 border border-white/30 transition"
           >
-            {showForm ? 'Cancel' : '+ Add company'}
+            {showForm ? t('common.cancel') : t('companies.addCompany')}
           </button>
         }
       >
@@ -61,21 +63,21 @@ export default function CompaniesPage() {
           <input
             value={search} onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && load()}
-            placeholder="Search by name…"
+            placeholder={t('companies.searchPlaceholder')}
             className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-64"
           />
-          <button onClick={load} className="text-sm text-slate-500 border border-slate-300 rounded-lg px-3 py-2">Search</button>
+          <button onClick={load} className="text-sm text-slate-500 border border-slate-300 rounded-lg px-3 py-2">{t('common.search')}</button>
         </div>
       </PageHeader>
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white border border-slate-200 rounded-xl p-4 mb-4 grid grid-cols-2 gap-3">
-          <input required placeholder="Company name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-          <input placeholder="City" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-          <input placeholder="Sector" value={form.sector} onChange={(e) => setForm({ ...form, sector: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-          <input placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          <input required placeholder={t('companies.createForm.name')} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          <input placeholder={t('companies.createForm.city')} value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          <input placeholder={t('companies.createForm.sector')} value={form.sector} onChange={(e) => setForm({ ...form, sector: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          <input placeholder={t('companies.createForm.email')} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" />
           {error && <p className="col-span-2 text-sm text-red-600">{error}</p>}
-          <button type="submit" className="col-span-2 bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg py-2">Create</button>
+          <button type="submit" className="col-span-2 bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg py-2">{t('common.create')}</button>
         </form>
       )}
 
@@ -83,17 +85,17 @@ export default function CompaniesPage() {
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-slate-500 text-left">
             <tr>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">City</th>
-              <th className="px-4 py-2">Sector</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Students</th>
-              <th className="px-4 py-2">Last contact</th>
+              <th className="px-4 py-2">{t('companies.table.name')}</th>
+              <th className="px-4 py-2">{t('companies.table.city')}</th>
+              <th className="px-4 py-2">{t('companies.table.sector')}</th>
+              <th className="px-4 py-2">{t('companies.table.status')}</th>
+              <th className="px-4 py-2">{t('companies.table.students')}</th>
+              <th className="px-4 py-2">{t('companies.table.lastContact')}</th>
             </tr>
           </thead>
           <tbody>
-            {loading && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">Loading…</td></tr>}
-            {!loading && companies.length === 0 && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">No companies yet.</td></tr>}
+            {loading && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">{t('common.loading')}</td></tr>}
+            {!loading && companies.length === 0 && <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">{t('companies.noCompanies')}</td></tr>}
             {companies.map((c) => (
               <tr key={c.id} className="border-t border-slate-100">
                 <td className="px-4 py-2 font-medium text-slate-700">{c.name}</td>

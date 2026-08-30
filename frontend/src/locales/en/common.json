@@ -16,6 +16,60 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "search": "Search",
-    "back": "← Back"
+    "back": "← Back",
+    "create": "Create"
+  },
+  "companies": {
+    "title": "Companies",
+    "subtitle": "Manage your internship partner network",
+    "addCompany": "+ Add company",
+    "searchPlaceholder": "Search by name…",
+    "createForm": {
+      "name": "Company name",
+      "city": "City",
+      "sector": "Sector",
+      "email": "Email"
+    },
+    "table": { "name": "Name", "city": "City", "sector": "Sector", "status": "Status", "students": "Students", "lastContact": "Last contact" },
+    "noCompanies": "No companies yet."
+  },
+  "classes": {
+    "title": "Classes",
+    "subtitle": "Classes that internship programmes attach to",
+    "newClass": "+ New class",
+    "table": { "name": "Name", "code": "Code", "id": "ID", "actions": "Actions" },
+    "noClasses": "No classes yet.",
+    "editModal": {
+      "title": "Edit Class",
+      "subtitle": "Update the class name or code",
+      "name": "Name",
+      "code": "Code",
+      "saved": "✓ Saved",
+      "save": "Save Class"
+    },
+    "createModal": {
+      "title": "New Class",
+      "subtitle": "Classes/cohorts that internship programmes attach to",
+      "name": "Name",
+      "namePlaceholder": "e.g. BIM Year 3",
+      "code": "Code (optional)",
+      "codePlaceholder": "e.g. BIM3"
+    },
+    "academicYears": {
+      "title": "Academic Years",
+      "subtitle": "A student's cohort (e.g. \"2026-2027\") and the scope internship programmes run within",
+      "newYear": "+ New academic year",
+      "table": { "label": "Label", "starts": "Starts", "ends": "Ends", "current": "Current" },
+      "noYears": "No academic years yet.",
+      "currentBadge": "Current",
+      "createModal": {
+        "title": "New Academic Year",
+        "subtitle": "Runs 1 Sept → 31 Aug, e.g. 2027 creates \"2027-2028\"",
+        "startYear": "Start year",
+        "startYearPlaceholder": "e.g. 2027",
+        "setCurrent": "Set as the current academic year",
+        "invalidYear": "Enter a valid start year"
+      }
+    }
   }
 }
