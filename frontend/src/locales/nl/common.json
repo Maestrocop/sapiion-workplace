@@ -37,6 +37,25 @@
     "evaluating": "Evaluatie",
     "completed": "Afgerond"
   },
+  "internshipStatus": {
+    "active": "actief",
+    "completed": "afgerond",
+    "cancelled": "geannuleerd",
+    "withdrawn": "gestopt"
+  },
+  "campaignDetail": {
+    "backLink": "← Stages",
+    "enrollFrom": "Studenten inschrijven uit {{className}}",
+    "thisClass": "deze klas",
+    "enrolling": "Inschrijven…",
+    "enrollSelected": "Geselecteerden inschrijven ({{count}})",
+    "searchPlaceholder": "Zoek op naam of e-mail…",
+    "noStudentsInClass": "Nog geen studenten gevonden in {{className}} — wijs ze toe aan deze klas via de Gebruikers-pagina.",
+    "everyoneEnrolled": "Iedereen in deze klas is al ingeschreven.",
+    "enrolledStudents": "Ingeschreven studenten",
+    "noneEnrolled": "Nog geen studenten ingeschreven.",
+    "noCompanyYet": "Nog geen bedrijf"
+  },
   "campaigns": {
     "title": "Stageprogramma",
     "subtitle": "Eén programma per klas — volgt alle studenten van jobzoektocht tot eindevaluatie",

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 import PageHeader from '../components/PageHeader';
 
@@ -11,6 +12,7 @@ const STATUS_STYLE = {
 };
 
 export default function CampaignDetailPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [campaign, setCampaign] = useState(null);
   const [classStudents, setClassStudents] = useState([]);
@@ -62,38 +64,39 @@ export default function CampaignDetailPage() {
     }
   }
 
-  if (!campaign) return <p className="text-slate-400 text-sm">Loading…</p>;
+  if (!campaign) return <p className="text-slate-400 text-sm">{t('common.loading')}</p>;
 
   const selectedCount = Object.values(selected).filter(Boolean).length;
+  const className = campaign.class?.name || t('campaignDetail.thisClass');
 
   return (
     <div>
-      <Link to="/campaigns" className="text-sm text-workplace-teal-700 hover:underline">&larr; Internships</Link>
+      <Link to="/campaigns" className="text-sm text-workplace-teal-700 hover:underline">{t('campaignDetail.backLink')}</Link>
       <div className="mt-2">
         <PageHeader
           title={campaign.name}
           subtitle={`${campaign.class?.name || ''} · ${campaign.academicYear?.label || ''} · ${campaign.campaign_type}`}
           actions={
-            <span className={`text-xs px-2 py-0.5 rounded-full ${STATUS_STYLE[campaign.status]}`}>{campaign.status}</span>
+            <span className={`text-xs px-2 py-0.5 rounded-full ${STATUS_STYLE[campaign.status]}`}>{t(`campaigns.status.${campaign.status}`)}</span>
           }
         />
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-medium text-slate-600">Enroll students from {campaign.class?.name || 'this class'}</h2>
+          <h2 className="text-sm font-medium text-slate-600">{t('campaignDetail.enrollFrom', { className })}</h2>
           {selectedCount > 0 && (
             <button
               onClick={handleEnroll} disabled={enrolling}
               className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2 disabled:opacity-50"
             >
-              {enrolling ? 'Enrolling…' : `Enroll selected (${selectedCount})`}
+              {enrolling ? t('campaignDetail.enrolling') : t('campaignDetail.enrollSelected', { count: selectedCount })}
             </button>
           )}
         </div>
 
         <input
-          placeholder="Search by name or email…" value={search} onChange={(e) => setSearch(e.target.value)}
+          placeholder={t('campaignDetail.searchPlaceholder')} value={search} onChange={(e) => setSearch(e.target.value)}
           className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-3"
         />
 
@@ -101,10 +104,10 @@ export default function CampaignDetailPage() {
 
         <div className="max-h-72 overflow-y-auto space-y-1">
           {classStudents.length === 0 && (
-            <p className="text-sm text-slate-400">No students found in {campaign.class?.name || 'this class'} yet — assign students to it from the Users page.</p>
+            <p className="text-sm text-slate-400">{t('campaignDetail.noStudentsInClass', { className })}</p>
           )}
           {classStudents.length > 0 && unenrolled.length === 0 && (
-            <p className="text-sm text-slate-400">Everyone in this class is already enrolled.</p>
+            <p className="text-sm text-slate-400">{t('campaignDetail.everyoneEnrolled')}</p>
           )}
           {unenrolled.map((s) => (
             <label key={s.id} className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-slate-50 text-sm cursor-pointer">
@@ -116,9 +119,9 @@ export default function CampaignDetailPage() {
         </div>
       </div>
 
-      <h2 className="text-sm font-medium text-slate-600 mb-2">Enrolled students</h2>
+      <h2 className="text-sm font-medium text-slate-600 mb-2">{t('campaignDetail.enrolledStudents')}</h2>
       <div className="grid gap-2">
-        {(campaign.studentRecords || []).length === 0 && <p className="text-slate-400 text-sm">No students enrolled yet.</p>}
+        {(campaign.studentRecords || []).length === 0 && <p className="text-slate-400 text-sm">{t('campaignDetail.noneEnrolled')}</p>}
         {(campaign.studentRecords || []).map((internship) => (
           <Link
             key={internship.id} to={`/internships/${internship.id}`}
@@ -126,9 +129,9 @@ export default function CampaignDetailPage() {
           >
             <div>
               <p className="font-medium text-slate-800">{internship.student?.first_name} {internship.student?.last_name}</p>
-              <p className="text-sm text-slate-500">{internship.company_name || 'No company yet'}</p>
+              <p className="text-sm text-slate-500">{internship.company_name || t('campaignDetail.noCompanyYet')}</p>
             </div>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{internship.status}</span>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{t(`internshipStatus.${internship.status}`, internship.status)}</span>
           </Link>
         ))}
       </div>

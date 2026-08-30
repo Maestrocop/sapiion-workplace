@@ -37,6 +37,25 @@
     "evaluating": "Evaluating",
     "completed": "Completed"
   },
+  "internshipStatus": {
+    "active": "active",
+    "completed": "completed",
+    "cancelled": "cancelled",
+    "withdrawn": "withdrawn"
+  },
+  "campaignDetail": {
+    "backLink": "← Internships",
+    "enrollFrom": "Enroll students from {{className}}",
+    "thisClass": "this class",
+    "enrolling": "Enrolling…",
+    "enrollSelected": "Enroll selected ({{count}})",
+    "searchPlaceholder": "Search by name or email…",
+    "noStudentsInClass": "No students found in {{className}} yet — assign students to it from the Users page.",
+    "everyoneEnrolled": "Everyone in this class is already enrolled.",
+    "enrolledStudents": "Enrolled students",
+    "noneEnrolled": "No students enrolled yet.",
+    "noCompanyYet": "No company yet"
+  },
   "campaigns": {
     "title": "Internship Programme",
     "subtitle": "One programme per class — tracks all students from job search to final evaluation",
