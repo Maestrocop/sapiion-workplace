@@ -4,6 +4,9 @@ import { setLanguage } from '../i18n';
 const LANGUAGES = [
   { value: 'en', label: 'English' },
   { value: 'nl', label: 'Nederlands' },
+  { value: 'fr', label: 'Français' },
+  { value: 'de', label: 'Deutsch' },
+  { value: 'es', label: 'Español' },
 ];
 
 export default function LanguageSwitcher() {

@@ -1,0 +1,394 @@
+{
+  "nav": {
+    "companies": "Empresas",
+    "internships": "Prácticas",
+    "classes": "Clases",
+    "monitoring": "Monitoring",
+    "users": "Usuarios",
+    "myInternship": "Mis Prácticas"
+  },
+  "header": {
+    "signOut": "Cerrar sesión"
+  },
+  "common": {
+    "loading": "Cargando…",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "back": "← Volver",
+    "create": "Crear"
+  },
+  "assessorRoles": {
+    "teacher": "profesor",
+    "supervisor": "supervisor",
+    "student": "estudiante"
+  },
+  "completedSummary": {
+    "title": "Prácticas finalizadas",
+    "finalizedOn": "Finalizado el {{date}}",
+    "totalHours": "Horas totales",
+    "finalScore": "Puntuación final"
+  },
+  "phase": {
+    "searching": "Buscando",
+    "placed": "Colocado",
+    "on_site": "En el lugar",
+    "evaluating": "Evaluación",
+    "completed": "Finalizado"
+  },
+  "supervisorPortal": {
+    "loading": "Cargando…",
+    "requestFailed": "Error en la solicitud",
+    "title": "Sapiion Workplace — Supervisor",
+    "youAreSupervising": "Estás supervisando a {{student}} en {{company}}.",
+    "aStudent": "un estudiante",
+    "yourCompany": "tu empresa",
+    "yourDetails": "Tus datos",
+    "namePlaceholder": "Tu nombre",
+    "emailPlaceholder": "Correo electrónico",
+    "phonePlaceholder": "Teléfono",
+    "jobTitlePlaceholder": "Cargo",
+    "workingSchedulePlaceholder": "Horario de trabajo (p. ej. lun-vie 09:00-17:00)",
+    "saved": "✓ Guardado",
+    "save": "Guardar",
+    "interimReviews": "Evaluaciones intermedias de la escuela",
+    "confirmAttendance": "Confirmar asistencia",
+    "cantAttend": "No puedo asistir",
+    "youResponded": "Has respondido: ",
+    "weeklyLogs": "Registros de actividad semanales",
+    "noLogs": "Aún no se han enviado registros.",
+    "acknowledged": "✓ Has validado este registro",
+    "acknowledgedWithComment": "✓ Has validado este registro: \"{{comment}}\"",
+    "commentPlaceholder": "Comentario opcional",
+    "acknowledge": "Validar"
+  },
+  "oauth": {
+    "signingIn": "Iniciando sesión…"
+  },
+  "login": {
+    "subtitle": "Inicia sesión para continuar",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "signingIn": "Iniciando sesión…",
+    "signIn": "Iniciar sesión",
+    "signInMicrosoft": "Iniciar sesión con Microsoft",
+    "signInGoogle": "Iniciar sesión con Google"
+  },
+  "docStatus": {
+    "submitted": "enviado",
+    "under_review": "en revisión",
+    "approved": "aprobado",
+    "needs_revision": "requiere revisión"
+  },
+  "applicationOutcome": {
+    "pending": "pendiente",
+    "no_reply": "sin respuesta",
+    "interview_scheduled": "entrevista programada",
+    "rejected": "rechazada",
+    "accepted": "aceptada"
+  },
+  "myInternship": {
+    "title": "Mis Prácticas",
+    "eyebrow": "Programa de prácticas",
+    "subtitleSearch": "Fase de búsqueda — encuentra tu empresa de prácticas",
+    "subtitlePlaced": "Colocación en curso",
+    "noPlacement": "Aún no tienes prácticas asignadas — consulta con tu coordinador.",
+    "placementDetails": {
+      "title": "Detalles de la colocación",
+      "notAssigned": "Aún no asignado",
+      "status": "Estado: {{status}}"
+    },
+    "assessment": { "title": "Evaluación" },
+    "searchStats": {
+      "applications": "Solicitudes",
+      "interviews": "Entrevistas",
+      "accepted": "Aceptadas",
+      "cvStatusLabel": "Estado del CV",
+      "noCv": "Aún sin CV",
+      "cvStatus": "CV {{status}}"
+    },
+    "documents": {
+      "title": "Documentos",
+      "none": "Aún no se han subido documentos.",
+      "docType": { "cv": "CV", "motivation_letter": "Carta de motivación", "other": "Otro" },
+      "upload": "Subir",
+      "uploading": "Subiendo…",
+      "uploaded": "✓ Subido"
+    },
+    "myApplications": {
+      "historyToggle": "Historial ({{count}})",
+      "companyNamePlaceholder": "Nombre de la empresa",
+      "companyEmailPlaceholder": "Correo de la empresa (opcional)",
+      "notesPlaceholder": "Notas",
+      "applyButton": "+ Solicitar a una empresa",
+      "logButton": "Registrar solicitud"
+    },
+    "assignments": {
+      "title": "Tareas",
+      "fallbackTitle": "Tarea",
+      "due": "Vence el {{date}}",
+      "points": "{{count}} pts",
+      "todo": "Pendiente"
+    },
+    "reviews": {
+      "confirmAttendance": "Confirmar asistencia",
+      "cantAttend": "No puedo asistir",
+      "youResponded": "Has respondido: "
+    },
+    "signature": {
+      "title": "Acuerdo de colocación",
+      "intro": "Confirma que aceptas los términos de esta colocación.",
+      "confirmLabel": "Confirmo que los detalles de la colocación anteriores son correctos y acepto los términos.",
+      "signButton": "Firmar acuerdo",
+      "signedTitle": "Acuerdo firmado",
+      "signedSubtitle": "Has confirmado el acuerdo de colocación."
+    },
+    "reflection": {
+      "submitted": "Enviado",
+      "notSubmitted": "No enviado",
+      "yourReflection": "Tu reflexión",
+      "whatDidYouLearn": "¿Qué aprendiste de estas prácticas?",
+      "competenciesDeveloped": "Competencias desarrolladas",
+      "saveDraft": "Guardar borrador",
+      "submit": "Enviar",
+      "update": "Actualizar",
+      "draftSaved": "✓ Borrador guardado",
+      "submittedMsg": "✓ Enviado"
+    },
+    "dailyLogs": {
+      "titlePlaceholder": "Título",
+      "none": "Aún no se han enviado registros."
+    }
+  },
+  "internshipDetail": {
+    "backLink": "← Volver",
+    "searchingSubtitle": "Buscando una empresa",
+    "phaseAdvance": { "placed": "Marcar como en el lugar", "on_site": "Pasar a evaluación" },
+    "phaseAdvanceConfirm": {
+      "placed": "¿Marcar estas prácticas como \"en el lugar\"? El estudiante y el coordinador verán el cambio a la fase En el lugar.",
+      "on_site": "¿Pasar estas prácticas a Evaluación?"
+    },
+    "phaseReverse": { "on_site": "Volver a colocado", "evaluating": "Volver a en el lugar" },
+    "movedTo": "✓ Movido a {{phase}}",
+    "movedBackTo": "✓ Retrocedido a {{phase}}",
+    "reversePrompt": "¿Por qué retrocedes esta fase? (obligatorio — se guarda como registro)",
+    "reverseReasonRequired": "Se requiere un motivo para retroceder una fase.",
+    "completeConfirm": "¿Marcar estas prácticas como finalizadas? Esto es definitivo — el estudiante verá su resumen final.",
+    "completeMarked": "✓ Prácticas marcadas como finalizadas",
+    "company": {
+      "title": "Empresa",
+      "namePlaceholder": "Nombre de la empresa",
+      "addressPlaceholder": "Dirección"
+    },
+    "supervisors": {
+      "title": "Supervisores",
+      "linkPrefix": "Enlace: ",
+      "namePlaceholder": "Nombre",
+      "emailPlaceholder": "Correo electrónico",
+      "jobTitlePlaceholder": "Cargo",
+      "addSupervisor": "Añadir supervisor"
+    },
+    "dailyLogs": {
+      "title": "Registros de actividad diarios",
+      "acknowledged": "✓ validado",
+      "hoursPlaceholder": "Horas trabajadas",
+      "contentPlaceholder": "¿Qué hiciste y aprendiste hoy?",
+      "addLog": "+ Añadir registro"
+    },
+    "assessment": {
+      "title": "Evaluación (profesor)",
+      "studentReflection": "Reflexión del estudiante",
+      "submitted": "(enviado)",
+      "draft": "(borrador)",
+      "competencies": "Competencias: ",
+      "scorePlaceholder": "Puntuación (0-100)",
+      "feedbackPlaceholder": "Comentarios",
+      "submit": "Enviar evaluación"
+    },
+    "checklist": { "title": "Lista de verificación de colocación" },
+    "complete": {
+      "title": "Finalizar prácticas",
+      "autoCalcNote": "El total de horas y la puntuación final se calculan automáticamente a partir de los registros de actividad y las evaluaciones enviadas — no hay nada que introducir aquí.",
+      "notePlaceholder": "Nota de finalización (opcional)",
+      "markComplete": "Marcar como finalizado"
+    },
+    "applications": { "title": "Solicitudes", "none": "Aún no hay solicitudes." },
+    "phaseHistory": "Historial de retrocesos de fase ({{count}})",
+    "reviews": {
+      "title": "Evaluaciones intermedias",
+      "none": "Aún no hay evaluaciones programadas.",
+      "student": "Estudiante",
+      "supervisor": "Supervisor",
+      "hoursLoggedAtReview": "Horas registradas en la evaluación: {{hours}}",
+      "complete": "Finalizar",
+      "cancelConfirm": "¿Cancelar esta evaluación programada?",
+      "scheduleReview": "+ Programar evaluación",
+      "supervisorAttending": "Supervisor asistente (opcional)",
+      "schedule": "Programar",
+      "reportPlaceholder": "Informe de la visita — conversación, qué va bien, qué no",
+      "completeReview": "Finalizar evaluación",
+      "status": { "scheduled": "programada", "completed": "finalizada", "cancelled": "cancelada" },
+      "response": { "pending": "pendiente", "confirmed": "confirmado", "declined": "rechazado" }
+    }
+  },
+  "internshipStatus": {
+    "active": "activo",
+    "completed": "finalizado",
+    "cancelled": "cancelado",
+    "withdrawn": "abandonado"
+  },
+  "campaignDetail": {
+    "backLink": "← Prácticas",
+    "enrollFrom": "Inscribir estudiantes de {{className}}",
+    "thisClass": "esta clase",
+    "enrolling": "Inscribiendo…",
+    "enrollSelected": "Inscribir seleccionados ({{count}})",
+    "searchPlaceholder": "Buscar por nombre o correo…",
+    "noStudentsInClass": "Aún no se han encontrado estudiantes en {{className}} — asígnalos a esta clase desde la página de Usuarios.",
+    "everyoneEnrolled": "Todos en esta clase ya están inscritos.",
+    "enrolledStudents": "Estudiantes inscritos",
+    "noneEnrolled": "Aún no hay estudiantes inscritos.",
+    "noCompanyYet": "Aún sin empresa"
+  },
+  "campaigns": {
+    "title": "Programa de Prácticas",
+    "subtitle": "Un programa por clase — sigue a todos los estudiantes desde la búsqueda de empleo hasta la evaluación final",
+    "newProgramme": "+ Nuevo programa",
+    "allYears": "Todos los años académicos",
+    "allStatus": "Todos los estados",
+    "status": { "planning": "planificación", "active": "activo", "closed": "cerrado", "cancelled": "cancelado" },
+    "programmeCount_one": "{{count}} programa",
+    "programmeCount_other": "{{count}} programas",
+    "showAll": "Mostrar los programas de todos los coordinadores →",
+    "showMine": "← Mostrar solo mis programas",
+    "adminViewNote": "Mostrando los programas de todos los coordinadores (vista de administrador)",
+    "createForm": {
+      "classPlaceholder": "Clase…",
+      "yearPlaceholder": "Año académico…",
+      "namePlaceholder": "Nombre del programa",
+      "noClasses": "Aún no existen clases —",
+      "createOneFirst": "crea una primero"
+    },
+    "noYearGroup": "Sin año académico",
+    "noProgrammes": "Aún no hay programas.",
+    "stats": {
+      "noStudents": "Aún no hay estudiantes inscritos",
+      "students_one": "{{count}} estudiante",
+      "students_other": "{{count}} estudiantes",
+      "inactive": "⚠ {{count}} inactivo(s)"
+    }
+  },
+  "monitoring": {
+    "title": "Monitoring de Ejecución",
+    "subtitle": "Estudiantes actualmente en el lugar — resumen de riesgos",
+    "studentCount_one": "{{count}} estudiante en ejecución",
+    "studentCount_other": "{{count}} estudiantes en ejecución",
+    "risk": { "red": "En riesgo", "amber": "Necesita atención", "green": "Va bien" },
+    "table": { "student": "Estudiante", "company": "Empresa", "period": "Periodo", "hours": "Horas", "lastLog": "Último registro", "supervisor": "Supervisor", "risk": "Riesgo" },
+    "noStudents": "Actualmente no hay estudiantes en el lugar.",
+    "never": "Nunca",
+    "daysAgo": "hace {{count}} d",
+    "connected": "✓ Conectado",
+    "notAssigned": "No asignado"
+  },
+  "users": {
+    "title": "Usuarios",
+    "subtitle": "{{active}} activos · {{inactive}} inactivos",
+    "newUser": "+ Nuevo usuario",
+    "table": { "name": "Nombre", "email": "Correo electrónico", "class": "Clase", "cohort": "Cohorte", "roles": "Roles", "actions": "Acciones" },
+    "noUsers": "Aún no hay usuarios.",
+    "inactiveTag": "(inactivo)",
+    "created": "✓ {{email}} creado (id {{id}}) — comparte la contraseña directamente con la persona",
+    "roles": { "student": "estudiante", "teacher": "profesor", "coordinator": "coordinador", "admin": "administrador" },
+    "atLeastOneRole": "Se requiere al menos un rol",
+    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+    "passwordUpdated": "✓ Contraseña actualizada",
+    "editModal": {
+      "title": "Editar usuario",
+      "subtitle": "Actualizar perfil y roles",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "class": "Clase (opcional)",
+      "noClass": "Sin clase",
+      "cohort": "Cohorte (opcional)",
+      "noCohort": "Sin cohorte",
+      "roles": "Roles",
+      "active": "Activo",
+      "saved": "✓ Guardado",
+      "setPassword": "Establecer nueva contraseña",
+      "passwordPlaceholder": "Mín. 8 caracteres",
+      "setPasswordButton": "Establecer contraseña",
+      "save": "Guardar usuario"
+    },
+    "createModal": {
+      "title": "Nuevo usuario",
+      "subtitle": "Estudiantes, profesores y coordinadores — sin autorregistro, las cuentas se crean aquí",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "class": "Clase (opcional)",
+      "noClass": "Sin clase",
+      "cohort": "Cohorte (opcional)",
+      "noCohort": "Sin cohorte",
+      "roles": "Roles",
+      "tempPassword": "Contraseña temporal",
+      "passwordPlaceholder": "Mín. 8 caracteres",
+      "createAccount": "Crear cuenta"
+    }
+  },
+  "companies": {
+    "title": "Empresas",
+    "subtitle": "Gestiona tu red de empresas colaboradoras de prácticas",
+    "addCompany": "+ Añadir empresa",
+    "searchPlaceholder": "Buscar por nombre…",
+    "createForm": {
+      "name": "Nombre de la empresa",
+      "city": "Ciudad",
+      "sector": "Sector",
+      "email": "Correo electrónico"
+    },
+    "table": { "name": "Nombre", "city": "Ciudad", "sector": "Sector", "status": "Estado", "students": "Estudiantes", "lastContact": "Último contacto" },
+    "noCompanies": "Aún no hay empresas."
+  },
+  "classes": {
+    "title": "Clases",
+    "subtitle": "Clases a las que se vinculan los programas de prácticas",
+    "newClass": "+ Nueva clase",
+    "table": { "name": "Nombre", "code": "Código", "id": "ID", "actions": "Acciones" },
+    "noClasses": "Aún no hay clases.",
+    "editModal": {
+      "title": "Editar clase",
+      "subtitle": "Actualizar el nombre o código de la clase",
+      "name": "Nombre",
+      "code": "Código",
+      "saved": "✓ Guardado",
+      "save": "Guardar clase"
+    },
+    "createModal": {
+      "title": "Nueva clase",
+      "subtitle": "Clases/cohortes a las que se vinculan los programas de prácticas",
+      "name": "Nombre",
+      "namePlaceholder": "p. ej. BIM Año 3",
+      "code": "Código (opcional)",
+      "codePlaceholder": "p. ej. BIM3"
+    },
+    "academicYears": {
+      "title": "Años académicos",
+      "subtitle": "La cohorte de un estudiante (p. ej. \"2026-2027\") y el ámbito en el que se desarrollan los programas de prácticas",
+      "newYear": "+ Nuevo año académico",
+      "table": { "label": "Etiqueta", "starts": "Inicio", "ends": "Fin", "current": "Actual" },
+      "noYears": "Aún no hay años académicos.",
+      "currentBadge": "Actual",
+      "createModal": {
+        "title": "Nuevo año académico",
+        "subtitle": "Va del 1 de sept. al 31 de agosto, p. ej. 2027 crea \"2027-2028\"",
+        "startYear": "Año de inicio",
+        "startYearPlaceholder": "p. ej. 2027",
+        "setCurrent": "Establecer como año académico actual",
+        "invalidYear": "Introduce un año de inicio válido"
+      }
+    }
+  }
+}

@@ -1,0 +1,394 @@
+{
+  "nav": {
+    "companies": "Entreprises",
+    "internships": "Stages",
+    "classes": "Classes",
+    "monitoring": "Monitoring",
+    "users": "Utilisateurs",
+    "myInternship": "Mon Stage"
+  },
+  "header": {
+    "signOut": "Déconnexion"
+  },
+  "common": {
+    "loading": "Chargement…",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "search": "Rechercher",
+    "back": "← Retour",
+    "create": "Créer"
+  },
+  "assessorRoles": {
+    "teacher": "enseignant",
+    "supervisor": "encadrant",
+    "student": "étudiant"
+  },
+  "completedSummary": {
+    "title": "Stage terminé",
+    "finalizedOn": "Finalisé le {{date}}",
+    "totalHours": "Total des heures",
+    "finalScore": "Score final"
+  },
+  "phase": {
+    "searching": "Recherche",
+    "placed": "Placé",
+    "on_site": "Sur place",
+    "evaluating": "Évaluation",
+    "completed": "Terminé"
+  },
+  "supervisorPortal": {
+    "loading": "Chargement…",
+    "requestFailed": "Échec de la requête",
+    "title": "Sapiion Workplace — Encadrant",
+    "youAreSupervising": "Vous encadrez {{student}} chez {{company}}.",
+    "aStudent": "un étudiant",
+    "yourCompany": "votre entreprise",
+    "yourDetails": "Vos coordonnées",
+    "namePlaceholder": "Votre nom",
+    "emailPlaceholder": "E-mail",
+    "phonePlaceholder": "Téléphone",
+    "jobTitlePlaceholder": "Fonction",
+    "workingSchedulePlaceholder": "Horaire de travail (ex. lun-ven 09h00-17h00)",
+    "saved": "✓ Enregistré",
+    "save": "Enregistrer",
+    "interimReviews": "Évaluations intermédiaires de l'école",
+    "confirmAttendance": "Confirmer la présence",
+    "cantAttend": "Ne peut pas assister",
+    "youResponded": "Vous avez répondu : ",
+    "weeklyLogs": "Journaux d'activité hebdomadaires",
+    "noLogs": "Aucun journal soumis pour l'instant.",
+    "acknowledged": "✓ Vous avez validé ce journal",
+    "acknowledgedWithComment": "✓ Vous avez validé ce journal : \"{{comment}}\"",
+    "commentPlaceholder": "Commentaire facultatif",
+    "acknowledge": "Valider"
+  },
+  "oauth": {
+    "signingIn": "Connexion en cours…"
+  },
+  "login": {
+    "subtitle": "Connectez-vous pour continuer",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "signingIn": "Connexion en cours…",
+    "signIn": "Se connecter",
+    "signInMicrosoft": "Se connecter avec Microsoft",
+    "signInGoogle": "Se connecter avec Google"
+  },
+  "docStatus": {
+    "submitted": "soumis",
+    "under_review": "en cours d'examen",
+    "approved": "approuvé",
+    "needs_revision": "à revoir"
+  },
+  "applicationOutcome": {
+    "pending": "en attente",
+    "no_reply": "pas de réponse",
+    "interview_scheduled": "entretien planifié",
+    "rejected": "refusé",
+    "accepted": "accepté"
+  },
+  "myInternship": {
+    "title": "Mon Stage",
+    "eyebrow": "Programme de stage",
+    "subtitleSearch": "Phase de recherche — trouvez votre entreprise de stage",
+    "subtitlePlaced": "Placement en cours",
+    "noPlacement": "Aucun stage assigné pour l'instant — contactez votre coordinateur.",
+    "placementDetails": {
+      "title": "Détails du placement",
+      "notAssigned": "Pas encore assigné",
+      "status": "Statut : {{status}}"
+    },
+    "assessment": { "title": "Évaluation" },
+    "searchStats": {
+      "applications": "Candidatures",
+      "interviews": "Entretiens",
+      "accepted": "Acceptées",
+      "cvStatusLabel": "Statut du CV",
+      "noCv": "Pas encore de CV",
+      "cvStatus": "CV {{status}}"
+    },
+    "documents": {
+      "title": "Documents",
+      "none": "Aucun document téléchargé pour l'instant.",
+      "docType": { "cv": "CV", "motivation_letter": "Lettre de motivation", "other": "Autre" },
+      "upload": "Télécharger",
+      "uploading": "Téléchargement…",
+      "uploaded": "✓ Téléchargé"
+    },
+    "myApplications": {
+      "historyToggle": "Historique ({{count}})",
+      "companyNamePlaceholder": "Nom de l'entreprise",
+      "companyEmailPlaceholder": "E-mail de l'entreprise (facultatif)",
+      "notesPlaceholder": "Notes",
+      "applyButton": "+ Postuler à une entreprise",
+      "logButton": "Enregistrer la candidature"
+    },
+    "assignments": {
+      "title": "Travaux",
+      "fallbackTitle": "Travail",
+      "due": "Échéance {{date}}",
+      "points": "{{count}} pts",
+      "todo": "À faire"
+    },
+    "reviews": {
+      "confirmAttendance": "Confirmer la présence",
+      "cantAttend": "Ne peut pas assister",
+      "youResponded": "Vous avez répondu : "
+    },
+    "signature": {
+      "title": "Convention de stage",
+      "intro": "Veuillez confirmer que vous acceptez les conditions de ce placement.",
+      "confirmLabel": "Je confirme que les détails du placement ci-dessus sont corrects et j'accepte les conditions.",
+      "signButton": "Signer la convention",
+      "signedTitle": "Convention signée",
+      "signedSubtitle": "Vous avez confirmé la convention de placement."
+    },
+    "reflection": {
+      "submitted": "Soumis",
+      "notSubmitted": "Non soumis",
+      "yourReflection": "Votre réflexion",
+      "whatDidYouLearn": "Qu'avez-vous appris de ce stage ?",
+      "competenciesDeveloped": "Compétences développées",
+      "saveDraft": "Enregistrer le brouillon",
+      "submit": "Soumettre",
+      "update": "Mettre à jour",
+      "draftSaved": "✓ Brouillon enregistré",
+      "submittedMsg": "✓ Soumis"
+    },
+    "dailyLogs": {
+      "titlePlaceholder": "Titre",
+      "none": "Aucun journal soumis pour l'instant."
+    }
+  },
+  "internshipDetail": {
+    "backLink": "← Retour",
+    "searchingSubtitle": "Recherche d'une entreprise",
+    "phaseAdvance": { "placed": "Marquer sur place", "on_site": "Passer à l'évaluation" },
+    "phaseAdvanceConfirm": {
+      "placed": "Marquer ce stage comme « sur place » ? L'étudiant et le coordinateur le verront passer à la phase Sur place.",
+      "on_site": "Passer ce stage à Évaluation ?"
+    },
+    "phaseReverse": { "on_site": "Revenir à placé", "evaluating": "Revenir à sur place" },
+    "movedTo": "✓ Passé à {{phase}}",
+    "movedBackTo": "✓ Revenu à {{phase}}",
+    "reversePrompt": "Pourquoi ramenez-vous cette phase en arrière ? (obligatoire — conservé comme trace)",
+    "reverseReasonRequired": "Une raison est requise pour revenir en arrière d'une phase.",
+    "completeConfirm": "Marquer ce stage comme terminé ? C'est définitif — l'étudiant verra son résumé final.",
+    "completeMarked": "✓ Stage marqué comme terminé",
+    "company": {
+      "title": "Entreprise",
+      "namePlaceholder": "Nom de l'entreprise",
+      "addressPlaceholder": "Adresse"
+    },
+    "supervisors": {
+      "title": "Encadrants",
+      "linkPrefix": "Lien : ",
+      "namePlaceholder": "Nom",
+      "emailPlaceholder": "E-mail",
+      "jobTitlePlaceholder": "Fonction",
+      "addSupervisor": "Ajouter un encadrant"
+    },
+    "dailyLogs": {
+      "title": "Journaux d'activité quotidiens",
+      "acknowledged": "✓ validé",
+      "hoursPlaceholder": "Heures travaillées",
+      "contentPlaceholder": "Qu'avez-vous fait et appris aujourd'hui ?",
+      "addLog": "+ Ajouter un journal"
+    },
+    "assessment": {
+      "title": "Évaluation (enseignant)",
+      "studentReflection": "Réflexion de l'étudiant",
+      "submitted": "(soumis)",
+      "draft": "(brouillon)",
+      "competencies": "Compétences : ",
+      "scorePlaceholder": "Score (0-100)",
+      "feedbackPlaceholder": "Commentaire",
+      "submit": "Soumettre l'évaluation"
+    },
+    "checklist": { "title": "Liste de contrôle du placement" },
+    "complete": {
+      "title": "Terminer le stage",
+      "autoCalcNote": "Le total des heures et le score final sont calculés automatiquement à partir des journaux d'activité et des évaluations soumises — rien à saisir ici.",
+      "notePlaceholder": "Note de clôture (facultatif)",
+      "markComplete": "Marquer comme terminé"
+    },
+    "applications": { "title": "Candidatures", "none": "Aucune candidature pour l'instant." },
+    "phaseHistory": "Historique des retours en arrière ({{count}})",
+    "reviews": {
+      "title": "Évaluations intermédiaires",
+      "none": "Aucune évaluation planifiée pour l'instant.",
+      "student": "Étudiant",
+      "supervisor": "Encadrant",
+      "hoursLoggedAtReview": "Heures enregistrées lors de l'évaluation : {{hours}}",
+      "complete": "Terminer",
+      "cancelConfirm": "Annuler cette évaluation planifiée ?",
+      "scheduleReview": "+ Planifier une évaluation",
+      "supervisorAttending": "Encadrant présent (facultatif)",
+      "schedule": "Planifier",
+      "reportPlaceholder": "Rapport de visite — discussion, ce qui va bien, ce qui ne va pas",
+      "completeReview": "Terminer l'évaluation",
+      "status": { "scheduled": "planifiée", "completed": "terminée", "cancelled": "annulée" },
+      "response": { "pending": "en attente", "confirmed": "confirmé", "declined": "refusé" }
+    }
+  },
+  "internshipStatus": {
+    "active": "actif",
+    "completed": "terminé",
+    "cancelled": "annulé",
+    "withdrawn": "abandonné"
+  },
+  "campaignDetail": {
+    "backLink": "← Stages",
+    "enrollFrom": "Inscrire des étudiants de {{className}}",
+    "thisClass": "cette classe",
+    "enrolling": "Inscription…",
+    "enrollSelected": "Inscrire la sélection ({{count}})",
+    "searchPlaceholder": "Rechercher par nom ou e-mail…",
+    "noStudentsInClass": "Aucun étudiant trouvé dans {{className}} pour l'instant — assignez-les à cette classe depuis la page Utilisateurs.",
+    "everyoneEnrolled": "Tout le monde dans cette classe est déjà inscrit.",
+    "enrolledStudents": "Étudiants inscrits",
+    "noneEnrolled": "Aucun étudiant inscrit pour l'instant.",
+    "noCompanyYet": "Pas encore d'entreprise"
+  },
+  "campaigns": {
+    "title": "Programme de stage",
+    "subtitle": "Un programme par classe — suit tous les étudiants de la recherche d'emploi à l'évaluation finale",
+    "newProgramme": "+ Nouveau programme",
+    "allYears": "Toutes les années académiques",
+    "allStatus": "Tous les statuts",
+    "status": { "planning": "planification", "active": "actif", "closed": "clôturé", "cancelled": "annulé" },
+    "programmeCount_one": "{{count}} programme",
+    "programmeCount_other": "{{count}} programmes",
+    "showAll": "Afficher tous les programmes des coordinateurs →",
+    "showMine": "← Afficher seulement mes programmes",
+    "adminViewNote": "Affichage des programmes de tous les coordinateurs (vue administrateur)",
+    "createForm": {
+      "classPlaceholder": "Classe…",
+      "yearPlaceholder": "Année académique…",
+      "namePlaceholder": "Nom du programme",
+      "noClasses": "Aucune classe n'existe encore —",
+      "createOneFirst": "créez-en une d'abord"
+    },
+    "noYearGroup": "Aucune année académique",
+    "noProgrammes": "Aucun programme pour l'instant.",
+    "stats": {
+      "noStudents": "Aucun étudiant inscrit pour l'instant",
+      "students_one": "{{count}} étudiant",
+      "students_other": "{{count}} étudiants",
+      "inactive": "⚠ {{count}} inactif(s)"
+    }
+  },
+  "monitoring": {
+    "title": "Monitoring d'exécution",
+    "subtitle": "Étudiants actuellement sur place — aperçu des risques",
+    "studentCount_one": "{{count}} étudiant en exécution",
+    "studentCount_other": "{{count}} étudiants en exécution",
+    "risk": { "red": "À risque", "amber": "Attention requise", "green": "Sur la bonne voie" },
+    "table": { "student": "Étudiant", "company": "Entreprise", "period": "Période", "hours": "Heures", "lastLog": "Dernier journal", "supervisor": "Encadrant", "risk": "Risque" },
+    "noStudents": "Aucun étudiant actuellement sur place.",
+    "never": "Jamais",
+    "daysAgo": "il y a {{count}} j",
+    "connected": "✓ Connecté",
+    "notAssigned": "Non assigné"
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "subtitle": "{{active}} actifs · {{inactive}} inactifs",
+    "newUser": "+ Nouvel utilisateur",
+    "table": { "name": "Nom", "email": "E-mail", "class": "Classe", "cohort": "Cohorte", "roles": "Rôles", "actions": "Actions" },
+    "noUsers": "Aucun utilisateur pour l'instant.",
+    "inactiveTag": "(inactif)",
+    "created": "✓ {{email}} créé (id {{id}}) — partagez le mot de passe directement avec la personne",
+    "roles": { "student": "étudiant", "teacher": "enseignant", "coordinator": "coordinateur", "admin": "administrateur" },
+    "atLeastOneRole": "Au moins un rôle est requis",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+    "passwordUpdated": "✓ Mot de passe mis à jour",
+    "editModal": {
+      "title": "Modifier l'utilisateur",
+      "subtitle": "Mettre à jour le profil et les rôles",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "E-mail",
+      "class": "Classe (facultatif)",
+      "noClass": "Aucune classe",
+      "cohort": "Cohorte (facultatif)",
+      "noCohort": "Aucune cohorte",
+      "roles": "Rôles",
+      "active": "Actif",
+      "saved": "✓ Enregistré",
+      "setPassword": "Définir un nouveau mot de passe",
+      "passwordPlaceholder": "Min. 8 caractères",
+      "setPasswordButton": "Définir le mot de passe",
+      "save": "Enregistrer l'utilisateur"
+    },
+    "createModal": {
+      "title": "Nouvel utilisateur",
+      "subtitle": "Étudiants, enseignants et coordinateurs — pas d'auto-inscription, les comptes sont créés ici",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "E-mail",
+      "class": "Classe (facultatif)",
+      "noClass": "Aucune classe",
+      "cohort": "Cohorte (facultatif)",
+      "noCohort": "Aucune cohorte",
+      "roles": "Rôles",
+      "tempPassword": "Mot de passe temporaire",
+      "passwordPlaceholder": "Min. 8 caractères",
+      "createAccount": "Créer le compte"
+    }
+  },
+  "companies": {
+    "title": "Entreprises",
+    "subtitle": "Gérez votre réseau d'entreprises partenaires de stage",
+    "addCompany": "+ Ajouter une entreprise",
+    "searchPlaceholder": "Rechercher par nom…",
+    "createForm": {
+      "name": "Nom de l'entreprise",
+      "city": "Ville",
+      "sector": "Secteur",
+      "email": "E-mail"
+    },
+    "table": { "name": "Nom", "city": "Ville", "sector": "Secteur", "status": "Statut", "students": "Étudiants", "lastContact": "Dernier contact" },
+    "noCompanies": "Aucune entreprise pour l'instant."
+  },
+  "classes": {
+    "title": "Classes",
+    "subtitle": "Classes auxquelles les programmes de stage sont rattachés",
+    "newClass": "+ Nouvelle classe",
+    "table": { "name": "Nom", "code": "Code", "id": "ID", "actions": "Actions" },
+    "noClasses": "Aucune classe pour l'instant.",
+    "editModal": {
+      "title": "Modifier la classe",
+      "subtitle": "Mettre à jour le nom ou le code de la classe",
+      "name": "Nom",
+      "code": "Code",
+      "saved": "✓ Enregistré",
+      "save": "Enregistrer la classe"
+    },
+    "createModal": {
+      "title": "Nouvelle classe",
+      "subtitle": "Classes/cohortes auxquelles les programmes de stage sont rattachés",
+      "name": "Nom",
+      "namePlaceholder": "ex. BIM Année 3",
+      "code": "Code (facultatif)",
+      "codePlaceholder": "ex. BIM3"
+    },
+    "academicYears": {
+      "title": "Années académiques",
+      "subtitle": "La cohorte d'un étudiant (ex. « 2026-2027 ») et la portée dans laquelle les programmes de stage se déroulent",
+      "newYear": "+ Nouvelle année académique",
+      "table": { "label": "Libellé", "starts": "Début", "ends": "Fin", "current": "Actuelle" },
+      "noYears": "Aucune année académique pour l'instant.",
+      "currentBadge": "Actuelle",
+      "createModal": {
+        "title": "Nouvelle année académique",
+        "subtitle": "Du 1er sept. au 31 août, ex. 2027 crée « 2027-2028 »",
+        "startYear": "Année de début",
+        "startYearPlaceholder": "ex. 2027",
+        "setCurrent": "Définir comme année académique actuelle",
+        "invalidYear": "Saisissez une année de début valide"
+      }
+    }
+  }
+}

@@ -3,6 +3,9 @@ import { initReactI18next } from 'react-i18next';
 
 import enCommon from './locales/en/common.json';
 import nlCommon from './locales/nl/common.json';
+import frCommon from './locales/fr/common.json';
+import deCommon from './locales/de/common.json';
+import esCommon from './locales/es/common.json';
 
 const STORAGE_KEY = 'workplace_language';
 
@@ -23,6 +26,9 @@ i18n.use(initReactI18next).init({
   resources: {
     en: { common: enCommon },
     nl: { common: nlCommon },
+    fr: { common: frCommon },
+    de: { common: deCommon },
+    es: { common: esCommon },
   },
   lng: getStoredLanguage(),
   fallbackLng: 'en',
