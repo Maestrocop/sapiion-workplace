@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { API_URL } from '../lib/api';
 import { formatDate } from '../lib/dates';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 // Public page — no login. Access is controlled entirely by the token in the URL.
 async function portalRequest(token, { method = 'GET', body } = {}) {
@@ -16,6 +18,7 @@ async function portalRequest(token, { method = 'GET', body } = {}) {
 }
 
 export default function SupervisorPortalPage() {
+  const { t } = useTranslation();
   const { token } = useParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
@@ -80,53 +83,59 @@ export default function SupervisorPortalPage() {
     );
   }
 
-  if (!data) return <div className="min-h-screen flex items-center justify-center text-slate-400">Loading…</div>;
+  if (!data) return <div className="min-h-screen flex items-center justify-center text-slate-400">{t('supervisorPortal.loading')}</div>;
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-slate-50 py-8 relative">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-xl font-semibold text-workplace-teal-700 mb-1">Sapiion Workplace — Supervisor</h1>
+        <h1 className="text-xl font-semibold text-workplace-teal-700 mb-1">{t('supervisorPortal.title')}</h1>
         <p className="text-slate-500 text-sm mb-6">
-          You're supervising {data.internship.student_name || 'a student'} at {data.internship.company_name || 'your company'}.
+          {t('supervisorPortal.youAreSupervising', {
+            student: data.internship.student_name || t('supervisorPortal.aStudent'),
+            company: data.internship.company_name || t('supervisorPortal.yourCompany'),
+          })}
         </p>
 
         <div className="bg-white border border-slate-200 rounded-xl p-5 mb-6">
-          <h2 className="text-sm font-medium text-slate-600 mb-3">Your details</h2>
+          <h2 className="text-sm font-medium text-slate-600 mb-3">{t('supervisorPortal.yourDetails')}</h2>
           <form onSubmit={handleSubmit} className="space-y-3">
-            <input required placeholder="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-            <input placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-            <input placeholder="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-            <input placeholder="Job title" value={form.job_title} onChange={(e) => setForm({ ...form, job_title: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+            <input required placeholder={t('supervisorPortal.namePlaceholder')} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+            <input placeholder={t('supervisorPortal.emailPlaceholder')} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+            <input placeholder={t('supervisorPortal.phonePlaceholder')} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+            <input placeholder={t('supervisorPortal.jobTitlePlaceholder')} value={form.job_title} onChange={(e) => setForm({ ...form, job_title: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
             <div className="flex gap-2">
               <input type="date" value={form.start_date || ''} onChange={(e) => setForm({ ...form, start_date: e.target.value })} className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
               <input type="date" value={form.end_date || ''} onChange={(e) => setForm({ ...form, end_date: e.target.value })} className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" />
             </div>
-            <input placeholder="Working schedule (e.g. Mon-Fri 09:00-17:00)" value={form.working_schedule} onChange={(e) => setForm({ ...form, working_schedule: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
-            {saved && <p className="text-sm text-emerald-600">✓ Saved</p>}
-            <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">Save</button>
+            <input placeholder={t('supervisorPortal.workingSchedulePlaceholder')} value={form.working_schedule} onChange={(e) => setForm({ ...form, working_schedule: e.target.value })} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+            {saved && <p className="text-sm text-emerald-600">{t('supervisorPortal.saved')}</p>}
+            <button type="submit" className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">{t('supervisorPortal.save')}</button>
           </form>
         </div>
 
         {data.reviews && data.reviews.length > 0 && (
           <div className="bg-white border border-slate-200 rounded-xl p-5 mb-6">
-            <h2 className="text-sm font-medium text-slate-600 mb-3">School interim reviews</h2>
+            <h2 className="text-sm font-medium text-slate-600 mb-3">{t('supervisorPortal.interimReviews')}</h2>
             <div className="space-y-2">
               {data.reviews.map((r) => (
                 <div key={r.id} className="border border-slate-100 rounded-lg p-3 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="font-medium">{formatDate(r.scheduled_date)}</span>
-                    <span className="text-xs text-slate-400 capitalize">{r.status}</span>
+                    <span className="text-xs text-slate-400 capitalize">{t(`internshipDetail.reviews.status.${r.status}`, r.status)}</span>
                   </div>
                   {r.status === 'completed' && r.report && <p className="text-slate-600 mt-1">{r.report}</p>}
                   {r.status === 'scheduled' && (
                     r.supervisor_response === 'pending' ? (
                       <div className="flex gap-2 mt-2">
-                        <button onClick={() => respondToReview(r.id, 'confirmed')} className="text-xs bg-workplace-teal-600 text-white rounded-lg px-3 py-1">Confirm attendance</button>
-                        <button onClick={() => respondToReview(r.id, 'declined')} className="text-xs border border-slate-300 rounded-lg px-3 py-1 text-slate-600">Can't attend</button>
+                        <button onClick={() => respondToReview(r.id, 'confirmed')} className="text-xs bg-workplace-teal-600 text-white rounded-lg px-3 py-1">{t('supervisorPortal.confirmAttendance')}</button>
+                        <button onClick={() => respondToReview(r.id, 'declined')} className="text-xs border border-slate-300 rounded-lg px-3 py-1 text-slate-600">{t('supervisorPortal.cantAttend')}</button>
                       </div>
                     ) : (
                       <p className="text-xs mt-1">
-                        You responded: <span className={r.supervisor_response === 'confirmed' ? 'text-emerald-600' : 'text-red-600'}>{r.supervisor_response}</span>
+                        {t('supervisorPortal.youResponded')}<span className={r.supervisor_response === 'confirmed' ? 'text-emerald-600' : 'text-red-600'}>{t(`internshipDetail.reviews.response.${r.supervisor_response}`, r.supervisor_response)}</span>
                       </p>
                     )
                   )}
@@ -137,15 +146,17 @@ export default function SupervisorPortalPage() {
         )}
 
         <div className="bg-white border border-slate-200 rounded-xl p-5">
-          <h2 className="text-sm font-medium text-slate-600 mb-3">Weekly activity logs</h2>
-          {data.logs.length === 0 && <p className="text-sm text-slate-400">No logs submitted yet.</p>}
+          <h2 className="text-sm font-medium text-slate-600 mb-3">{t('supervisorPortal.weeklyLogs')}</h2>
+          {data.logs.length === 0 && <p className="text-sm text-slate-400">{t('supervisorPortal.noLogs')}</p>}
           <div className="space-y-2">
             {data.logs.map((log) => (
               <div key={log.id} className="border border-slate-100 rounded-lg p-3">
                 <p className="text-sm font-medium">{formatDate(log.week_starting)} — {log.hours_logged || 0}h</p>
                 <p className="text-sm text-slate-600 mb-2">{log.content}</p>
                 {log.supervisor_ack ? (
-                  <p className="text-xs text-emerald-600">✓ You acknowledged this log{log.supervisor_comment ? `: "${log.supervisor_comment}"` : ''}</p>
+                  <p className="text-xs text-emerald-600">
+                    {log.supervisor_comment ? t('supervisorPortal.acknowledgedWithComment', { comment: log.supervisor_comment }) : t('supervisorPortal.acknowledged')}
+                  </p>
                 ) : (
                   <AckForm onAck={(comment) => acknowledgeLog(log.id, comment)} />
                 )}
@@ -159,14 +170,15 @@ export default function SupervisorPortalPage() {
 }
 
 function AckForm({ onAck }) {
+  const { t } = useTranslation();
   const [comment, setComment] = useState('');
   return (
     <div className="flex gap-2">
       <input
-        placeholder="Optional comment" value={comment} onChange={(e) => setComment(e.target.value)}
+        placeholder={t('supervisorPortal.commentPlaceholder')} value={comment} onChange={(e) => setComment(e.target.value)}
         className="flex-1 border border-slate-300 rounded-lg px-2 py-1 text-xs"
       />
-      <button onClick={() => onAck(comment)} className="text-xs bg-workplace-teal-600 text-white rounded-lg px-3 py-1">Acknowledge</button>
+      <button onClick={() => onAck(comment)} className="text-xs bg-workplace-teal-600 text-white rounded-lg px-3 py-1">{t('supervisorPortal.acknowledge')}</button>
     </div>
   );
 }
