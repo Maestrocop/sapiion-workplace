@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
+import PageHeader from '../components/PageHeader';
 
 function EditClassModal({ klass, onClose, onSaved }) {
   const [name, setName] = useState(klass.name);
@@ -165,16 +166,18 @@ export default function ClassesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
-        <h1 className="text-lg font-semibold text-slate-800">Classes</h1>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"
-        >
-          + New class
-        </button>
-      </div>
-      <p className="text-sm text-slate-500 mb-4">Classes that internship programmes attach to</p>
+      <PageHeader
+        title="Classes"
+        subtitle="Classes that internship programmes attach to"
+        actions={
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/20 hover:bg-white/30 border border-white/30 transition"
+          >
+            + New class
+          </button>
+        }
+      />
 
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden mb-8">
         <table className="w-full text-sm">
@@ -209,7 +212,7 @@ export default function ClassesPage() {
       </div>
 
       <div className="flex items-center justify-between mb-1">
-        <h1 className="text-lg font-semibold text-slate-800">Academic Years</h1>
+        <h2 className="text-lg font-semibold text-slate-800">Academic Years</h2>
         <button
           onClick={() => setShowCreateYearModal(true)}
           className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"

@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { FaBuilding, FaClipboardList, FaLayerGroup, FaChartBar, FaUsers, FaUserGraduate, FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
+import Logo from './Logo';
 
 // Same structural pattern as ILS-dev's Sidebar/StaffSidebar: fixed-left,
 // collapsible icon-only <-> full width, white background, active item
@@ -25,7 +26,7 @@ export default function Sidebar({ navItems, collapsed, onToggle }) {
         >
           {collapsed ? <FaAngleDoubleRight /> : <FaAngleDoubleLeft />}
         </button>
-        {!collapsed && <span className="font-semibold text-workplace-teal-700 text-sm">Sapiion Workplace</span>}
+        {!collapsed && <Logo scale={0.5} />}
       </div>
 
       <nav className="flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto">
