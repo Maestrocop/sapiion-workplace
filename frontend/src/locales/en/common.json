@@ -37,6 +37,34 @@
     "evaluating": "Evaluating",
     "completed": "Completed"
   },
+  "campaigns": {
+    "title": "Internship Programme",
+    "subtitle": "One programme per class — tracks all students from job search to final evaluation",
+    "newProgramme": "+ New programme",
+    "allYears": "All academic years",
+    "allStatus": "All status",
+    "status": { "planning": "planning", "active": "active", "closed": "closed", "cancelled": "cancelled" },
+    "programmeCount_one": "{{count}} programme",
+    "programmeCount_other": "{{count}} programmes",
+    "showAll": "Show all coordinators' programmes →",
+    "showMine": "← Show only my programmes",
+    "adminViewNote": "Showing every coordinator's programmes (admin view)",
+    "createForm": {
+      "classPlaceholder": "Class…",
+      "yearPlaceholder": "Academic year…",
+      "namePlaceholder": "Programme name",
+      "noClasses": "No classes exist yet —",
+      "createOneFirst": "create one first"
+    },
+    "noYearGroup": "No academic year",
+    "noProgrammes": "No programmes yet.",
+    "stats": {
+      "noStudents": "No students enrolled yet",
+      "students_one": "{{count}} student",
+      "students_other": "{{count}} students",
+      "inactive": "⚠ {{count}} inactive"
+    }
+  },
   "monitoring": {
     "title": "Execution Monitoring",
     "subtitle": "Students currently on-site — at-risk overview",

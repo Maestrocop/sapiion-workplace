@@ -37,6 +37,34 @@
     "evaluating": "Evaluatie",
     "completed": "Afgerond"
   },
+  "campaigns": {
+    "title": "Stageprogramma",
+    "subtitle": "Eén programma per klas — volgt alle studenten van jobzoektocht tot eindevaluatie",
+    "newProgramme": "+ Nieuw programma",
+    "allYears": "Alle academiejaren",
+    "allStatus": "Alle statussen",
+    "status": { "planning": "planning", "active": "actief", "closed": "afgesloten", "cancelled": "geannuleerd" },
+    "programmeCount_one": "{{count}} programma",
+    "programmeCount_other": "{{count}} programma's",
+    "showAll": "Toon alle programma's van coördinatoren →",
+    "showMine": "← Toon enkel mijn programma's",
+    "adminViewNote": "Alle programma's van alle coördinatoren worden getoond (beheerdersweergave)",
+    "createForm": {
+      "classPlaceholder": "Klas…",
+      "yearPlaceholder": "Academiejaar…",
+      "namePlaceholder": "Programmanaam",
+      "noClasses": "Nog geen klassen —",
+      "createOneFirst": "maak er eerst een aan"
+    },
+    "noYearGroup": "Geen academiejaar",
+    "noProgrammes": "Nog geen programma's.",
+    "stats": {
+      "noStudents": "Nog geen studenten ingeschreven",
+      "students_one": "{{count}} student",
+      "students_other": "{{count}} studenten",
+      "inactive": "⚠ {{count}} inactief"
+    }
+  },
   "monitoring": {
     "title": "Opvolging Uitvoering",
     "subtitle": "Studenten momenteel op de werkvloer — risico-overzicht",
