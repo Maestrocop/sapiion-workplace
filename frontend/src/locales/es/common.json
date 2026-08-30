@@ -206,7 +206,22 @@
       "feedbackPlaceholder": "Comentarios",
       "submit": "Enviar evaluación"
     },
-    "checklist": { "title": "Lista de verificación de colocación" },
+    "checklist": {
+      "title": "Lista de verificación de colocación",
+      "items": {
+        "company_details_verified": "Datos de la empresa verificados",
+        "company_supervisor_assigned": "Supervisor de la empresa asignado",
+        "start_date_defined": "Fecha de inicio definida",
+        "end_date_defined": "Fecha de fin definida",
+        "working_schedule_defined": "Horario de trabajo definido",
+        "learning_objectives_set": "Objetivos de aprendizaje asignados",
+        "assessment_method_set": "Método de evaluación asignado",
+        "documents_uploaded": "Documentos requeridos subidos",
+        "student_signed": "Acuerdo firmado por el estudiante",
+        "company_signed": "Acuerdo firmado por la empresa",
+        "school_signed": "Acuerdo firmado por la escuela"
+      }
+    },
     "complete": {
       "title": "Finalizar prácticas",
       "autoCalcNote": "El total de horas y la puntuación final se calculan automáticamente a partir de los registros de actividad y las evaluaciones enviadas — no hay nada que introducir aquí.",

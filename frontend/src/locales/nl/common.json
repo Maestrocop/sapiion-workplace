@@ -206,7 +206,22 @@
       "feedbackPlaceholder": "Feedback",
       "submit": "Beoordeling indienen"
     },
-    "checklist": { "title": "Plaatsingschecklist" },
+    "checklist": {
+      "title": "Plaatsingschecklist",
+      "items": {
+        "company_details_verified": "Bedrijfsgegevens geverifieerd",
+        "company_supervisor_assigned": "Bedrijfsbegeleider toegewezen",
+        "start_date_defined": "Startdatum bepaald",
+        "end_date_defined": "Einddatum bepaald",
+        "working_schedule_defined": "Werkschema bepaald",
+        "learning_objectives_set": "Leerdoelen toegewezen",
+        "assessment_method_set": "Beoordelingsmethode toegewezen",
+        "documents_uploaded": "Verplichte documenten geüpload",
+        "student_signed": "Overeenkomst ondertekend door student",
+        "company_signed": "Overeenkomst ondertekend door bedrijf",
+        "school_signed": "Overeenkomst ondertekend door school"
+      }
+    },
     "complete": {
       "title": "Stage afronden",
       "autoCalcNote": "Totaal aantal uren en eindscore worden automatisch berekend op basis van activiteitenlogs en ingediende beoordelingen — hier hoeft niets ingevuld te worden.",

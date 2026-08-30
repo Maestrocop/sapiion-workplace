@@ -206,7 +206,22 @@
       "feedbackPlaceholder": "Commentaire",
       "submit": "Soumettre l'évaluation"
     },
-    "checklist": { "title": "Liste de contrôle du placement" },
+    "checklist": {
+      "title": "Liste de contrôle du placement",
+      "items": {
+        "company_details_verified": "Coordonnées de l'entreprise vérifiées",
+        "company_supervisor_assigned": "Encadrant en entreprise désigné",
+        "start_date_defined": "Date de début définie",
+        "end_date_defined": "Date de fin définie",
+        "working_schedule_defined": "Horaire de travail défini",
+        "learning_objectives_set": "Objectifs d'apprentissage assignés",
+        "assessment_method_set": "Méthode d'évaluation assignée",
+        "documents_uploaded": "Documents requis téléchargés",
+        "student_signed": "Convention signée par l'étudiant",
+        "company_signed": "Convention signée par l'entreprise",
+        "school_signed": "Convention signée par l'école"
+      }
+    },
     "complete": {
       "title": "Terminer le stage",
       "autoCalcNote": "Le total des heures et le score final sont calculés automatiquement à partir des journaux d'activité et des évaluations soumises — rien à saisir ici.",

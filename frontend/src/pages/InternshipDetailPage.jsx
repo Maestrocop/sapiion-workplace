@@ -445,7 +445,7 @@ function ChecklistLoader({ internshipId, onToggle }) {
             type="checkbox" checked={Boolean(check?.is_completed)}
             onChange={() => onToggle(definition.check_key, Boolean(check?.is_completed))}
           />
-          <span className={check?.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}>{definition.label}</span>
+          <span className={check?.is_completed ? 'text-slate-400 line-through' : 'text-slate-700'}>{t(`internshipDetail.checklist.items.${definition.check_key}`, definition.label)}</span>
         </label>
       ))}
     </div>

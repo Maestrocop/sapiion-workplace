@@ -206,7 +206,22 @@
       "feedbackPlaceholder": "Feedback",
       "submit": "Submit assessment"
     },
-    "checklist": { "title": "Placement checklist" },
+    "checklist": {
+      "title": "Placement checklist",
+      "items": {
+        "company_details_verified": "Company details verified",
+        "company_supervisor_assigned": "Company supervisor assigned",
+        "start_date_defined": "Start date defined",
+        "end_date_defined": "End date defined",
+        "working_schedule_defined": "Working schedule defined",
+        "learning_objectives_set": "Learning objectives assigned",
+        "assessment_method_set": "Assessment method assigned",
+        "documents_uploaded": "Required documents uploaded",
+        "student_signed": "Agreement signed by student",
+        "company_signed": "Agreement signed by company",
+        "school_signed": "Agreement signed by school"
+      }
+    },
     "complete": {
       "title": "Complete internship",
       "autoCalcNote": "Total hours and final score are calculated automatically from activity logs and submitted assessments — nothing to enter there.",

@@ -206,7 +206,22 @@
       "feedbackPlaceholder": "Feedback",
       "submit": "Bewertung einreichen"
     },
-    "checklist": { "title": "Platzierungs-Checkliste" },
+    "checklist": {
+      "title": "Platzierungs-Checkliste",
+      "items": {
+        "company_details_verified": "Unternehmensdaten geprüft",
+        "company_supervisor_assigned": "Betreuer im Unternehmen zugewiesen",
+        "start_date_defined": "Startdatum festgelegt",
+        "end_date_defined": "Enddatum festgelegt",
+        "working_schedule_defined": "Arbeitszeiten festgelegt",
+        "learning_objectives_set": "Lernziele zugewiesen",
+        "assessment_method_set": "Bewertungsmethode zugewiesen",
+        "documents_uploaded": "Erforderliche Dokumente hochgeladen",
+        "student_signed": "Vereinbarung vom Studenten unterzeichnet",
+        "company_signed": "Vereinbarung vom Unternehmen unterzeichnet",
+        "school_signed": "Vereinbarung von der Schule unterzeichnet"
+      }
+    },
     "complete": {
       "title": "Praktikum abschließen",
       "autoCalcNote": "Gesamtstunden und Endnote werden automatisch aus Tätigkeitsberichten und eingereichten Bewertungen berechnet — hier muss nichts eingegeben werden.",
