@@ -82,7 +82,7 @@ export default function MainLayout() {
       <div className={`flex flex-col min-h-screen transition-all duration-200 ${collapsed ? 'md:ml-16' : 'md:ml-56'}`}>
         <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
           <div className="px-4 h-14 flex items-center justify-between">
-            <Logo scale={0.5} />
+            <Logo />
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen((v) => !v)}
