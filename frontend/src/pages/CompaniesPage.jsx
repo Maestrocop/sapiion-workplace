@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { formatDate } from '../lib/dates';
+import PageHeader from '../components/PageHeader';
 
 const STATUS_COLORS = {
   prospect: 'bg-slate-100 text-slate-600',
@@ -44,25 +45,28 @@ export default function CompaniesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-lg font-semibold text-slate-800">Companies</h1>
-        <button
-          onClick={() => setShowForm((s) => !s)}
-          className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"
-        >
-          {showForm ? 'Cancel' : '+ Add company'}
-        </button>
-      </div>
-
-      <div className="mb-4 flex gap-2">
-        <input
-          value={search} onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && load()}
-          placeholder="Search by name…"
-          className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-64"
-        />
-        <button onClick={load} className="text-sm text-slate-500 border border-slate-300 rounded-lg px-3 py-2">Search</button>
-      </div>
+      <PageHeader
+        title="Companies"
+        subtitle="Manage your internship partner network"
+        actions={
+          <button
+            onClick={() => setShowForm((s) => !s)}
+            className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/20 hover:bg-white/30 border border-white/30 transition"
+          >
+            {showForm ? 'Cancel' : '+ Add company'}
+          </button>
+        }
+      >
+        <div className="flex gap-2">
+          <input
+            value={search} onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && load()}
+            placeholder="Search by name…"
+            className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-64"
+          />
+          <button onClick={load} className="text-sm text-slate-500 border border-slate-300 rounded-lg px-3 py-2">Search</button>
+        </div>
+      </PageHeader>
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white border border-slate-200 rounded-xl p-4 mb-4 grid grid-cols-2 gap-3">

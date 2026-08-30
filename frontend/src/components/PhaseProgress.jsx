@@ -1,3 +1,9 @@
+import { Fragment } from 'react';
+
+// Same structural pattern as ILS-dev's PhaseTrack (InternshipDetailPage.jsx):
+// numbered circles connected by a line, current step outlined, completed
+// steps filled with a checkmark. Workplace's teal instead of ILS-dev's
+// sky/indigo mix, and Workplace's own phase keys/labels.
 const PHASES = [
   { key: 'searching', label: 'Searching' },
   { key: 'placed', label: 'Placed' },
@@ -6,30 +12,26 @@ const PHASES = [
 ];
 
 export default function PhaseProgress({ phase }) {
-  const currentIndex = phase === 'completed' ? PHASES.length : PHASES.findIndex((p) => p.key === phase);
+  const idx = phase === 'completed' ? PHASES.length : PHASES.findIndex((p) => p.key === phase);
 
   return (
-    <div className="flex gap-4">
-      {PHASES.map((p, i) => {
-        const done = i < currentIndex;
-        const active = i === currentIndex;
-        return (
-          <div key={p.key} className="flex items-center gap-1.5 text-sm">
-            <span
-              className={
-                done ? 'text-emerald-600' :
-                active ? 'text-workplace-teal-700 font-medium' :
-                'text-slate-400'
-              }
-            >
-              {done ? '✓' : i + 1}
-            </span>
-            <span className={active ? 'text-workplace-teal-700 font-medium' : done ? 'text-slate-600' : 'text-slate-400'}>
+    <div className="flex items-start gap-0 w-full max-w-lg">
+      {PHASES.map((p, i) => (
+        <Fragment key={p.key}>
+          <div className="flex flex-col items-center gap-1 flex-1">
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all
+              ${i < idx  ? 'bg-workplace-teal-600 border-workplace-teal-600 text-white' :
+                i === idx ? 'bg-white border-workplace-teal-600 text-workplace-teal-700' :
+                            'bg-white border-slate-300 text-slate-300'}`}>
+              {i < idx ? '✓' : i + 1}
+            </div>
+            <span className={`text-xs font-medium whitespace-nowrap ${i === idx ? 'text-workplace-teal-700' : i < idx ? 'text-slate-600' : 'text-slate-300'}`}>
               {p.label}
             </span>
           </div>
-        );
-      })}
+          {i < PHASES.length - 1 && <div className={`flex-1 h-0.5 mt-3.5 ${i < idx ? 'bg-workplace-teal-600' : 'bg-slate-200'}`} />}
+        </Fragment>
+      ))}
     </div>
   );
 }

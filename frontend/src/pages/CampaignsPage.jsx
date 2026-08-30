@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import PageHeader from '../components/PageHeader';
 
 export default function CampaignsPage() {
   const { user } = useAuth();
@@ -54,22 +55,25 @@ export default function CampaignsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
-        <h1 className="text-lg font-semibold text-slate-800">Internship Programme</h1>
-        <button
-          onClick={() => setShowForm((s) => !s)}
-          className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"
-        >
-          {showForm ? 'Cancel' : '+ New programme'}
-        </button>
-      </div>
-      <p className="text-sm text-slate-500 mb-1">One programme per class — tracks all students from job search to final evaluation</p>
-      {!isAdmin && (
-        <button onClick={() => setShowAll((s) => !s)} className="text-xs text-workplace-teal-700 hover:underline mb-4">
-          {showAll ? '← Show only my programmes' : 'Show all coordinators\' programmes →'}
-        </button>
-      )}
-      {isAdmin && <p className="text-xs text-slate-400 mb-4">Showing every coordinator's programmes (admin view)</p>}
+      <PageHeader
+        title="Internship Programme"
+        subtitle="One programme per class — tracks all students from job search to final evaluation"
+        actions={
+          <button
+            onClick={() => setShowForm((s) => !s)}
+            className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/20 hover:bg-white/30 border border-white/30 transition"
+          >
+            {showForm ? 'Cancel' : '+ New programme'}
+          </button>
+        }
+      >
+        {!isAdmin && (
+          <button onClick={() => setShowAll((s) => !s)} className="text-xs text-workplace-teal-700 hover:underline">
+            {showAll ? '← Show only my programmes' : 'Show all coordinators\' programmes →'}
+          </button>
+        )}
+        {isAdmin && <p className="text-xs text-slate-400">Showing every coordinator's programmes (admin view)</p>}
+      </PageHeader>
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white border border-slate-200 rounded-xl p-4 mb-4 grid grid-cols-3 gap-3">

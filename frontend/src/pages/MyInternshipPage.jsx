@@ -3,6 +3,7 @@ import { api } from '../lib/api';
 import { formatDate } from '../lib/dates';
 import PhaseProgress from '../components/PhaseProgress';
 import CompletedSummary from '../components/CompletedSummary';
+import PageHeader from '../components/PageHeader';
 
 const DOC_STATUS_STYLE = {
   submitted: 'bg-slate-100 text-slate-600',
@@ -440,12 +441,12 @@ export default function MyInternshipPage() {
 
   return (
     <div>
-      <h1 className="text-lg font-semibold text-slate-800 mb-1">My Internship</h1>
-      <p className="text-sm text-slate-500 mb-4">{internship.company_name || 'Company not yet assigned'}</p>
-
-      <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
-        <PhaseProgress phase={internship.phase} />
-      </div>
+      <PageHeader
+        eyebrow="Internship Programme"
+        title="My Internship"
+        subtitle={internship.phase === 'searching' ? 'Search phase — find your placement company' : (internship.company_name || 'Placement in progress')}
+        actions={<PhaseProgress phase={internship.phase} />}
+      />
 
       {internship.phase === 'searching' && <SearchStatsHeader internship={internship} />}
 

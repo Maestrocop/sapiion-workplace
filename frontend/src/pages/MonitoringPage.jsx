@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { formatDate } from '../lib/dates';
+import PageHeader from '../components/PageHeader';
 
 const RISK_STYLE = {
   red:   'bg-red-100 text-red-700',
@@ -30,8 +31,7 @@ export default function MonitoringPage() {
 
   return (
     <div>
-      <h1 className="text-lg font-semibold text-slate-800 mb-1">Execution Monitoring</h1>
-      <p className="text-sm text-slate-500 mb-4">Students currently on-site — at-risk overview</p>
+      <PageHeader title="Execution Monitoring" subtitle="Students currently on-site — at-risk overview" />
 
       {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
       {loading && <p className="text-slate-400 text-sm">Loading…</p>}

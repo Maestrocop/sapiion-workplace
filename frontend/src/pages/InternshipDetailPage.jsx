@@ -4,6 +4,7 @@ import { api } from '../lib/api';
 import { formatDate } from '../lib/dates';
 import PhaseProgress from '../components/PhaseProgress';
 import CompletedSummary from '../components/CompletedSummary';
+import PageHeader from '../components/PageHeader';
 
 const PHASE_ADVANCE_LABEL = { placed: 'Mark as on-site', on_site: 'Move to evaluating' };
 const PHASE_ADVANCE_CONFIRM = {
@@ -270,26 +271,28 @@ export default function InternshipDetailPage() {
   return (
     <div>
       <Link to="/campaigns" className="text-sm text-workplace-teal-700 hover:underline">&larr; Back</Link>
-      <h1 className="text-lg font-semibold text-slate-800 mt-2">
-        {internship.student?.first_name} {internship.student?.last_name}
-      </h1>
-      <p className="text-sm text-slate-500 mb-4">{internship.status} {internship.start_date && `· ${formatDate(internship.start_date)} – ${formatDate(internship.end_date)}`}</p>
-
-      <div className="flex items-center justify-between bg-white border border-slate-200 rounded-xl p-4 mb-6">
-        <PhaseProgress phase={internship.phase} />
-        <div className="flex items-center gap-3">
-          {phaseMessage && <span className="text-sm text-emerald-600">{phaseMessage}</span>}
-          {PHASE_REVERSE_LABEL[internship.phase] && (
-            <button onClick={reversePhase} className="border border-slate-300 text-slate-600 hover:bg-slate-50 text-sm rounded-lg px-4 py-2">
-              ← {PHASE_REVERSE_LABEL[internship.phase]}
-            </button>
+      <div className="mt-2">
+        <PageHeader
+          title={`${internship.student?.first_name || ''} ${internship.student?.last_name || ''}`}
+          subtitle={internship.phase === 'searching' ? 'Searching for a company' : (internship.company_name || 'No company yet')}
+          actions={<PhaseProgress phase={internship.phase} />}
+        >
+          {(phaseMessage || PHASE_REVERSE_LABEL[internship.phase] || PHASE_ADVANCE_LABEL[internship.phase]) && (
+            <div className="flex items-center justify-end gap-3">
+              {phaseMessage && <span className="text-sm text-emerald-600">{phaseMessage}</span>}
+              {PHASE_REVERSE_LABEL[internship.phase] && (
+                <button onClick={reversePhase} className="border border-slate-300 text-slate-600 hover:bg-slate-50 text-sm rounded-lg px-4 py-2">
+                  ← {PHASE_REVERSE_LABEL[internship.phase]}
+                </button>
+              )}
+              {PHASE_ADVANCE_LABEL[internship.phase] && (
+                <button onClick={advancePhase} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">
+                  {PHASE_ADVANCE_LABEL[internship.phase]}
+                </button>
+              )}
+            </div>
           )}
-          {PHASE_ADVANCE_LABEL[internship.phase] && (
-            <button onClick={advancePhase} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">
-              {PHASE_ADVANCE_LABEL[internship.phase]}
-            </button>
-          )}
-        </div>
+        </PageHeader>
       </div>
 
       {error && <p className="text-sm text-red-600 mb-4">{error}</p>}

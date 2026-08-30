@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
+import PageHeader from '../components/PageHeader';
+
+const STATUS_STYLE = {
+  planning:  'bg-slate-100 text-slate-500',
+  active:    'bg-emerald-100 text-emerald-700',
+  closed:    'bg-slate-200 text-slate-500',
+  cancelled: 'bg-red-100 text-red-500',
+};
 
 export default function CampaignDetailPage() {
   const { id } = useParams();
@@ -61,8 +69,15 @@ export default function CampaignDetailPage() {
   return (
     <div>
       <Link to="/campaigns" className="text-sm text-workplace-teal-700 hover:underline">&larr; Internships</Link>
-      <h1 className="text-lg font-semibold text-slate-800 mt-2">{campaign.name}</h1>
-      <p className="text-sm text-slate-500 mb-6">{campaign.class?.name} · {campaign.academicYear?.label} · {campaign.status}</p>
+      <div className="mt-2">
+        <PageHeader
+          title={campaign.name}
+          subtitle={`${campaign.class?.name || ''} · ${campaign.academicYear?.label || ''} · ${campaign.campaign_type}`}
+          actions={
+            <span className={`text-xs px-2 py-0.5 rounded-full ${STATUS_STYLE[campaign.status]}`}>{campaign.status}</span>
+          }
+        />
+      </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
         <div className="flex items-center justify-between mb-3">

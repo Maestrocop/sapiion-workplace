@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
+import PageHeader from '../components/PageHeader';
 
 const ROLE_OPTIONS = ['student', 'teacher', 'coordinator', 'admin'];
 
@@ -266,18 +267,23 @@ export default function PeoplePage() {
 
   useEffect(() => { load(); }, []);
 
+  const activeCount = users.filter((u) => u.is_active !== false).length;
+  const inactiveCount = users.length - activeCount;
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
-        <h1 className="text-lg font-semibold text-slate-800">Users</h1>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2"
-        >
-          + New User
-        </button>
-      </div>
-      <p className="text-sm text-slate-500 mb-4">Students, teachers, and coordinators — no self-registration, accounts are created here</p>
+      <PageHeader
+        title="Users"
+        subtitle={`${activeCount} active · ${inactiveCount} inactive`}
+        actions={
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/20 hover:bg-white/30 border border-white/30 transition"
+          >
+            + New User
+          </button>
+        }
+      />
 
       {created && <p className="text-sm text-emerald-600 mb-4">{created}</p>}
 

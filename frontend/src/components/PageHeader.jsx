@@ -9,11 +9,12 @@
  *     <FilterBar />
  *   </PageHeader>
  */
-export default function PageHeader({ title, subtitle, actions, children }) {
+export default function PageHeader({ title, eyebrow, subtitle, actions, children }) {
   return (
     <section className="bg-white rounded-xl shadow-sm overflow-hidden sticky top-14 z-20 mb-6">
       <div className="px-5 py-4 bg-gradient-to-r from-workplace-teal-600 to-workplace-teal-700 text-white flex items-center justify-between gap-4">
         <div>
+          {eyebrow && <p className="text-xs font-medium uppercase tracking-wide opacity-70 mb-0.5">{eyebrow}</p>}
           <h1 className="font-semibold text-lg">{title}</h1>
           {subtitle && <p className="text-sm opacity-80">{subtitle}</p>}
         </div>
