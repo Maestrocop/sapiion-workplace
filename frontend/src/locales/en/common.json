@@ -19,6 +19,37 @@
     "back": "← Back",
     "create": "Create"
   },
+  "assessorRoles": {
+    "teacher": "teacher",
+    "supervisor": "supervisor",
+    "student": "student"
+  },
+  "completedSummary": {
+    "title": "Internship completed",
+    "finalizedOn": "Finalized on {{date}}",
+    "totalHours": "Total hours",
+    "finalScore": "Final score"
+  },
+  "phase": {
+    "searching": "Searching",
+    "placed": "Placed",
+    "on_site": "On-site",
+    "evaluating": "Evaluating",
+    "completed": "Completed"
+  },
+  "monitoring": {
+    "title": "Execution Monitoring",
+    "subtitle": "Students currently on-site — at-risk overview",
+    "studentCount_one": "{{count}} student in execution",
+    "studentCount_other": "{{count}} students in execution",
+    "risk": { "red": "At risk", "amber": "Needs attention", "green": "On track" },
+    "table": { "student": "Student", "company": "Company", "period": "Period", "hours": "Hours", "lastLog": "Last log", "supervisor": "Supervisor", "risk": "Risk" },
+    "noStudents": "No students currently on-site.",
+    "never": "Never",
+    "daysAgo": "{{count}}d ago",
+    "connected": "✓ Connected",
+    "notAssigned": "Not assigned"
+  },
   "users": {
     "title": "Users",
     "subtitle": "{{active}} active · {{inactive}} inactive",

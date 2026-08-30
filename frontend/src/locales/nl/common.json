@@ -19,6 +19,37 @@
     "back": "← Terug",
     "create": "Aanmaken"
   },
+  "assessorRoles": {
+    "teacher": "leerkracht",
+    "supervisor": "begeleider",
+    "student": "student"
+  },
+  "completedSummary": {
+    "title": "Stage afgerond",
+    "finalizedOn": "Afgerond op {{date}}",
+    "totalHours": "Totaal uren",
+    "finalScore": "Eindscore"
+  },
+  "phase": {
+    "searching": "Op zoek",
+    "placed": "Geplaatst",
+    "on_site": "Op de werkvloer",
+    "evaluating": "Evaluatie",
+    "completed": "Afgerond"
+  },
+  "monitoring": {
+    "title": "Opvolging Uitvoering",
+    "subtitle": "Studenten momenteel op de werkvloer — risico-overzicht",
+    "studentCount_one": "{{count}} student in uitvoering",
+    "studentCount_other": "{{count}} studenten in uitvoering",
+    "risk": { "red": "Risico", "amber": "Aandacht nodig", "green": "Op schema" },
+    "table": { "student": "Student", "company": "Bedrijf", "period": "Periode", "hours": "Uren", "lastLog": "Laatste log", "supervisor": "Begeleider", "risk": "Risico" },
+    "noStudents": "Geen studenten momenteel op de werkvloer.",
+    "never": "Nooit",
+    "daysAgo": "{{count}}d geleden",
+    "connected": "✓ Gekoppeld",
+    "notAssigned": "Niet toegewezen"
+  },
   "users": {
     "title": "Gebruikers",
     "subtitle": "{{active}} actief · {{inactive}} inactief",
