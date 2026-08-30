@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 
 // Landed here after a Microsoft/Google redirect with ?token=&refresh_token=
 export default function OAuthCallbackPage() {
+  const { t } = useTranslation();
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ export default function OAuthCallbackPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center text-slate-500">
-      Signing you in…
+      {t('oauth.signingIn')}
     </div>
   );
 }

@@ -63,6 +63,9 @@
     "commentPlaceholder": "Optional comment",
     "acknowledge": "Acknowledge"
   },
+  "oauth": {
+    "signingIn": "Signing you in…"
+  },
   "login": {
     "subtitle": "Sign in to continue",
     "email": "Email",

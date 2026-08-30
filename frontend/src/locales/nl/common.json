@@ -63,6 +63,9 @@
     "commentPlaceholder": "Optionele opmerking",
     "acknowledge": "Bevestigen"
   },
+  "oauth": {
+    "signingIn": "Je wordt aangemeld…"
+  },
   "login": {
     "subtitle": "Meld je aan om verder te gaan",
     "email": "E-mail",
