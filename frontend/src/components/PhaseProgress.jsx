@@ -20,16 +20,15 @@ export default function PhaseProgress({ phase }) {
         <Fragment key={p.key}>
           <div className="flex flex-col items-center gap-1 flex-1">
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all
-              ${i < idx  ? 'bg-workplace-teal-600 border-workplace-teal-600 text-white' :
-                i === idx ? 'bg-white border-workplace-teal-600 text-workplace-teal-700' :
-                            'bg-white border-slate-300 text-slate-300'}`}>
+              ${i <= idx ? 'bg-white border-white text-workplace-teal-700' :
+                           'bg-transparent border-white/40 text-white/40'}`}>
               {i < idx ? '✓' : i + 1}
             </div>
-            <span className={`text-xs font-medium whitespace-nowrap ${i === idx ? 'text-workplace-teal-700' : i < idx ? 'text-slate-600' : 'text-slate-300'}`}>
+            <span className={`text-xs font-medium whitespace-nowrap ${i === idx ? 'text-white font-semibold' : i < idx ? 'text-white/80' : 'text-white/40'}`}>
               {p.label}
             </span>
           </div>
-          {i < PHASES.length - 1 && <div className={`flex-1 h-0.5 mt-3.5 ${i < idx ? 'bg-workplace-teal-600' : 'bg-slate-200'}`} />}
+          {i < PHASES.length - 1 && <div className={`flex-1 h-0.5 mt-3.5 ${i < idx ? 'bg-white' : 'bg-white/30'}`} />}
         </Fragment>
       ))}
     </div>
