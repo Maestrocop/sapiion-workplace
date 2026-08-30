@@ -37,6 +37,77 @@
     "evaluating": "Evaluating",
     "completed": "Completed"
   },
+  "internshipDetail": {
+    "backLink": "← Back",
+    "searchingSubtitle": "Searching for a company",
+    "phaseAdvance": { "placed": "Mark as on-site", "on_site": "Move to evaluating" },
+    "phaseAdvanceConfirm": {
+      "placed": "Mark this internship as on-site? The student and coordinator will see it move to the On-site phase.",
+      "on_site": "Move this internship to Evaluating?"
+    },
+    "phaseReverse": { "on_site": "Move back to placed", "evaluating": "Move back to on-site" },
+    "movedTo": "✓ Moved to {{phase}}",
+    "movedBackTo": "✓ Moved back to {{phase}}",
+    "reversePrompt": "Why are you moving this phase back? (required — kept as a record)",
+    "reverseReasonRequired": "A reason is required to reverse a phase.",
+    "completeConfirm": "Mark this internship as complete? This is final — the student will see their finished-state summary.",
+    "completeMarked": "✓ Internship marked complete",
+    "company": {
+      "title": "Company",
+      "namePlaceholder": "Company name",
+      "addressPlaceholder": "Address"
+    },
+    "supervisors": {
+      "title": "Supervisors",
+      "linkPrefix": "Link: ",
+      "namePlaceholder": "Name",
+      "emailPlaceholder": "Email",
+      "jobTitlePlaceholder": "Job title",
+      "addSupervisor": "Add supervisor"
+    },
+    "dailyLogs": {
+      "title": "Daily Activity Logs",
+      "acknowledged": "✓ acknowledged",
+      "hoursPlaceholder": "Hours worked",
+      "contentPlaceholder": "What did you do and learn today?",
+      "addLog": "+ Add log"
+    },
+    "assessment": {
+      "title": "Assessment (teacher)",
+      "studentReflection": "Student reflection",
+      "submitted": "(submitted)",
+      "draft": "(draft)",
+      "competencies": "Competencies: ",
+      "scorePlaceholder": "Score (0-100)",
+      "feedbackPlaceholder": "Feedback",
+      "submit": "Submit assessment"
+    },
+    "checklist": { "title": "Placement checklist" },
+    "complete": {
+      "title": "Complete internship",
+      "autoCalcNote": "Total hours and final score are calculated automatically from activity logs and submitted assessments — nothing to enter there.",
+      "notePlaceholder": "Completion note (optional)",
+      "markComplete": "Mark as complete"
+    },
+    "applications": { "title": "Applications", "none": "No applications yet." },
+    "phaseHistory": "Phase reversal history ({{count}})",
+    "reviews": {
+      "title": "Interim reviews",
+      "none": "No reviews scheduled yet.",
+      "student": "Student",
+      "supervisor": "Supervisor",
+      "hoursLoggedAtReview": "Hours logged at review: {{hours}}",
+      "complete": "Complete",
+      "cancelConfirm": "Cancel this scheduled review?",
+      "scheduleReview": "+ Schedule review",
+      "supervisorAttending": "Supervisor attending (optional)",
+      "schedule": "Schedule",
+      "reportPlaceholder": "Visit report — discussion, what's going well, what isn't",
+      "completeReview": "Complete review",
+      "status": { "scheduled": "scheduled", "completed": "completed", "cancelled": "cancelled" },
+      "response": { "pending": "pending", "confirmed": "confirmed", "declined": "declined" }
+    }
+  },
   "internshipStatus": {
     "active": "active",
     "completed": "completed",
