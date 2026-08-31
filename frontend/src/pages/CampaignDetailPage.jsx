@@ -25,7 +25,7 @@ function EditCampaignModal({ campaign, onClose, onSaved, onDeleted }) {
       await api.put(`/api/internship-campaigns/${campaign.id}`, { name });
       setSaved(true);
       onSaved();
-      onClose();
+      setTimeout(onClose, 900);
     } catch (err) {
       setError(err.message);
     }

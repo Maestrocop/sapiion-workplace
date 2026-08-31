@@ -17,7 +17,7 @@ function EditClassModal({ klass, onClose, onSaved }) {
       await api.put(`/api/classes/${klass.id}`, { name, code: code || undefined });
       setSaved(true);
       onSaved();
-      onClose();
+      setTimeout(onClose, 900);
     } catch (err) {
       setError(err.message);
     }

@@ -37,7 +37,7 @@ function EditUserModal({ user, classes, years, onClose, onSaved }) {
       });
       setSaved(true);
       onSaved();
-      onClose();
+      setTimeout(onClose, 900);
     } catch (err) {
       setError(err.message);
     }
