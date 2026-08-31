@@ -194,7 +194,10 @@
       "acknowledged": "✓ bestätigt",
       "hoursPlaceholder": "Gearbeitete Stunden",
       "contentPlaceholder": "Was haben Sie heute getan und gelernt?",
-      "addLog": "+ Bericht hinzufügen"
+      "addLog": "+ Bericht hinzufügen",
+      "showAll_one": "Alle anzeigen ({{count}} Bericht)",
+      "showAll_other": "Alle anzeigen ({{count}} Berichte)",
+      "showLess": "Weniger anzeigen"
     },
     "assessment": {
       "title": "Bewertung (Lehrkraft)",

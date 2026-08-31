@@ -74,7 +74,10 @@ router.get('/mine', async (req, res) => {
         },
         { model: InternshipReview, as: 'reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] }] },
       ],
-      order: [['created_at', 'DESC']],
+      order: [
+        ['created_at', 'DESC'],
+        [{ model: InternshipActivityLog, as: 'activityLogs' }, 'week_starting', 'DESC'],
+      ],
     });
     res.json(internships);
   } catch (err) {
@@ -178,7 +181,10 @@ router.get('/:id', async (req, res) => {
         { model: InternshipReview, as: 'reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] }] },
         { model: InternshipPhaseHistory, as: 'phaseHistory', include: [{ model: User, as: 'reversedBy', attributes: ['id', 'first_name', 'last_name'] }] },
       ],
-      order: [[{ model: InternshipPhaseHistory, as: 'phaseHistory' }, 'created_at', 'DESC']],
+      order: [
+        [{ model: InternshipPhaseHistory, as: 'phaseHistory' }, 'created_at', 'DESC'],
+        [{ model: InternshipActivityLog, as: 'activityLogs' }, 'week_starting', 'DESC'],
+      ],
     });
     if (!internship) return res.status(404).json({ error: 'Internship not found' });
     res.json(internship);

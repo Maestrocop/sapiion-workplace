@@ -20,6 +20,38 @@ const OUTCOME_STYLE = {
   accepted: 'bg-emerald-100 text-emerald-700',
 };
 
+// Collapsed to a handful of most-recent entries by default — a full
+// internship's worth of logs would otherwise be an unbroken, ever-growing
+// list. Logs already arrive newest-first from the API.
+const LOG_PREVIEW_COUNT = 3;
+
+function ActivityLogList({ logs, renderTitle }) {
+  const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? logs : logs.slice(0, LOG_PREVIEW_COUNT);
+
+  return (
+    <>
+      <div className="space-y-2">
+        {visible.map((log) => (
+          <div key={log.id} className="border border-slate-100 rounded-lg p-3 text-sm">
+            <p className="font-medium">{renderTitle(log)} — {log.hours_logged || 0}h {log.supervisor_ack && <span className="text-emerald-600 text-xs">{t('internshipDetail.dailyLogs.acknowledged')}</span>}</p>
+            <p className="text-slate-600">{log.content}</p>
+          </div>
+        ))}
+      </div>
+      {logs.length > LOG_PREVIEW_COUNT && (
+        <button
+          type="button" onClick={() => setExpanded((e) => !e)}
+          className="text-xs text-workplace-teal-700 hover:underline mt-2"
+        >
+          {expanded ? t('internshipDetail.dailyLogs.showLess') : t('internshipDetail.dailyLogs.showAll', { count: logs.length })}
+        </button>
+      )}
+    </>
+  );
+}
+
 // ── Searching-phase header stats ─────────────────────────────────────────────
 // Informational only — same underlying data as DocumentsPanel/ApplicationsPanel,
 // just summarized at a glance the way ILS-dev's header does.
@@ -541,14 +573,7 @@ export default function MyInternshipPage() {
             )}
 
             {(internship.activityLogs || []).length === 0 && <p className="text-sm text-slate-400">{t('myInternship.dailyLogs.none')}</p>}
-            <div className="space-y-2">
-              {(internship.activityLogs || []).map((log) => (
-                <div key={log.id} className="border border-slate-100 rounded-lg p-3 text-sm">
-                  <p className="font-medium">{log.title || formatDate(log.week_starting)} — {log.hours_logged || 0}h {log.supervisor_ack && <span className="text-emerald-600 text-xs">{t('internshipDetail.dailyLogs.acknowledged')}</span>}</p>
-                  <p className="text-slate-600">{log.content}</p>
-                </div>
-              ))}
-            </div>
+            <ActivityLogList logs={internship.activityLogs || []} renderTitle={(log) => log.title || formatDate(log.week_starting)} />
           </Section>
         )}
 

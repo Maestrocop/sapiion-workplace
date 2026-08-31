@@ -194,7 +194,10 @@
       "acknowledged": "✓ bevestigd",
       "hoursPlaceholder": "Gewerkte uren",
       "contentPlaceholder": "Wat heb je vandaag gedaan en geleerd?",
-      "addLog": "+ Log toevoegen"
+      "addLog": "+ Log toevoegen",
+      "showAll_one": "Alles tonen ({{count}} log)",
+      "showAll_other": "Alles tonen ({{count}} logs)",
+      "showLess": "Minder tonen"
     },
     "assessment": {
       "title": "Beoordeling (leerkracht)",

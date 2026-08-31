@@ -194,7 +194,10 @@
       "acknowledged": "✓ acknowledged",
       "hoursPlaceholder": "Hours worked",
       "contentPlaceholder": "What did you do and learn today?",
-      "addLog": "+ Add log"
+      "addLog": "+ Add log",
+      "showAll_one": "Show all ({{count}} log)",
+      "showAll_other": "Show all ({{count}} logs)",
+      "showLess": "Show less"
     },
     "assessment": {
       "title": "Assessment (teacher)",

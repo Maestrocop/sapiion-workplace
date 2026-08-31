@@ -19,6 +19,38 @@ function Section({ title, children }) {
   );
 }
 
+// Collapsed to a handful of most-recent entries by default — a full
+// internship's worth of logs (weekly or daily) would otherwise be an
+// unbroken, ever-growing list. Logs already arrive newest-first from the API.
+const LOG_PREVIEW_COUNT = 3;
+
+function ActivityLogList({ logs, renderTitle }) {
+  const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? logs : logs.slice(0, LOG_PREVIEW_COUNT);
+
+  return (
+    <>
+      <div className="space-y-2">
+        {visible.map((l) => (
+          <div key={l.id} className="text-sm border border-slate-100 rounded-lg p-2">
+            <p className="font-medium">{renderTitle(l)} — {l.hours_logged || 0}h {l.supervisor_ack && <span className="text-emerald-600 text-xs">{t('internshipDetail.dailyLogs.acknowledged')}</span>}</p>
+            <p className="text-slate-600">{l.content}</p>
+          </div>
+        ))}
+      </div>
+      {logs.length > LOG_PREVIEW_COUNT && (
+        <button
+          type="button" onClick={() => setExpanded((e) => !e)}
+          className="text-xs text-workplace-teal-700 hover:underline mt-2"
+        >
+          {expanded ? t('internshipDetail.dailyLogs.showLess') : t('internshipDetail.dailyLogs.showAll', { count: logs.length })}
+        </button>
+      )}
+    </>
+  );
+}
+
 const REVIEW_STATUS_STYLE = {
   scheduled: 'bg-blue-100 text-blue-700',
   completed: 'bg-emerald-100 text-emerald-700',
@@ -333,13 +365,8 @@ export default function InternshipDetailPage() {
         </Section>
 
         <Section title={t('internshipDetail.dailyLogs.title')}>
-          <div className="space-y-2 mb-3 max-h-48 overflow-y-auto">
-            {(internship.activityLogs || []).map((l) => (
-              <div key={l.id} className="text-sm border border-slate-100 rounded-lg p-2">
-                <p className="font-medium">{formatDate(l.week_starting)} — {l.hours_logged || 0}h {l.supervisor_ack && <span className="text-emerald-600 text-xs">{t('internshipDetail.dailyLogs.acknowledged')}</span>}</p>
-                <p className="text-slate-600">{l.content}</p>
-              </div>
-            ))}
+          <div className="mb-3">
+            <ActivityLogList logs={internship.activityLogs || []} renderTitle={(l) => formatDate(l.week_starting)} />
           </div>
           <form onSubmit={addLog} className="space-y-2">
             <div className="flex gap-2">

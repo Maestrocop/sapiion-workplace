@@ -194,7 +194,10 @@
       "acknowledged": "✓ validé",
       "hoursPlaceholder": "Heures travaillées",
       "contentPlaceholder": "Qu'avez-vous fait et appris aujourd'hui ?",
-      "addLog": "+ Ajouter un journal"
+      "addLog": "+ Ajouter un journal",
+      "showAll_one": "Tout afficher ({{count}} journal)",
+      "showAll_other": "Tout afficher ({{count}} journaux)",
+      "showLess": "Afficher moins"
     },
     "assessment": {
       "title": "Évaluation (enseignant)",

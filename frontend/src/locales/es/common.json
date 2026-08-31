@@ -194,7 +194,10 @@
       "acknowledged": "✓ validado",
       "hoursPlaceholder": "Horas trabajadas",
       "contentPlaceholder": "¿Qué hiciste y aprendiste hoy?",
-      "addLog": "+ Añadir registro"
+      "addLog": "+ Añadir registro",
+      "showAll_one": "Mostrar todos ({{count}} registro)",
+      "showAll_other": "Mostrar todos ({{count}} registros)",
+      "showLess": "Mostrar menos"
     },
     "assessment": {
       "title": "Evaluación (profesor)",
