@@ -4,6 +4,12 @@ Open-source workplace learning / internship management: companies, placements, s
 
 This is a standalone product — a fresh build using the internship domain design from [Sapiion](https://sapiion.ai) as its blueprint, not an extraction of that codebase. It does not depend on, share a database with, or require the main Sapiion platform to run.
 
+## Screenshots
+
+<!-- TODO before wide announcement: add screenshots here (coordinator dashboard,
+     internship detail with the phase track, student's My Internship page,
+     the supervisor portal). None captured yet. -->
+
 ## Status
 
 Under active development. Core internship lifecycle (search → placement → on-site → evaluation → completion) is functional end-to-end for coordinators, students, and external company supervisors.
@@ -70,6 +76,22 @@ Starts Postgres, backend (port 4100), and frontend (port 8080) together — the 
 ```bash
 docker compose exec backend npm run seed:demo
 ```
+
+## Roadmap
+
+Tracked as [GitHub Issues](https://github.com/Maestrocop/sapiion-workplace/issues) — that's the real, current list, not a separate document that goes stale. As of now:
+
+- Password policy (minimum length / MFA) still needs a decision before recommending this for production use with sensitive data
+- A public hosted demo (self-hosting via the Docker setup above already works today)
+- More languages beyond the current five, if there's demand
+
+Open an issue if there's something you'd want prioritized.
+
+## Contributing
+
+Bug reports and feature requests are welcome as [GitHub Issues](https://github.com/Maestrocop/sapiion-workplace/issues). Pull requests too — this is early-stage and actively maintained, so open an issue first for anything beyond a small fix, to avoid duplicated work.
+
+Since this is AGPL-3.0, contributions are licensed the same way — anyone running a modified version as a network service needs to release those modifications too.
 
 ## License
 
