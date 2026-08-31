@@ -8,7 +8,8 @@
     "dev": "nodemon --watch . --ignore uploads/ --delay 1500 --exec node index.js",
     "create-db": "node scripts/create_db_and_run_migrations.mjs",
     "seed:admin": "node scripts/seed_admin.mjs",
-    "seed:demo": "node scripts/seed_demo.mjs"
+    "seed:demo": "node scripts/seed_demo.mjs",
+    "seed:demo:extended": "node scripts/seed_demo_extended.mjs"
   },
   "dependencies": {
     "argon2": "^0.44.0",

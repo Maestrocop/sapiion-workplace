@@ -6,7 +6,7 @@ This is a standalone product — a fresh build using the internship domain desig
 
 ## Status
 
-Under active development. Repository kept private until ready to launch publicly.
+Under active development. Core internship lifecycle (search → placement → on-site → evaluation → completion) is functional end-to-end for coordinators, students, and external company supervisors.
 
 ## Development setup
 
@@ -43,6 +43,13 @@ npm run seed:demo
 
 This prints the demo logins (`coordinator@example.com` / `student1@example.com` etc., password `DemoPassword123`) and a supervisor portal link you can open directly, no login required.
 
+For a fuller demo (students spread across every phase, several companies, completed internships with scores), run the extended seed once the backend is already running (it goes through the real API, not direct database writes):
+
+```bash
+cd backend
+npm run seed:demo:extended
+```
+
 ## What's here
 
 - **Companies** — registry with CRM fields (partnership status, visits)
@@ -50,6 +57,7 @@ This prints the demo logins (`coordinator@example.com` / `student1@example.com` 
 - **Internships** — the placement record: company info, supervisors, weekly activity logs, bilateral assessment (teacher + supervisor), placement checklist, applications, and document uploads
 - **Supervisor portal** — token-based, no account required — the external company supervisor updates their own details and acknowledges logs via a link, nothing else
 - Local email/password auth out of the box; Microsoft Entra ID and Google sign-in work once an administrator adds real OAuth credentials to `.env` (see `.env.example`)
+- Multi-language UI — English, Dutch, French, German, Spanish, switchable per user from the header
 
 ## Self-hosting with Docker
 
