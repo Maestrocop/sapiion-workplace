@@ -65,7 +65,12 @@ router.get('/mine', async (req, res) => {
       where: { student_id: req.user.id },
       include: [
         { model: InternshipSupervisor, as: 'supervisors' },
-        { model: InternshipActivityLog, as: 'activityLogs' },
+        // separate: true so this runs as its own query with its own ORDER BY —
+        // ordering one hasMany association from the top-level `order` array
+        // isn't reliable once several other hasMany includes are joined into
+        // the same query (confirmed: worked on the single-record GET /:id,
+        // silently didn't here on this multi-include findAll).
+        { model: InternshipActivityLog, as: 'activityLogs', separate: true, order: [['week_starting', 'DESC']] },
         { model: InternshipAssessment, as: 'assessments' },
         { model: InternshipDocument, as: 'documents' },
         {
@@ -74,10 +79,7 @@ router.get('/mine', async (req, res) => {
         },
         { model: InternshipReview, as: 'reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] }] },
       ],
-      order: [
-        ['created_at', 'DESC'],
-        [{ model: InternshipActivityLog, as: 'activityLogs' }, 'week_starting', 'DESC'],
-      ],
+      order: [['created_at', 'DESC']],
     });
     res.json(internships);
   } catch (err) {
@@ -172,7 +174,10 @@ router.get('/:id', async (req, res) => {
       include: [
         includeStudent(req.models),
         { model: InternshipSupervisor, as: 'supervisors' },
-        { model: InternshipActivityLog, as: 'activityLogs' },
+        // separate: true — same reasoning as GET /mine: ordering one hasMany
+        // from the top-level `order` array isn't reliable once several other
+        // hasMany associations are joined into the same query.
+        { model: InternshipActivityLog, as: 'activityLogs', separate: true, order: [['week_starting', 'DESC']] },
         { model: InternshipAssessment, as: 'assessments' },
         { model: InternshipDocument, as: 'documents' },
         { model: InternshipApplication, as: 'applications' },
@@ -181,10 +186,7 @@ router.get('/:id', async (req, res) => {
         { model: InternshipReview, as: 'reviews', include: [{ model: User, as: 'reviewer', attributes: ['id', 'first_name', 'last_name'] }] },
         { model: InternshipPhaseHistory, as: 'phaseHistory', include: [{ model: User, as: 'reversedBy', attributes: ['id', 'first_name', 'last_name'] }] },
       ],
-      order: [
-        [{ model: InternshipPhaseHistory, as: 'phaseHistory' }, 'created_at', 'DESC'],
-        [{ model: InternshipActivityLog, as: 'activityLogs' }, 'week_starting', 'DESC'],
-      ],
+      order: [[{ model: InternshipPhaseHistory, as: 'phaseHistory' }, 'created_at', 'DESC']],
     });
     if (!internship) return res.status(404).json({ error: 'Internship not found' });
     res.json(internship);
