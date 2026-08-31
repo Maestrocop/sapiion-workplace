@@ -335,7 +335,10 @@
       "setPassword": "Neues Passwort festlegen",
       "passwordPlaceholder": "Min. 8 Zeichen",
       "setPasswordButton": "Passwort festlegen",
-      "save": "Benutzer speichern"
+      "save": "Benutzer speichern",
+      "delete": "Benutzer löschen",
+      "deleteConfirm": "{{name}} löschen? Verschwindet aus allen Listen — das Konto müsste neu angelegt werden, um dies rückgängig zu machen.",
+      "cannotDeleteSelf": "Sie können Ihr eigenes Konto nicht löschen, während Sie damit angemeldet sind"
     },
     "createModal": {
       "title": "Neuer Benutzer",

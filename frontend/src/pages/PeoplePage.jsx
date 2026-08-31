@@ -56,6 +56,18 @@ function EditUserModal({ user, classes, years, onClose, onSaved }) {
     }
   }
 
+  async function handleDelete() {
+    if (!window.confirm(t('users.editModal.deleteConfirm', { name: `${user.first_name} ${user.last_name}` }))) return;
+    setError('');
+    try {
+      await api.del(`/api/users/${user.id}`);
+      onSaved();
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
@@ -133,9 +145,12 @@ function EditUserModal({ user, classes, years, onClose, onSaved }) {
           {passwordError && <p className="text-sm text-red-600 mt-1">{passwordError}</p>}
         </div>
 
-        <div className="flex justify-end gap-2 mt-6">
-          <button onClick={onClose} className="text-sm text-slate-500 px-4 py-2">{t('common.cancel')}</button>
-          <button onClick={saveProfile} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">{t('users.editModal.save')}</button>
+        <div className="flex justify-between items-center mt-6">
+          <button onClick={handleDelete} className="text-sm text-red-600 hover:underline px-2 py-2">{t('users.editModal.delete')}</button>
+          <div className="flex gap-2">
+            <button onClick={onClose} className="text-sm text-slate-500 px-4 py-2">{t('common.cancel')}</button>
+            <button onClick={saveProfile} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">{t('users.editModal.save')}</button>
+          </div>
         </div>
       </div>
     </div>

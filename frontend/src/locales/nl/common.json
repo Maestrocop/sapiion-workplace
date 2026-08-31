@@ -335,7 +335,10 @@
       "setPassword": "Nieuw wachtwoord instellen",
       "passwordPlaceholder": "Min. 8 tekens",
       "setPasswordButton": "Wachtwoord instellen",
-      "save": "Gebruiker opslaan"
+      "save": "Gebruiker opslaan",
+      "delete": "Gebruiker verwijderen",
+      "deleteConfirm": "{{name}} verwijderen? Verdwijnt uit alle lijsten — je moet het account opnieuw aanmaken om dit ongedaan te maken.",
+      "cannotDeleteSelf": "Je kunt je eigen account niet verwijderen terwijl je ermee bent aangemeld"
     },
     "createModal": {
       "title": "Nieuwe gebruiker",

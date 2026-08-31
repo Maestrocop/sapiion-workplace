@@ -335,7 +335,10 @@
       "setPassword": "Set new password",
       "passwordPlaceholder": "Min 8 characters",
       "setPasswordButton": "Set password",
-      "save": "Save User"
+      "save": "Save User",
+      "delete": "Delete user",
+      "deleteConfirm": "Delete {{name}}? This removes them from every list — you'd need to recreate the account to undo this.",
+      "cannotDeleteSelf": "You cannot delete your own account while signed in as it"
     },
     "createModal": {
       "title": "New User",

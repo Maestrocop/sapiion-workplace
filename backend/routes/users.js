@@ -103,4 +103,23 @@ router.put('/:id', validate(updateUserSchema), async (req, res) => {
   }
 });
 
+// DELETE /api/users/:id — admin only, soft-delete (paranoid model — sets
+// deleted_at, excluded from all default finds, not a hard row wipe).
+router.delete('/:id', async (req, res) => {
+  try {
+    if (!req.user.roles?.includes('admin')) return res.status(403).json({ error: 'Only an admin can delete users' });
+    if (Number(req.params.id) === Number(req.user.id)) {
+      return res.status(400).json({ error: 'You cannot delete your own account while signed in as it' });
+    }
+    const { User } = req.models;
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    await user.destroy();
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[users DELETE]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default router;

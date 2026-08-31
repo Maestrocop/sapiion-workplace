@@ -335,7 +335,10 @@
       "setPassword": "Establecer nueva contraseña",
       "passwordPlaceholder": "Mín. 8 caracteres",
       "setPasswordButton": "Establecer contraseña",
-      "save": "Guardar usuario"
+      "save": "Guardar usuario",
+      "delete": "Eliminar usuario",
+      "deleteConfirm": "¿Eliminar a {{name}}? Desaparecerá de todas las listas — habría que recrear la cuenta para deshacerlo.",
+      "cannotDeleteSelf": "No puedes eliminar tu propia cuenta mientras has iniciado sesión con ella"
     },
     "createModal": {
       "title": "Nuevo usuario",

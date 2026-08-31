@@ -335,7 +335,10 @@
       "setPassword": "Définir un nouveau mot de passe",
       "passwordPlaceholder": "Min. 8 caractères",
       "setPasswordButton": "Définir le mot de passe",
-      "save": "Enregistrer l'utilisateur"
+      "save": "Enregistrer l'utilisateur",
+      "delete": "Supprimer l'utilisateur",
+      "deleteConfirm": "Supprimer {{name}} ? Cette personne disparaîtra de toutes les listes — il faudra recréer le compte pour annuler.",
+      "cannotDeleteSelf": "Vous ne pouvez pas supprimer votre propre compte en étant connecté avec celui-ci"
     },
     "createModal": {
       "title": "Nouvel utilisateur",
