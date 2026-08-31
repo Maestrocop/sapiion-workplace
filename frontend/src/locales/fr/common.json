@@ -264,7 +264,16 @@
     "everyoneEnrolled": "Tout le monde dans cette classe est déjà inscrit.",
     "enrolledStudents": "Étudiants inscrits",
     "noneEnrolled": "Aucun étudiant inscrit pour l'instant.",
-    "noCompanyYet": "Pas encore d'entreprise"
+    "noCompanyYet": "Pas encore d'entreprise",
+    "editModal": {
+      "title": "Modifier le programme",
+      "subtitle": "Mettre à jour le nom du programme",
+      "name": "Nom",
+      "saved": "✓ Enregistré",
+      "save": "Enregistrer le programme",
+      "delete": "Supprimer le programme",
+      "deleteConfirm": "Supprimer {{name}} ? Il disparaîtra avec son historique d'inscription — il faudra le recréer pour annuler."
+    }
   },
   "campaigns": {
     "title": "Programme de stage",

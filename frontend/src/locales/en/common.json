@@ -264,7 +264,16 @@
     "everyoneEnrolled": "Everyone in this class is already enrolled.",
     "enrolledStudents": "Enrolled students",
     "noneEnrolled": "No students enrolled yet.",
-    "noCompanyYet": "No company yet"
+    "noCompanyYet": "No company yet",
+    "editModal": {
+      "title": "Edit Programme",
+      "subtitle": "Update the programme name",
+      "name": "Name",
+      "saved": "✓ Saved",
+      "save": "Save Programme",
+      "delete": "Delete programme",
+      "deleteConfirm": "Delete {{name}}? This removes it and its enrollment history — you'd need to recreate it to undo this."
+    }
   },
   "campaigns": {
     "title": "Internship Programme",

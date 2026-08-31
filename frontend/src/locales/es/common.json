@@ -264,7 +264,16 @@
     "everyoneEnrolled": "Todos en esta clase ya están inscritos.",
     "enrolledStudents": "Estudiantes inscritos",
     "noneEnrolled": "Aún no hay estudiantes inscritos.",
-    "noCompanyYet": "Aún sin empresa"
+    "noCompanyYet": "Aún sin empresa",
+    "editModal": {
+      "title": "Editar programa",
+      "subtitle": "Actualizar el nombre del programa",
+      "name": "Nombre",
+      "saved": "✓ Guardado",
+      "save": "Guardar programa",
+      "delete": "Eliminar programa",
+      "deleteConfirm": "¿Eliminar {{name}}? Desaparecerá junto con su historial de inscripción — habría que recrearlo para deshacerlo."
+    }
   },
   "campaigns": {
     "title": "Programa de Prácticas",

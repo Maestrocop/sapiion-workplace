@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
 import PageHeader from '../components/PageHeader';
 
 const STATUS_STYLE = {
@@ -11,15 +12,75 @@ const STATUS_STYLE = {
   cancelled: 'bg-red-100 text-red-500',
 };
 
+function EditCampaignModal({ campaign, onClose, onSaved, onDeleted }) {
+  const { t } = useTranslation();
+  const [name, setName] = useState(campaign.name);
+  const [error, setError] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  async function save() {
+    setError('');
+    setSaved(false);
+    try {
+      await api.put(`/api/internship-campaigns/${campaign.id}`, { name });
+      setSaved(true);
+      onSaved();
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleDelete() {
+    if (!window.confirm(t('campaignDetail.editModal.deleteConfirm', { name: campaign.name }))) return;
+    setError('');
+    try {
+      await api.del(`/api/internship-campaigns/${campaign.id}`);
+      onDeleted();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
+        <h2 className="text-lg font-semibold text-slate-800">{t('campaignDetail.editModal.title')}</h2>
+        <p className="text-sm text-slate-500 mb-4">{t('campaignDetail.editModal.subtitle')}</p>
+
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">{t('campaignDetail.editModal.name')}</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          {saved && <p className="text-sm text-emerald-600">{t('campaignDetail.editModal.saved')}</p>}
+          {error && <p className="text-sm text-red-600">{error}</p>}
+        </div>
+
+        <div className="flex justify-between items-center mt-6">
+          <button onClick={handleDelete} className="text-sm text-red-600 hover:underline px-2 py-2">{t('campaignDetail.editModal.delete')}</button>
+          <div className="flex gap-2">
+            <button onClick={onClose} className="text-sm text-slate-500 px-4 py-2">{t('common.cancel')}</button>
+            <button onClick={save} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">{t('campaignDetail.editModal.save')}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CampaignDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [campaign, setCampaign] = useState(null);
   const [classStudents, setClassStudents] = useState([]);
   const [selected, setSelected] = useState({});
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
   const [enrolling, setEnrolling] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   async function load() {
     const c = await api.get(`/api/internship-campaigns/${id}`);
@@ -68,6 +129,8 @@ export default function CampaignDetailPage() {
 
   const selectedCount = Object.values(selected).filter(Boolean).length;
   const className = campaign.class?.name || t('campaignDetail.thisClass');
+  const isAdmin = (user?.roles || []).includes('admin');
+  const canEdit = isAdmin || String(campaign.coordinator?.id) === String(user?.id);
 
   return (
     <div>
@@ -77,10 +140,29 @@ export default function CampaignDetailPage() {
           title={campaign.name}
           subtitle={`${campaign.class?.name || ''} · ${campaign.academicYear?.label || ''} · ${campaign.campaign_type}`}
           actions={
-            <span className={`text-xs px-2 py-0.5 rounded-full ${STATUS_STYLE[campaign.status]}`}>{t(`campaigns.status.${campaign.status}`)}</span>
+            <div className="flex items-center gap-2">
+              <span className={`text-xs px-2 py-0.5 rounded-full ${STATUS_STYLE[campaign.status]}`}>{t(`campaigns.status.${campaign.status}`)}</span>
+              {canEdit && (
+                <button
+                  onClick={() => setEditing(true)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/20 hover:bg-white/30 border border-white/30 transition"
+                >
+                  {t('common.edit')}
+                </button>
+              )}
+            </div>
           }
         />
       </div>
+
+      {editing && (
+        <EditCampaignModal
+          campaign={campaign}
+          onClose={() => setEditing(false)}
+          onSaved={() => load()}
+          onDeleted={() => navigate('/campaigns')}
+        />
+      )}
 
       <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
         <div className="flex items-center justify-between mb-3">

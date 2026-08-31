@@ -264,7 +264,16 @@
     "everyoneEnrolled": "Alle in dieser Klasse sind bereits eingeschrieben.",
     "enrolledStudents": "Eingeschriebene Studenten",
     "noneEnrolled": "Noch keine Studenten eingeschrieben.",
-    "noCompanyYet": "Noch kein Unternehmen"
+    "noCompanyYet": "Noch kein Unternehmen",
+    "editModal": {
+      "title": "Programm bearbeiten",
+      "subtitle": "Name des Programms aktualisieren",
+      "name": "Name",
+      "saved": "✓ Gespeichert",
+      "save": "Programm speichern",
+      "delete": "Programm löschen",
+      "deleteConfirm": "{{name}} löschen? Verschwindet zusammen mit dem Einschreibungsverlauf — müsste neu angelegt werden, um dies rückgängig zu machen."
+    }
   },
   "campaigns": {
     "title": "Praktikumsprogramm",

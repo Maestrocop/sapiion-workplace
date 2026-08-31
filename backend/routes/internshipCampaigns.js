@@ -164,12 +164,18 @@ router.post('/', validate(campaignSchema), async (req, res) => {
   }
 });
 
-// PUT /api/internship-campaigns/:id
+// PUT /api/internship-campaigns/:id — admin, or the coordinator who owns
+// this programme (same rule the GET list uses to scope visibility).
 router.put('/:id', validate(campaignSchema.partial()), async (req, res) => {
   try {
     const { InternshipCampaign } = req.models;
     const campaign = await InternshipCampaign.findByPk(req.params.id);
     if (!campaign) return res.status(404).json({ error: 'Campaign not found' });
+    const isAdmin = req.user.roles?.includes('admin');
+    const isOwner = String(campaign.coordinator_id) === String(req.user.id);
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ error: 'Only an admin or this programme\'s coordinator can edit it' });
+    }
     await campaign.update(req.body);
     res.json(campaign);
   } catch (err) {
@@ -184,6 +190,11 @@ router.delete('/:id', async (req, res) => {
     const { InternshipCampaign } = req.models;
     const campaign = await InternshipCampaign.findByPk(req.params.id);
     if (!campaign) return res.status(404).json({ error: 'Campaign not found' });
+    const isAdmin = req.user.roles?.includes('admin');
+    const isOwner = String(campaign.coordinator_id) === String(req.user.id);
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ error: 'Only an admin or this programme\'s coordinator can delete it' });
+    }
     await campaign.destroy();
     res.json({ ok: true });
   } catch (err) {

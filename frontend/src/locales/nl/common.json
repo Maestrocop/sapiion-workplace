@@ -264,7 +264,16 @@
     "everyoneEnrolled": "Iedereen in deze klas is al ingeschreven.",
     "enrolledStudents": "Ingeschreven studenten",
     "noneEnrolled": "Nog geen studenten ingeschreven.",
-    "noCompanyYet": "Nog geen bedrijf"
+    "noCompanyYet": "Nog geen bedrijf",
+    "editModal": {
+      "title": "Programma bewerken",
+      "subtitle": "Naam van het programma bijwerken",
+      "name": "Naam",
+      "saved": "✓ Opgeslagen",
+      "save": "Programma opslaan",
+      "delete": "Programma verwijderen",
+      "deleteConfirm": "{{name}} verwijderen? Verdwijnt samen met de inschrijvingsgeschiedenis — je moet het opnieuw aanmaken om dit ongedaan te maken."
+    }
   },
   "campaigns": {
     "title": "Stageprogramma",
