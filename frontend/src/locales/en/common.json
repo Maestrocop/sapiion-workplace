@@ -382,7 +382,9 @@
       "name": "Name",
       "code": "Code",
       "saved": "✓ Saved",
-      "save": "Save Class"
+      "save": "Save Class",
+      "delete": "Delete class",
+      "deleteConfirm": "Delete {{name}}? This removes it from every list — you'd need to recreate it to undo this."
     },
     "createModal": {
       "title": "New Class",

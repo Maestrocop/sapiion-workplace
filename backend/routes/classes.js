@@ -53,4 +53,23 @@ router.put('/:id', validate(classSchema), async (req, res) => {
   }
 });
 
+// DELETE /api/classes/:id — admin/coordinator, soft-delete (paranoid model
+// — sets deleted_at, row preserved, so no conflict with existing
+// campaigns/users that still reference this class_id).
+router.delete('/:id', async (req, res) => {
+  try {
+    if (!req.user.roles?.some((r) => ['admin', 'coordinator'].includes(r))) {
+      return res.status(403).json({ error: 'Only admin/coordinator can delete classes' });
+    }
+    const { Class } = req.models;
+    const klass = await Class.findByPk(req.params.id);
+    if (!klass) return res.status(404).json({ error: 'Class not found' });
+    await klass.destroy();
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[classes DELETE]', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default router;

@@ -382,7 +382,9 @@
       "name": "Naam",
       "code": "Code",
       "saved": "✓ Opgeslagen",
-      "save": "Klas opslaan"
+      "save": "Klas opslaan",
+      "delete": "Klas verwijderen",
+      "deleteConfirm": "{{name}} verwijderen? Verdwijnt uit alle lijsten — je moet ze opnieuw aanmaken om dit ongedaan te maken."
     },
     "createModal": {
       "title": "Nieuwe klas",

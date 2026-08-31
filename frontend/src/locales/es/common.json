@@ -382,7 +382,9 @@
       "name": "Nombre",
       "code": "Código",
       "saved": "✓ Guardado",
-      "save": "Guardar clase"
+      "save": "Guardar clase",
+      "delete": "Eliminar clase",
+      "deleteConfirm": "¿Eliminar {{name}}? Desaparecerá de todas las listas — habría que recrearla para deshacerlo."
     },
     "createModal": {
       "title": "Nueva clase",

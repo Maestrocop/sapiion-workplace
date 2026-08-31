@@ -23,6 +23,18 @@ function EditClassModal({ klass, onClose, onSaved }) {
     }
   }
 
+  async function handleDelete() {
+    if (!window.confirm(t('classes.editModal.deleteConfirm', { name: klass.name }))) return;
+    setError('');
+    try {
+      await api.del(`/api/classes/${klass.id}`);
+      onSaved();
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
@@ -42,9 +54,12 @@ function EditClassModal({ klass, onClose, onSaved }) {
           {error && <p className="text-sm text-red-600">{error}</p>}
         </div>
 
-        <div className="flex justify-end gap-2 mt-6">
-          <button onClick={onClose} className="text-sm text-slate-500 px-4 py-2">{t('common.cancel')}</button>
-          <button onClick={save} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">{t('classes.editModal.save')}</button>
+        <div className="flex justify-between items-center mt-6">
+          <button onClick={handleDelete} className="text-sm text-red-600 hover:underline px-2 py-2">{t('classes.editModal.delete')}</button>
+          <div className="flex gap-2">
+            <button onClick={onClose} className="text-sm text-slate-500 px-4 py-2">{t('common.cancel')}</button>
+            <button onClick={save} className="bg-workplace-teal-600 hover:bg-workplace-teal-700 text-white text-sm rounded-lg px-4 py-2">{t('classes.editModal.save')}</button>
+          </div>
         </div>
       </div>
     </div>
