@@ -329,7 +329,7 @@
     "created": "✓ {{email}} creado (id {{id}}) — comparte la contraseña directamente con la persona",
     "roles": { "student": "estudiante", "teacher": "profesor", "coordinator": "coordinador", "admin": "administrador" },
     "atLeastOneRole": "Se requiere al menos un rol",
-    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+    "passwordMinLength": "La contraseña debe tener al menos 12 caracteres, con una mayúscula, una minúscula y un número",
     "passwordUpdated": "✓ Contraseña actualizada",
     "editModal": {
       "title": "Editar usuario",
@@ -345,7 +345,7 @@
       "active": "Activo",
       "saved": "✓ Guardado",
       "setPassword": "Establecer nueva contraseña",
-      "passwordPlaceholder": "Mín. 8 caracteres",
+      "passwordPlaceholder": "Mín. 12 caracteres, mayús+minúscula, número",
       "setPasswordButton": "Establecer contraseña",
       "save": "Guardar usuario",
       "delete": "Eliminar usuario",
@@ -364,7 +364,7 @@
       "noCohort": "Sin cohorte",
       "roles": "Roles",
       "tempPassword": "Contraseña temporal",
-      "passwordPlaceholder": "Mín. 8 caracteres",
+      "passwordPlaceholder": "Mín. 12 caracteres, mayús+minúscula, número",
       "createAccount": "Crear cuenta"
     }
   },

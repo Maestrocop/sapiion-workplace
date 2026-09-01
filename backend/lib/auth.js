@@ -1,6 +1,20 @@
 import jwt from 'jsonwebtoken';
 import argon2 from 'argon2';
 import crypto from 'crypto';
+import { z } from 'zod';
+
+// Single source of truth for "what counts as an acceptable password" —
+// used everywhere a password is set (self-service reset/change in
+// routes/auth.js, and admin-created/admin-set accounts in routes/users.js).
+// Previously routes/users.js only required 8 characters with no complexity
+// while routes/auth.js already required this stronger rule — the weaker one
+// mattered more since it's how every account starts out. (#5)
+export const strongPasswordRule = z.string()
+  .min(12, 'Password must be at least 12 characters')
+  .max(128, 'Password too long')
+  .regex(/[A-Z]/, 'Password must contain an uppercase letter')
+  .regex(/[a-z]/, 'Password must contain a lowercase letter')
+  .regex(/[0-9]/, 'Password must contain a number');
 
 function secret() {
   const s = process.env.JWT_SECRET;

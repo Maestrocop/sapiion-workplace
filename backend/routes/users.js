@@ -2,13 +2,13 @@ import express from 'express';
 import { z } from 'zod';
 import { Op } from 'sequelize';
 import { validate } from '../middleware/validate.js';
-import { hashPassword } from '../lib/auth.js';
+import { hashPassword, strongPasswordRule } from '../lib/auth.js';
 
 const router = express.Router();
 
 const createUserSchema = z.object({
   email:            z.string().email(),
-  password:         z.string().min(8).max(128),
+  password:         strongPasswordRule,
   first_name:       z.string().min(1).max(100),
   last_name:        z.string().min(1).max(100),
   roles:            z.array(z.enum(['admin', 'coordinator', 'teacher', 'student'])).min(1),
@@ -23,7 +23,7 @@ const updateUserSchema = z.object({
   is_active:        z.boolean().optional(),
   class_id:         z.number().int().nullable().optional(),
   academic_year_id: z.number().int().nullable().optional(),
-  password:         z.string().min(8).max(128).optional(),
+  password:         strongPasswordRule.optional(),
 });
 
 // GET /api/users?role=student

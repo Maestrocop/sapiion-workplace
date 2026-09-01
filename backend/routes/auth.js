@@ -2,7 +2,7 @@ import express from 'express';
 import { z } from 'zod';
 import rateLimit from 'express-rate-limit';
 import crypto from 'crypto';
-import { signToken, verifyPassword, hashPassword, generateRefreshToken, hashRefreshToken, REFRESH_TOKEN_TTL_DAYS } from '../lib/auth.js';
+import { signToken, verifyPassword, hashPassword, generateRefreshToken, hashRefreshToken, REFRESH_TOKEN_TTL_DAYS, strongPasswordRule } from '../lib/auth.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { validate } from '../middleware/validate.js';
 import { sendPasswordResetEmail } from '../lib/mailer.js';
@@ -25,13 +25,10 @@ const forgotPasswordLimiter = rateLimit({
   message: { error: 'Too many password reset requests — please try again in 15 minutes' },
 });
 
+// Login itself just checks the submitted string is non-trivial before
+// hitting the DB — the actual policy (strongPasswordRule) is enforced only
+// where a password is being *set*, not on every login attempt.
 const passwordRule = z.string().min(8, 'Password must be at least 8 characters').max(128, 'Password too long');
-const strongPasswordRule = z.string()
-  .min(12, 'Password must be at least 12 characters')
-  .max(128, 'Password too long')
-  .regex(/[A-Z]/, 'Password must contain an uppercase letter')
-  .regex(/[a-z]/, 'Password must contain a lowercase letter')
-  .regex(/[0-9]/, 'Password must contain a number');
 
 const loginSchema = z.object({
   email:    z.string().email('Invalid email format').max(254),

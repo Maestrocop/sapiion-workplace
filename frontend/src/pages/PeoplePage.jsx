@@ -46,7 +46,7 @@ function EditUserModal({ user, classes, years, onClose, onSaved }) {
   async function setPassword() {
     setPasswordError('');
     setPasswordMessage('');
-    if (newPassword.length < 8) { setPasswordError(t('users.passwordMinLength')); return; }
+    if (newPassword.length < 12) { setPasswordError(t('users.passwordMinLength')); return; }
     try {
       await api.put(`/api/users/${user.id}`, { password: newPassword });
       setPasswordMessage(t('users.passwordUpdated'));

@@ -329,7 +329,7 @@
     "created": "✓ {{email}} erstellt (ID {{id}}) — teilen Sie das Passwort direkt mit",
     "roles": { "student": "Student", "teacher": "Lehrkraft", "coordinator": "Koordinator", "admin": "Administrator" },
     "atLeastOneRole": "Mindestens eine Rolle ist erforderlich",
-    "passwordMinLength": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "passwordMinLength": "Das Passwort muss mindestens 12 Zeichen lang sein und einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten",
     "passwordUpdated": "✓ Passwort aktualisiert",
     "editModal": {
       "title": "Benutzer bearbeiten",
@@ -345,7 +345,7 @@
       "active": "Aktiv",
       "saved": "✓ Gespeichert",
       "setPassword": "Neues Passwort festlegen",
-      "passwordPlaceholder": "Min. 8 Zeichen",
+      "passwordPlaceholder": "Min. 12 Zeichen, Groß+Kleinbuchstabe, Zahl",
       "setPasswordButton": "Passwort festlegen",
       "save": "Benutzer speichern",
       "delete": "Benutzer löschen",
@@ -364,7 +364,7 @@
       "noCohort": "Keine Kohorte",
       "roles": "Rollen",
       "tempPassword": "Vorläufiges Passwort",
-      "passwordPlaceholder": "Min. 8 Zeichen",
+      "passwordPlaceholder": "Min. 12 Zeichen, Groß+Kleinbuchstabe, Zahl",
       "createAccount": "Konto erstellen"
     }
   },

@@ -329,7 +329,7 @@
     "created": "✓ {{email}} aangemaakt (id {{id}}) — deel het wachtwoord rechtstreeks met de gebruiker",
     "roles": { "student": "student", "teacher": "leerkracht", "coordinator": "coördinator", "admin": "beheerder" },
     "atLeastOneRole": "Minstens één rol is verplicht",
-    "passwordMinLength": "Wachtwoord moet minstens 8 tekens bevatten",
+    "passwordMinLength": "Wachtwoord moet minstens 12 tekens bevatten, met een hoofdletter, een kleine letter en een cijfer",
     "passwordUpdated": "✓ Wachtwoord bijgewerkt",
     "editModal": {
       "title": "Gebruiker bewerken",
@@ -345,7 +345,7 @@
       "active": "Actief",
       "saved": "✓ Opgeslagen",
       "setPassword": "Nieuw wachtwoord instellen",
-      "passwordPlaceholder": "Min. 8 tekens",
+      "passwordPlaceholder": "Min. 12 tekens, hoofd+kleine letter, cijfer",
       "setPasswordButton": "Wachtwoord instellen",
       "save": "Gebruiker opslaan",
       "delete": "Gebruiker verwijderen",
@@ -364,7 +364,7 @@
       "noCohort": "Geen cohort",
       "roles": "Rollen",
       "tempPassword": "Tijdelijk wachtwoord",
-      "passwordPlaceholder": "Min. 8 tekens",
+      "passwordPlaceholder": "Min. 12 tekens, hoofd+kleine letter, cijfer",
       "createAccount": "Account aanmaken"
     }
   },
