@@ -73,7 +73,29 @@
     "signingIn": "Anmeldung läuft…",
     "signIn": "Anmelden",
     "signInMicrosoft": "Mit Microsoft anmelden",
-    "signInGoogle": "Mit Google anmelden"
+    "signInGoogle": "Mit Google anmelden",
+    "forgotPassword": "Passwort vergessen?"
+  },
+  "forgotPassword": {
+    "subtitle": "Wir senden Ihnen einen Link zum Zurücksetzen",
+    "email": "E-Mail",
+    "sending": "Wird gesendet…",
+    "sendLink": "Link senden",
+    "checkEmail": "Falls ein Konto für diese E-Mail existiert, ist ein Reset-Link unterwegs. Er läuft nach 1 Stunde ab.",
+    "smtpNote": "Selbst gehostet ohne konfigurierten SMTP-Server? Der Link kommt dann nicht wirklich an — schauen Sie stattdessen in die Konsolenausgabe des Backend-Servers.",
+    "backToLogin": "← Zurück zur Anmeldung"
+  },
+  "resetPassword": {
+    "subtitle": "Wählen Sie ein neues Passwort",
+    "missingToken": "Diesem Link fehlt das Reset-Token — verwenden Sie den Link aus Ihrer E-Mail oder fordern Sie einen neuen an.",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "mismatch": "Passwörter stimmen nicht überein",
+    "resetting": "Wird zurückgesetzt…",
+    "resetButton": "Passwort zurücksetzen",
+    "success": "Passwort aktualisiert — Sie können sich jetzt damit anmelden.",
+    "requestNewLink": "Neuen Link anfordern",
+    "goToLogin": "Zur Anmeldung"
   },
   "docStatus": {
     "submitted": "eingereicht",

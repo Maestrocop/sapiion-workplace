@@ -73,7 +73,29 @@
     "signingIn": "Bezig met aanmelden…",
     "signIn": "Aanmelden",
     "signInMicrosoft": "Aanmelden met Microsoft",
-    "signInGoogle": "Aanmelden met Google"
+    "signInGoogle": "Aanmelden met Google",
+    "forgotPassword": "Wachtwoord vergeten?"
+  },
+  "forgotPassword": {
+    "subtitle": "We sturen je een link om het opnieuw in te stellen",
+    "email": "E-mail",
+    "sending": "Bezig met versturen…",
+    "sendLink": "Reset-link versturen",
+    "checkEmail": "Als er een account bestaat voor dit e-mailadres, is er een reset-link onderweg. Deze verloopt na 1 uur.",
+    "smtpNote": "Zelf gehost zonder SMTP-server ingesteld? De link komt dan niet echt aan — kijk in plaats daarvan in de console-uitvoer van de backend-server.",
+    "backToLogin": "← Terug naar aanmelden"
+  },
+  "resetPassword": {
+    "subtitle": "Kies een nieuw wachtwoord",
+    "missingToken": "Deze link mist zijn reset-token — gebruik de link uit je e-mail, of vraag een nieuwe aan.",
+    "newPassword": "Nieuw wachtwoord",
+    "confirmPassword": "Bevestig wachtwoord",
+    "mismatch": "Wachtwoorden komen niet overeen",
+    "resetting": "Bezig met resetten…",
+    "resetButton": "Wachtwoord resetten",
+    "success": "Wachtwoord bijgewerkt — je kunt er nu mee aanmelden.",
+    "requestNewLink": "Nieuwe link aanvragen",
+    "goToLogin": "Naar aanmelden"
   },
   "docStatus": {
     "submitted": "ingediend",

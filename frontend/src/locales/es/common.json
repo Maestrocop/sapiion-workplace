@@ -73,7 +73,29 @@
     "signingIn": "Iniciando sesión…",
     "signIn": "Iniciar sesión",
     "signInMicrosoft": "Iniciar sesión con Microsoft",
-    "signInGoogle": "Iniciar sesión con Google"
+    "signInGoogle": "Iniciar sesión con Google",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  },
+  "forgotPassword": {
+    "subtitle": "Te enviaremos un enlace para restablecerla",
+    "email": "Correo electrónico",
+    "sending": "Enviando…",
+    "sendLink": "Enviar enlace",
+    "checkEmail": "Si existe una cuenta con ese correo, un enlace de restablecimiento está en camino. Caduca en 1 hora.",
+    "smtpNote": "¿Autoalojado sin un servidor SMTP configurado? El enlace no llegará realmente — revisa la salida de la consola del servidor backend en su lugar.",
+    "backToLogin": "← Volver a iniciar sesión"
+  },
+  "resetPassword": {
+    "subtitle": "Elige una nueva contraseña",
+    "missingToken": "A este enlace le falta el token de restablecimiento — usa el enlace de tu correo, o solicita uno nuevo.",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "mismatch": "Las contraseñas no coinciden",
+    "resetting": "Restableciendo…",
+    "resetButton": "Restablecer contraseña",
+    "success": "Contraseña actualizada — ya puedes iniciar sesión con ella.",
+    "requestNewLink": "Solicitar un nuevo enlace",
+    "goToLogin": "Ir a iniciar sesión"
   },
   "docStatus": {
     "submitted": "enviado",

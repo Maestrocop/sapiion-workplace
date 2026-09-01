@@ -73,7 +73,29 @@
     "signingIn": "Connexion en cours…",
     "signIn": "Se connecter",
     "signInMicrosoft": "Se connecter avec Microsoft",
-    "signInGoogle": "Se connecter avec Google"
+    "signInGoogle": "Se connecter avec Google",
+    "forgotPassword": "Mot de passe oublié ?"
+  },
+  "forgotPassword": {
+    "subtitle": "Nous vous enverrons un lien pour le réinitialiser",
+    "email": "E-mail",
+    "sending": "Envoi en cours…",
+    "sendLink": "Envoyer le lien",
+    "checkEmail": "Si un compte existe pour cet e-mail, un lien de réinitialisation est en route. Il expire dans 1 heure.",
+    "smtpNote": "Auto-hébergement sans serveur SMTP configuré ? Le lien n'arrivera pas réellement — consultez plutôt la sortie console du serveur backend.",
+    "backToLogin": "← Retour à la connexion"
+  },
+  "resetPassword": {
+    "subtitle": "Choisissez un nouveau mot de passe",
+    "missingToken": "Ce lien n'a pas de jeton de réinitialisation — utilisez le lien de votre e-mail, ou demandez-en un nouveau.",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "mismatch": "Les mots de passe ne correspondent pas",
+    "resetting": "Réinitialisation en cours…",
+    "resetButton": "Réinitialiser le mot de passe",
+    "success": "Mot de passe mis à jour — vous pouvez maintenant vous connecter avec.",
+    "requestNewLink": "Demander un nouveau lien",
+    "goToLogin": "Aller à la connexion"
   },
   "docStatus": {
     "submitted": "soumis",

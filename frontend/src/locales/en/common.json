@@ -73,7 +73,29 @@
     "signingIn": "Signing in…",
     "signIn": "Sign in",
     "signInMicrosoft": "Sign in with Microsoft",
-    "signInGoogle": "Sign in with Google"
+    "signInGoogle": "Sign in with Google",
+    "forgotPassword": "Forgot password?"
+  },
+  "forgotPassword": {
+    "subtitle": "We'll email you a link to reset it",
+    "email": "Email",
+    "sending": "Sending…",
+    "sendLink": "Send reset link",
+    "checkEmail": "If an account exists for that email, a reset link is on its way. It expires in 1 hour.",
+    "smtpNote": "Self-hosting without an SMTP server configured? The link won't actually arrive — check the backend server's console output instead.",
+    "backToLogin": "← Back to sign in"
+  },
+  "resetPassword": {
+    "subtitle": "Choose a new password",
+    "missingToken": "This link is missing its reset token — use the link from your email, or request a new one.",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "mismatch": "Passwords don't match",
+    "resetting": "Resetting…",
+    "resetButton": "Reset password",
+    "success": "Password updated — you can sign in with it now.",
+    "requestNewLink": "Request a new link",
+    "goToLogin": "Go to sign in"
   },
   "docStatus": {
     "submitted": "submitted",

@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import RequireAuth from './components/RequireAuth';
 import MainLayout from './components/MainLayout';
 import LoginPage from './pages/LoginPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import OAuthCallbackPage from './pages/OAuthCallbackPage';
 import CompaniesPage from './pages/CompaniesPage';
 import CampaignsPage from './pages/CampaignsPage';
@@ -30,6 +32,8 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/oauth-callback" element={<OAuthCallbackPage />} />
           <Route path="/supervisor/:token" element={<SupervisorPortalPage />} />
 
