@@ -40,7 +40,7 @@
   "supervisorPortal": {
     "loading": "Cargando…",
     "requestFailed": "Error en la solicitud",
-    "title": "Sapiion Workplace — Supervisor",
+    "title": "Supervisor",
     "youAreSupervising": "Estás supervisando a {{student}} en {{company}}.",
     "aStudent": "un estudiante",
     "yourCompany": "tu empresa",

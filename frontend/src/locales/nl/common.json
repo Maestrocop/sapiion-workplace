@@ -40,7 +40,7 @@
   "supervisorPortal": {
     "loading": "Laden…",
     "requestFailed": "Aanvraag mislukt",
-    "title": "Sapiion Workplace — Begeleider",
+    "title": "Begeleider",
     "youAreSupervising": "Je begeleidt {{student}} bij {{company}}.",
     "aStudent": "een student",
     "yourCompany": "je bedrijf",

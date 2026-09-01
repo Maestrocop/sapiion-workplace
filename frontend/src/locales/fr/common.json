@@ -40,7 +40,7 @@
   "supervisorPortal": {
     "loading": "Chargement…",
     "requestFailed": "Échec de la requête",
-    "title": "Sapiion Workplace — Encadrant",
+    "title": "Encadrant",
     "youAreSupervising": "Vous encadrez {{student}} chez {{company}}.",
     "aStudent": "un étudiant",
     "yourCompany": "votre entreprise",

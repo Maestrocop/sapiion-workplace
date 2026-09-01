@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { API_URL } from '../lib/api';
 import { formatDate } from '../lib/dates';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import Logo from '../components/Logo';
 
 // Public page — no login. Access is controlled entirely by the token in the URL.
 async function portalRequest(token, { method = 'GET', body } = {}) {
@@ -91,7 +92,11 @@ export default function SupervisorPortalPage() {
         <LanguageSwitcher />
       </div>
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-xl font-semibold text-workplace-teal-700 mb-1">{t('supervisorPortal.title')}</h1>
+        <div className="flex items-center gap-2 mb-1">
+          <Logo />
+          <span className="text-slate-400 text-lg">—</span>
+          <span className="text-workplace-teal-700 text-lg font-medium">{t('supervisorPortal.title')}</span>
+        </div>
         <p className="text-slate-500 text-sm mb-6">
           {t('supervisorPortal.youAreSupervising', {
             student: data.internship.student_name || t('supervisorPortal.aStudent'),
