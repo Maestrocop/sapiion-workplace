@@ -6,9 +6,21 @@ This is a standalone product — a fresh build using the internship domain desig
 
 ## Screenshots
 
-<!-- TODO before wide announcement: add screenshots here (coordinator dashboard,
-     internship detail with the phase track, student's My Internship page,
-     the supervisor portal). None captured yet. -->
+**Coordinator dashboard** — every internship programme at a glance, phase distribution per class
+
+![Coordinator dashboard](docs/screenshots/coordinator-dashboard.png)
+
+**Internship detail** — phase track, completion summary, company and supervisor records
+
+![Internship detail](docs/screenshots/internship-detail.png)
+
+**My Internship** — the student's own view: placement, assessment, interim reviews, activity logs
+
+![My Internship](docs/screenshots/my-internship.png)
+
+**Supervisor portal** — token-based, no account required for the external company contact
+
+![Supervisor portal](docs/screenshots/supervisor-portal.png)
 
 ## Status
 
