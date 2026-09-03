@@ -18,6 +18,11 @@ async function portalRequest(token, { method = 'GET', body } = {}) {
   return data;
 }
 
+// Same collapse-to-a-preview pattern used on the coordinator/student pages
+// (#23) — this page has its own separate log rendering (with the
+// acknowledge form per entry), which that earlier fix didn't cover.
+const LOG_PREVIEW_COUNT = 3;
+
 export default function SupervisorPortalPage() {
   const { t } = useTranslation();
   const { token } = useParams();
@@ -25,6 +30,7 @@ export default function SupervisorPortalPage() {
   const [error, setError] = useState('');
   const [form, setForm] = useState({ name: '', email: '', phone: '', job_title: '', start_date: '', end_date: '', working_schedule: '' });
   const [saved, setSaved] = useState(false);
+  const [expandedLogs, setExpandedLogs] = useState(false);
 
   async function load() {
     try {
@@ -154,7 +160,7 @@ export default function SupervisorPortalPage() {
           <h2 className="text-sm font-medium text-slate-600 mb-3">{t('supervisorPortal.weeklyLogs')}</h2>
           {data.logs.length === 0 && <p className="text-sm text-slate-400">{t('supervisorPortal.noLogs')}</p>}
           <div className="space-y-2">
-            {data.logs.map((log) => (
+            {(expandedLogs ? data.logs : data.logs.slice(0, LOG_PREVIEW_COUNT)).map((log) => (
               <div key={log.id} className="border border-slate-100 rounded-lg p-3">
                 <p className="text-sm font-medium">{formatDate(log.week_starting)} — {log.hours_logged || 0}h</p>
                 <p className="text-sm text-slate-600 mb-2">{log.content}</p>
@@ -168,6 +174,14 @@ export default function SupervisorPortalPage() {
               </div>
             ))}
           </div>
+          {data.logs.length > LOG_PREVIEW_COUNT && (
+            <button
+              type="button" onClick={() => setExpandedLogs((e) => !e)}
+              className="text-xs text-workplace-teal-700 hover:underline mt-2"
+            >
+              {expandedLogs ? t('internshipDetail.dailyLogs.showLess') : t('internshipDetail.dailyLogs.showAll', { count: data.logs.length })}
+            </button>
+          )}
         </div>
       </div>
     </div>
