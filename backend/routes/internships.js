@@ -11,7 +11,15 @@ import { sendReviewScheduledEmail } from '../lib/mailer.js';
 const router = express.Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadDir = path.join(__dirname, '..', 'uploads', 'internship-documents');
-fs.mkdirSync(uploadDir, { recursive: true });
+try {
+  fs.mkdirSync(uploadDir, { recursive: true });
+} catch (err) {
+  // Read-only filesystems (e.g. Vercel's serverless runtime) can't create this
+  // directory at all — don't let that crash the whole server at startup.
+  // Document uploads will fail at request time instead, which is the correct,
+  // isolated failure mode until this route has real persistent storage.
+  console.warn(`[internships] Could not create upload directory (${uploadDir}): ${err.message}`);
+}
 const upload = multer({ dest: uploadDir, limits: { fileSize: 20 * 1024 * 1024 } });
 
 const internshipSchema = z.object({
