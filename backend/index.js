@@ -2,6 +2,12 @@ import express from 'express';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
+// Explicit import so bundlers that only detect static imports (e.g. Vercel's
+// Web Service build) include pg in the deployed output — Sequelize otherwise
+// loads it dynamically by dialect name, which such bundlers miss entirely,
+// causing "Please install pg package manually" despite it being a real
+// dependency.
+import pg from 'pg';
 import { initModels } from './models/index.js';
 import { requireAuth } from './middleware/requireAuth.js';
 import healthRouter from './routes/health.js';
@@ -34,7 +40,7 @@ if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'sapiion-workplace-d
   process.exit(1);
 }
 
-const sequelize = new Sequelize(DATABASE_URL, { logging: false });
+const sequelize = new Sequelize(DATABASE_URL, { logging: false, dialectModule: pg });
 
 async function start() {
   try {
