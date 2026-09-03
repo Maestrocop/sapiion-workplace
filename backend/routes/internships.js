@@ -11,16 +11,28 @@ import { sendReviewScheduledEmail } from '../lib/mailer.js';
 const router = express.Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadDir = path.join(__dirname, '..', 'uploads', 'internship-documents');
-try {
-  fs.mkdirSync(uploadDir, { recursive: true });
-} catch (err) {
-  // Read-only filesystems (e.g. Vercel's serverless runtime) can't create this
-  // directory at all — don't let that crash the whole server at startup.
-  // Document uploads will fail at request time instead, which is the correct,
-  // isolated failure mode until this route has real persistent storage.
-  console.warn(`[internships] Could not create upload directory (${uploadDir}): ${err.message}`);
-}
-const upload = multer({ dest: uploadDir, limits: { fileSize: 20 * 1024 * 1024 } });
+// Custom storage instead of the multer({ dest }) shorthand — that shorthand
+// creates the directory eagerly (uncaught) at construction time, which
+// crashes the whole server on read-only filesystems (e.g. Vercel). Creating
+// it lazily per-request means a read-only filesystem fails just that one
+// upload, not server startup — document uploads need real persistent
+// storage before this route works reliably there.
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      try {
+        fs.mkdirSync(uploadDir, { recursive: true });
+        cb(null, uploadDir);
+      } catch (err) {
+        cb(new Error(`Upload directory unavailable: ${err.message}`));
+      }
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${crypto.randomBytes(8).toString('hex')}`);
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+});
 
 const internshipSchema = z.object({
   student_id:       z.number().int(),
