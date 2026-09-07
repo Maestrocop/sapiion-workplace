@@ -3,7 +3,7 @@
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 import { initModels } from '../models/index.js';
-import { hashPassword } from '../lib/auth.js';
+import { hashPassword, strongPasswordRule } from '../lib/auth.js';
 
 dotenv.config({ path: '.env' });
 
@@ -11,6 +11,15 @@ const email    = process.env.ADMIN_EMAIL;
 const password = process.env.ADMIN_PASSWORD;
 if (!email || !password) {
   console.error('Usage: ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=strongpassword node scripts/seed_admin.mjs');
+  process.exit(2);
+}
+
+// Same policy enforced everywhere else (routes/auth.js, routes/users.js) -
+// this script used to accept any ADMIN_PASSWORD unchecked, bypassing it.
+const passwordCheck = strongPasswordRule.safeParse(password);
+if (!passwordCheck.success) {
+  console.error('ADMIN_PASSWORD does not meet the password policy:');
+  for (const issue of passwordCheck.error.issues) console.error(`  - ${issue.message}`);
   process.exit(2);
 }
 
