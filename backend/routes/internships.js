@@ -193,6 +193,7 @@ router.get('/:id', async (req, res) => {
     const internship = await Internship.findByPk(req.params.id, {
       include: [
         includeStudent(req.models),
+        { model: req.models.InternshipCampaign, as: 'campaign', required: false, attributes: ['id', 'name', 'internship_start_date', 'internship_end_date'] },
         { model: InternshipSupervisor, as: 'supervisors' },
         // separate: true — same reasoning as GET /mine: ordering one hasMany
         // from the top-level `order` array isn't reliable once several other

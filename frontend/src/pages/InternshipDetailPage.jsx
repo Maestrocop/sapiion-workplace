@@ -192,7 +192,8 @@ export default function InternshipDetailPage() {
     setInternship(data);
     setCompanyForm({
       company_name: data.company_name || '', company_address: data.company_address || '',
-      start_date: data.start_date || '', end_date: data.end_date || '',
+      start_date: data.start_date || data.campaign?.internship_start_date || '',
+      end_date: data.end_date || data.campaign?.internship_end_date || '',
     });
   }
 
